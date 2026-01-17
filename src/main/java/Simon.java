@@ -1,4 +1,5 @@
 import tasks.Task;
+import tasks.Todo;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -19,7 +20,7 @@ public class Simon {
     }
 
     private static void sayBye() {
-        System.out.printf("""
+        System.out.print("""
                 ____________________________________________________________ 
                 Bye. Hope to see you again soon!
                 ____________________________________________________________ 
@@ -38,9 +39,7 @@ public class Simon {
         System.out.print("____________________________________________________________\n");
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < list.size(); i++) {
-            String completed = " ";
-            if (list.get(i).isCompleted()) completed = "X";
-            System.out.println(i + 1 + ".[" + completed + "] " + list.get(i));
+            System.out.println(i + 1 + "." + list.get(i));
         }
         System.out.println("____________________________________________________________\n");
     }
@@ -49,9 +48,11 @@ public class Simon {
         Simon.list.add(item);
         System.out.printf("""
                 ____________________________________________________________
-                 added: %s
+                  Got it. I've added this task:
+                    %s
+                  Now you have %d tasks in the list.
                 ____________________________________________________________
-                %n""", item);
+                %n""", item, Simon.list.size());
     }
 
     public static void markAsCompleted(int num) {
@@ -63,7 +64,7 @@ public class Simon {
         System.out.printf("""
                 ____________________________________________________________
                  Nice! I've marked this task as done:
-                   [X] %s
+                   %s
                 ____________________________________________________________
                 %n""", toMark);
     }
@@ -77,7 +78,7 @@ public class Simon {
         System.out.printf("""
                 ____________________________________________________________
                  OK, I've marked this task as not done yet:
-                   [ ] %s
+                   %s
                 ____________________________________________________________
                 %n""", toMark);
     }
@@ -90,23 +91,64 @@ public class Simon {
         Scanner scanner = new Scanner(System.in);
         String input;
 
-        while (true) {
+        boolean running = true;
+
+        while (running) {
             input = scanner.nextLine().trim();
-            if (input.equalsIgnoreCase("bye")) {
-                sayBye();
-                break;
-            } else if (input.equalsIgnoreCase("list")) {
-                listAll();
-            } else if (input.startsWith("mark")) {
-                int num = Integer.parseInt(input.split(" ")[1]);
-                markAsCompleted(num);
-            } else if (input.startsWith("unmark")) {
-                int num = Integer.parseInt(input.split(" ")[1]);
-                markAsUnCompleted(num);
+            if (input.isEmpty()) continue;
+
+            String[] parts = input.split("\\s+", 2);
+            String cmd = parts[0].toLowerCase();
+
+            switch (cmd) {
+                case "bye":
+                    sayBye();
+                    running = false;
+                    break;
+                case "list":
+                    listAll();
+                    break;
+                case "mark": {
+                    if (parts.length > 1) {
+                        markAsCompleted(Integer.parseInt(parts[1]));
+                    }
+                    break;
+                }
+                case "unmark": {
+                    if (parts.length > 1) {
+                        try {
+                            markAsUnCompleted(Integer.parseInt(parts[1]));
+                        } catch (NumberFormatException ignored) {
+                        }
+                    }
+                    break;
+                }
+                case "todo":
+                    if (parts.length > 1) {
+                        addToList(new Todo(parts[1]));
+                    }
+                    break;
+                case "deadline":
+                    if (parts.length > 1) {
+                        String[] deadlineParts = parts[1].split(" /by ", 2);
+                        if (deadlineParts.length > 1) {
+                            addToList(new tasks.Deadline(deadlineParts[0], deadlineParts[1]));
+                        }
+                    }
+                    break;
+                case "event":
+                    if (parts.length > 1) {
+                        String[] eventParts = parts[1].split(" /from | /to ", 3);
+                        if (eventParts.length > 2) {
+                            addToList(new tasks.Event(eventParts[0], eventParts[1], eventParts[2]));
+                        }
+                    }
+                    break;
+                default:
+                    System.out.println("____________________________________________________________");
+                    System.out.println("hUH what are you sAying");
+                    System.out.println("____________________________________________________________\n");
             }
-            /*else {
-                addToList(new Task(input));
-            }*/
             // echo(input);
         }
     }
