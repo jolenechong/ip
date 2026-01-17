@@ -5,6 +5,8 @@ import tasks.Todo;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static utils.Parser.parseIndex;
+
 public class Simon {
 
     private static String name;
@@ -82,14 +84,6 @@ public class Simon {
                    %s
                 ____________________________________________________________
                 %n""", toMark);
-    }
-
-    private static int parseIndex(String s) throws InputFormatException {
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            throw InputFormatException.numberFormatError();
-        }
     }
 
     public static void main(String[] args) throws InputFormatException {
