@@ -86,6 +86,20 @@ public class Simon {
                 %n""", toMark);
     }
 
+    public static void deleteFromList(int num) {
+        if (num == 0 || num > list.size()) {
+            return;
+        }
+        Task toDelete = Simon.list.remove(num - 1);
+        System.out.printf("""
+                ____________________________________________________________
+                 Noted. I've removed this task:
+                   %s
+                 Now you have %d tasks in the list.
+                ____________________________________________________________
+                %n""", toDelete, Simon.list.size());
+    }
+
     public static void main(String[] args) throws InputFormatException {
         Simon.name = "Simon";
         Simon.list = new ArrayList<>();
@@ -154,6 +168,10 @@ public class Simon {
                         }
 
                         addToList(new tasks.Event(desc, from, to));
+                        break;
+                    case "delete":
+                        if (parts.length <= 1) throw InputFormatException.numberFormatError();
+                        deleteFromList(parseIndex(parts[1]));
                         break;
                     default:
                         System.out.println("____________________________________________________________");
