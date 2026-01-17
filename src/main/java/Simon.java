@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Simon {
 
     private static String name;
@@ -14,6 +16,7 @@ public class Simon {
 
     private static void sayBye() {
         System.out.printf("""
+                ____________________________________________________________ 
                 Bye. Hope to see you again soon!
                 ____________________________________________________________ 
                 """);
@@ -22,6 +25,20 @@ public class Simon {
     public static void main(String[] args) {
         name = "Simon";
         sayHi();
-        sayBye();
+        Scanner scanner = new Scanner(System.in);
+        String input;
+        while (true) {
+            input = scanner.nextLine().trim();
+            if (input.equalsIgnoreCase("bye")) {
+                sayBye();
+                break;
+            }
+
+            System.out.printf("""
+                    ____________________________________________________________
+                     %s
+                    ____________________________________________________________
+                    %n""", input);
+        }
     }
 }
