@@ -1,5 +1,6 @@
 package utils;
 
+import exceptions.InputErrorType;
 import exceptions.InputFormatException;
 
 public class Parser {
@@ -7,7 +8,7 @@ public class Parser {
         try {
             return Integer.parseInt(s);
         } catch (NumberFormatException e) {
-            throw InputFormatException.numberFormatError();
+            throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
         }
     }
 }

@@ -1,3 +1,4 @@
+import exceptions.InputErrorType;
 import exceptions.InputFormatException;
 import tasks.Task;
 import tasks.Todo;
@@ -127,50 +128,51 @@ public class Simon {
                         listAll();
                         break;
                     case "mark":
-                        if (parts.length <= 1) throw InputFormatException.numberFormatError();
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
                         markAsCompleted(parseIndex(parts[1]));
                         break;
 
                     case "unmark":
-                        if (parts.length <= 1) throw InputFormatException.numberFormatError();
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
                         markAsUnCompleted(parseIndex(parts[1]));
                         break;
                     case "todo":
-                        if (parts.length <= 1) throw InputFormatException.todoDescriptionEmpty();
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.TODO_EMPTY);
                         addToList(new Todo(parts[1]));
                         break;
                     case "deadline":
-                        if (parts.length <= 1) throw InputFormatException.deadlineFormatError();
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
 
                         String rest = parts[1];
                         int byIndex = rest.indexOf(" /by ");
-                        if (byIndex == -1) throw InputFormatException.deadlineFormatError();
+                        if (byIndex == -1) throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
                         String desc = rest.substring(0, byIndex).trim();
                         String by = rest.substring(byIndex + 5).trim();
-                        if (desc.isEmpty() || by.isEmpty()) throw InputFormatException.deadlineFormatError();
+                        if (desc.isEmpty() || by.isEmpty())
+                            throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
 
                         addToList(new tasks.Deadline(desc, by));
                         break;
                     case "event":
-                        if (parts.length <= 1) throw InputFormatException.eventFormatError();
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.EVENT_FORMAT);
 
                         rest = parts[1];
                         int fromIndex = rest.indexOf(" /from ");
                         int toIndex = rest.indexOf(" /to ");
                         if (fromIndex == -1 || toIndex == -1 || fromIndex >= toIndex) {
-                            throw InputFormatException.eventFormatError();
+                            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
                         }
                         desc = rest.substring(0, fromIndex).trim();
                         String from = rest.substring(fromIndex + 7, toIndex).trim();
                         String to = rest.substring(toIndex + 5).trim();
                         if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                            throw InputFormatException.eventFormatError();
+                            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
                         }
 
                         addToList(new tasks.Event(desc, from, to));
                         break;
                     case "delete":
-                        if (parts.length <= 1) throw InputFormatException.numberFormatError();
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.NUMBER_RANGE);
                         deleteFromList(parseIndex(parts[1]));
                         break;
                     default:
