@@ -22,6 +22,14 @@ public class Simon {
                 """);
     }
 
+    private static void echo(String input) {
+        System.out.printf("""
+                ____________________________________________________________
+                 %s
+                ____________________________________________________________
+                %n""", input);
+    }
+
     public static void main(String[] args) {
         name = "Simon";
         sayHi();
@@ -33,12 +41,8 @@ public class Simon {
                 sayBye();
                 break;
             }
+            echo(input);
 
-            System.out.printf("""
-                    ____________________________________________________________
-                     %s
-                    ____________________________________________________________
-                    %n""", input);
         }
     }
 }
