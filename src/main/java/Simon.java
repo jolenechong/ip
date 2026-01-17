@@ -1,3 +1,5 @@
+import tasks.Task;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -101,9 +103,10 @@ public class Simon {
             } else if (input.startsWith("unmark")) {
                 int num = Integer.parseInt(input.split(" ")[1]);
                 markAsUnCompleted(num);
-            } else {
-                addToList(new Task(input));
             }
+            /*else {
+                addToList(new Task(input));
+            }*/
             // echo(input);
         }
     }

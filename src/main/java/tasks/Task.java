@@ -1,14 +1,12 @@
-public class Task {
+package tasks;
+
+abstract public class Task {
     private String title;
     private Boolean completed;
 
     public Task(String title) {
         this.title = title;
         this.completed = false;
-    }
-
-    public String getTitle() {
-        return this.title;
     }
 
     public Boolean isCompleted() {
@@ -21,6 +19,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.title;
+        String completed = this.completed ? "X" : " ";
+        return "[" + completed + "] " + this.title;
     }
 }
