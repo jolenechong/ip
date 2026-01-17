@@ -1,3 +1,4 @@
+import exceptions.InputFormatException;
 import tasks.Task;
 import tasks.Todo;
 
@@ -83,7 +84,15 @@ public class Simon {
                 %n""", toMark);
     }
 
-    public static void main(String[] args) {
+    private static int parseIndex(String s) throws InputFormatException {
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            throw InputFormatException.numberFormatError();
+        }
+    }
+
+    public static void main(String[] args) throws InputFormatException {
         Simon.name = "Simon";
         Simon.list = new ArrayList<>();
 
@@ -100,56 +109,69 @@ public class Simon {
             String[] parts = input.split("\\s+", 2);
             String cmd = parts[0].toLowerCase();
 
-            switch (cmd) {
-                case "bye":
-                    sayBye();
-                    running = false;
-                    break;
-                case "list":
-                    listAll();
-                    break;
-                case "mark": {
-                    if (parts.length > 1) {
-                        markAsCompleted(Integer.parseInt(parts[1]));
-                    }
-                    break;
-                }
-                case "unmark": {
-                    if (parts.length > 1) {
-                        try {
-                            markAsUnCompleted(Integer.parseInt(parts[1]));
-                        } catch (NumberFormatException ignored) {
-                        }
-                    }
-                    break;
-                }
-                case "todo":
-                    if (parts.length > 1) {
+            try {
+                switch (cmd) {
+                    case "bye":
+                        sayBye();
+                        running = false;
+                        break;
+                    case "list":
+                        listAll();
+                        break;
+                    case "mark":
+                        if (parts.length <= 1) throw InputFormatException.numberFormatError();
+                        markAsCompleted(parseIndex(parts[1]));
+                        break;
+
+                    case "unmark":
+                        if (parts.length <= 1) throw InputFormatException.numberFormatError();
+                        markAsUnCompleted(parseIndex(parts[1]));
+                        break;
+                    case "todo":
+                        if (parts.length <= 1) throw InputFormatException.todoDescriptionEmpty();
                         addToList(new Todo(parts[1]));
-                    }
-                    break;
-                case "deadline":
-                    if (parts.length > 1) {
-                        String[] deadlineParts = parts[1].split(" /by ", 2);
-                        if (deadlineParts.length > 1) {
-                            addToList(new tasks.Deadline(deadlineParts[0], deadlineParts[1]));
+                        break;
+                    case "deadline":
+                        if (parts.length <= 1) throw InputFormatException.deadlineFormatError();
+
+                        String rest = parts[1];
+                        int byIndex = rest.indexOf(" /by ");
+                        if (byIndex == -1) throw InputFormatException.deadlineFormatError();
+                        String desc = rest.substring(0, byIndex).trim();
+                        String by = rest.substring(byIndex + 5).trim();
+                        if (desc.isEmpty() || by.isEmpty()) throw InputFormatException.deadlineFormatError();
+
+                        addToList(new tasks.Deadline(desc, by));
+                        break;
+                    case "event":
+                        if (parts.length <= 1) throw InputFormatException.eventFormatError();
+
+                        rest = parts[1];
+                        int fromIndex = rest.indexOf(" /from ");
+                        int toIndex = rest.indexOf(" /to ");
+                        if (fromIndex == -1 || toIndex == -1 || fromIndex >= toIndex) {
+                            throw InputFormatException.eventFormatError();
                         }
-                    }
-                    break;
-                case "event":
-                    if (parts.length > 1) {
-                        String[] eventParts = parts[1].split(" /from | /to ", 3);
-                        if (eventParts.length > 2) {
-                            addToList(new tasks.Event(eventParts[0], eventParts[1], eventParts[2]));
+                        desc = rest.substring(0, fromIndex).trim();
+                        String from = rest.substring(fromIndex + 7, toIndex).trim();
+                        String to = rest.substring(toIndex + 5).trim();
+                        if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
+                            throw InputFormatException.eventFormatError();
                         }
-                    }
-                    break;
-                default:
-                    System.out.println("____________________________________________________________");
-                    System.out.println("hUH what are you sAying");
-                    System.out.println("____________________________________________________________\n");
+
+                        addToList(new tasks.Event(desc, from, to));
+                        break;
+                    default:
+                        System.out.println("____________________________________________________________");
+                        System.out.println("hUH what are you sAying");
+                        System.out.println("____________________________________________________________\n");
+                }
+                // echo(input);
+            } catch (InputFormatException e) {
+                System.out.println("____________________________________________________________");
+                System.out.println(e.getMessage());
+                System.out.println("____________________________________________________________\n");
             }
-            // echo(input);
         }
     }
 }
