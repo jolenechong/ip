@@ -1,5 +1,8 @@
-package exceptions;
+package simon.exception;
 
+/**
+ * Typed input errors with human-readable messages.
+ */
 public enum InputErrorType {
     TODO_EMPTY("That todo seems to be missing a description :("),
     DEADLINE_FORMAT("That deadline looks a little lost… Format it like: deadline <description> /by <time>"),

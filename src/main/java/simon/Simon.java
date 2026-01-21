@@ -1,16 +1,23 @@
-import exceptions.InputErrorType;
-import exceptions.InputFormatException;
-import tasks.Task;
-import tasks.Todo;
+package simon;
+
+import static simon.util.Parser.parseIndex;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static utils.Parser.parseIndex;
+import simon.exception.InputErrorType;
+import simon.exception.InputFormatException;
+import simon.task.Task;
+import simon.task.Todo;
+import simon.task.Event;
+import simon.task.Deadline;
 
+/**
+ * Main entry point for the Simon chatbot application.
+ */
 public class Simon {
 
-    private static String name;
+    private static final String name = "Simon";
     private static ArrayList<Task> list;
 
     private static void sayHi() {
@@ -101,25 +108,23 @@ public class Simon {
                 %n""", toDelete, Simon.list.size());
     }
 
-    public static void main(String[] args) throws InputFormatException {
-        Simon.name = "Simon";
+    public static void main(String[] args) {
         Simon.list = new ArrayList<>();
 
         sayHi();
-        Scanner scanner = new Scanner(System.in);
-        String input;
 
-        boolean running = true;
+        try (Scanner scanner = new Scanner(System.in)) {
+            boolean running = true;
 
-        while (running) {
-            input = scanner.nextLine().trim();
-            if (input.isEmpty()) continue;
+            while (running && scanner.hasNextLine()) {
+                String input = scanner.nextLine().trim();
+                if (input.isEmpty()) continue;
 
-            String[] parts = input.split("\\s+", 2);
-            String cmd = parts[0].toLowerCase();
+                String[] parts = input.split("\\s+", 2);
+                String cmd = parts[0].toLowerCase();
 
-            try {
-                switch (cmd) {
+                try {
+                    switch (cmd) {
                     case "bye":
                         sayBye();
                         running = false;
@@ -128,33 +133,46 @@ public class Simon {
                         listAll();
                         break;
                     case "mark":
-                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
+                        if (parts.length <= 1) {
+                            throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
+                        }
                         markAsCompleted(parseIndex(parts[1]));
                         break;
 
                     case "unmark":
-                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
+                        if (parts.length <= 1) {
+                            throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
+                        }
                         markAsUnCompleted(parseIndex(parts[1]));
                         break;
                     case "todo":
-                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.TODO_EMPTY);
+                        if (parts.length <= 1) {
+                            throw new InputFormatException(InputErrorType.TODO_EMPTY);
+                        }
                         addToList(new Todo(parts[1]));
                         break;
                     case "deadline":
-                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+                        if (parts.length <= 1) {
+                            throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+                        }
 
                         String rest = parts[1];
                         int byIndex = rest.indexOf(" /by ");
-                        if (byIndex == -1) throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+                        if (byIndex == -1) {
+                            throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+                        }
                         String desc = rest.substring(0, byIndex).trim();
                         String by = rest.substring(byIndex + 5).trim();
-                        if (desc.isEmpty() || by.isEmpty())
+                        if (desc.isEmpty() || by.isEmpty()) {
                             throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+                        }
 
-                        addToList(new tasks.Deadline(desc, by));
+                        addToList(new Deadline(desc, by));
                         break;
                     case "event":
-                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+                        if (parts.length <= 1) {
+                            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+                        }
 
                         rest = parts[1];
                         int fromIndex = rest.indexOf(" /from ");
@@ -169,22 +187,25 @@ public class Simon {
                             throw new InputFormatException(InputErrorType.EVENT_FORMAT);
                         }
 
-                        addToList(new tasks.Event(desc, from, to));
+                        addToList(new Event(desc, from, to));
                         break;
                     case "delete":
-                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.NUMBER_RANGE);
+                        if (parts.length <= 1) {
+                            throw new InputFormatException(InputErrorType.NUMBER_RANGE);
+                        }
                         deleteFromList(parseIndex(parts[1]));
                         break;
                     default:
                         System.out.println("____________________________________________________________");
                         System.out.println("hUH what are you sAying");
                         System.out.println("____________________________________________________________\n");
+                    }
+                    // echo(input);
+                } catch (InputFormatException e) {
+                    System.out.println("____________________________________________________________");
+                    System.out.println(e.getMessage());
+                    System.out.println("____________________________________________________________\n");
                 }
-                // echo(input);
-            } catch (InputFormatException e) {
-                System.out.println("____________________________________________________________");
-                System.out.println(e.getMessage());
-                System.out.println("____________________________________________________________\n");
             }
         }
     }

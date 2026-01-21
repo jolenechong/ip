@@ -1,4 +1,4 @@
-package tasks;
+package simon.task;
 
 public class Event extends Task {
 

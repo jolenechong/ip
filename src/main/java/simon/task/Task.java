@@ -1,4 +1,4 @@
-package tasks;
+package simon.task;
 
 abstract public class Task {
     private String title;

@@ -1,5 +1,8 @@
-package exceptions;
+package simon.exception;
 
+/**
+ * Exception thrown when user input does not match expected format.
+ */
 public class InputFormatException extends Exception {
     private final InputErrorType type;
 

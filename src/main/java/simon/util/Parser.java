@@ -1,7 +1,7 @@
-package utils;
+package simon.util;
 
-import exceptions.InputErrorType;
-import exceptions.InputFormatException;
+import simon.exception.InputErrorType;
+import simon.exception.InputFormatException;
 
 public class Parser {
     public static int parseIndex(String s) throws InputFormatException {

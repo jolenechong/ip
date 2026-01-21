@@ -1,11 +1,10 @@
-package tasks;
+package simon.task;
 
 public class Deadline extends Task {
     private String by;
 
     public Deadline(String title, String by) {
         super(title);
-
         this.by = by;
     }
 
