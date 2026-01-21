@@ -1,8 +1,12 @@
 package simon;
 
-import static simon.util.Parser.parseIndex;
+import static simon.util.IntParser.parseIndex;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,6 +17,7 @@ import simon.task.Task;
 import simon.task.Todo;
 import simon.task.Event;
 import simon.task.Deadline;
+import simon.util.DateParser;
 
 /**
  * Main entry point for the Simon chatbot application.
@@ -70,7 +75,7 @@ public class Simon {
         persist();
     }
 
-    public static void markAsCompleted(int num) {
+    private static void markAsCompleted(int num) {
         if (num == 0 || num > tasks.size()) {
             return;
         }
@@ -85,7 +90,7 @@ public class Simon {
         persist();
     }
 
-    public static void markAsUnCompleted(int num) {
+    private static void markAsUnCompleted(int num) {
         if (num == 0 || num > Simon.tasks.size()) {
             return;
         }
@@ -100,7 +105,7 @@ public class Simon {
         persist();
     }
 
-    public static void deleteFromList(int num) {
+    private static void deleteFromList(int num) {
         if (num == 0 || num > Simon.tasks.size()) {
             return;
         }
@@ -115,6 +120,27 @@ public class Simon {
         persist();
     }
 
+    private static void findDateOn(LocalDateTime date) {
+        System.out.print("____________________________________________________________\n");
+        System.out.println("Here are the deadlines and events on " + DateParser.format(date) + ":");
+        for (int i = 0; i < Simon.tasks.size(); i++) {
+            Task task = Simon.tasks.get(i);
+            if (task instanceof Deadline) {
+                Deadline deadline = (Deadline) task;
+                if (deadline.getBy().toLocalDate().equals(date.toLocalDate())) {
+                    System.out.println(i + 1 + "." + deadline);
+                }
+            } else if (task instanceof Event) {
+                Event event = (Event) task;
+                if (event.getFrom().toLocalDate().equals(date.toLocalDate())
+                        || event.getTo().toLocalDate().equals(date.toLocalDate())) {
+                    System.out.println(i + 1 + "." + event);
+                }
+            }
+        }
+        System.out.println("____________________________________________________________\n");
+    }
+
     private static void persist() {
         try {
             storage.saveTasks(Simon.tasks);
@@ -125,7 +151,14 @@ public class Simon {
 
     public static void main(String[] args) {
         Simon.tasks = new ArrayList<>();
-        storage = new Storage("./data/simon.txt");
+        Path dataPath = Paths.get(System.getProperty("user.home"), ".simon", "data", "simon.txt");
+        try {
+            Files.createDirectories(dataPath.getParent());
+        } catch (IOException e) {
+            System.err.println("Failed to create storage directory: " + e.getMessage());
+        }
+
+        storage = new Storage(dataPath.toString());
         tasks = storage.loadTasks();
 
         sayHi();
@@ -205,6 +238,13 @@ public class Simon {
                         }
 
                         addToList(new Event(desc, from, to));
+                        break;
+                    case "on":
+                        if (parts.length <= 1) {
+                            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+                        }
+                        String date = parts[1].trim();
+                        findDateOn(DateParser.parse(date));
                         break;
                     case "delete":
                         if (parts.length <= 1) {
