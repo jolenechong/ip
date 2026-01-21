@@ -26,6 +26,10 @@ public class Deadline extends Task {
         this(title, DateParser.parse(by), isCompleted);
     }
 
+    public LocalDateTime getBy() {
+        return this.by;
+    }
+
     @Override
     public String toDataString() {
         // format date to  2nd of December 2019, 6pm

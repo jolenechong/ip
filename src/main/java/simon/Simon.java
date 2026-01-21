@@ -3,6 +3,7 @@ package simon;
 import static simon.util.IntParser.parseIndex;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,6 +14,7 @@ import simon.task.Task;
 import simon.task.Todo;
 import simon.task.Event;
 import simon.task.Deadline;
+import simon.util.DateParser;
 
 /**
  * Main entry point for the Simon chatbot application.
@@ -70,7 +72,7 @@ public class Simon {
         persist();
     }
 
-    public static void markAsCompleted(int num) {
+    private static void markAsCompleted(int num) {
         if (num == 0 || num > tasks.size()) {
             return;
         }
@@ -85,7 +87,7 @@ public class Simon {
         persist();
     }
 
-    public static void markAsUnCompleted(int num) {
+    private static void markAsUnCompleted(int num) {
         if (num == 0 || num > Simon.tasks.size()) {
             return;
         }
@@ -100,7 +102,7 @@ public class Simon {
         persist();
     }
 
-    public static void deleteFromList(int num) {
+    private static void deleteFromList(int num) {
         if (num == 0 || num > Simon.tasks.size()) {
             return;
         }
@@ -113,6 +115,27 @@ public class Simon {
                 ____________________________________________________________
                 %n""", toDelete, Simon.tasks.size());
         persist();
+    }
+
+    private static void findDateOn(LocalDateTime date) {
+        System.out.print("____________________________________________________________\n");
+        System.out.println("Here are the tasks on " + date + ":");
+        for (int i = 0; i < Simon.tasks.size(); i++) {
+            Task task = Simon.tasks.get(i);
+            if (task instanceof Deadline) {
+                Deadline deadline = (Deadline) task;
+                if (deadline.getBy().toLocalDate().equals(date.toLocalDate())) {
+                    System.out.println(i + 1 + "." + deadline);
+                }
+            } else if (task instanceof Event) {
+                Event event = (Event) task;
+                if (event.getFrom().toLocalDate().equals(date.toLocalDate())
+                        || event.getTo().toLocalDate().equals(date.toLocalDate())) {
+                    System.out.println(i + 1 + "." + event);
+                }
+            }
+        }
+        System.out.println("____________________________________________________________\n");
     }
 
     private static void persist() {
@@ -205,6 +228,13 @@ public class Simon {
                         }
 
                         addToList(new Event(desc, from, to));
+                        break;
+                    case "on":
+                        if (parts.length <= 1) {
+                            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+                        }
+                        String date = parts[1].trim();
+                        findDateOn(DateParser.parse(date));
                         break;
                     case "delete":
                         if (parts.length <= 1) {

@@ -33,6 +33,14 @@ public class Event extends Task {
         this(title, DateParser.parse(from), DateParser.parse(to), isCompleted);
     }
 
+    public LocalDateTime getFrom() {
+        return this.from;
+    }
+
+    public LocalDateTime getTo() {
+        return this.to;
+    }
+
     @Override
     public String toDataString() {
         return "E | " + (isCompleted() ? "1" : "0") + " | " + super.getTitle() + " | " + this.from + " | " + this.to;
