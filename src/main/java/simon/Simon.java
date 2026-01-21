@@ -1,6 +1,6 @@
 package simon;
 
-import static simon.util.Parser.parseIndex;
+import static simon.util.IntParser.parseIndex;
 
 import java.io.IOException;
 import java.util.ArrayList;
