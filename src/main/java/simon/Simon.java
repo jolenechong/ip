@@ -3,6 +3,9 @@ package simon;
 import static simon.util.IntParser.parseIndex;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -119,7 +122,7 @@ public class Simon {
 
     private static void findDateOn(LocalDateTime date) {
         System.out.print("____________________________________________________________\n");
-        System.out.println("Here are the tasks on " + date + ":");
+        System.out.println("Here are the deadlines and events on " + DateParser.format(date) + ":");
         for (int i = 0; i < Simon.tasks.size(); i++) {
             Task task = Simon.tasks.get(i);
             if (task instanceof Deadline) {
@@ -148,7 +151,14 @@ public class Simon {
 
     public static void main(String[] args) {
         Simon.tasks = new ArrayList<>();
-        storage = new Storage("./data/simon.txt");
+        Path dataPath = Paths.get(System.getProperty("user.home"), ".simon", "data", "simon.txt");
+        try {
+            Files.createDirectories(dataPath.getParent());
+        } catch (IOException e) {
+            System.err.println("Failed to create storage directory: " + e.getMessage());
+        }
+
+        storage = new Storage(dataPath.toString());
         tasks = storage.loadTasks();
 
         sayHi();
