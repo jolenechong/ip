@@ -5,14 +5,14 @@ ____________________________________________________________
 ____________________________________________________________
 
 ____________________________________________________________
-  Got it. I've added this task:
-    [T][ ] read book
-  Now you have 1 tasks in the list.
+Got it. I've added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
 ____________________________________________________________
 
 ____________________________________________________________
- Nice! I've marked this task as done:
-   [T][X] read book
+Nice! I've marked this task as done:
+  [T][X] read book
 ____________________________________________________________
 
 ____________________________________________________________
@@ -21,38 +21,38 @@ Here are the tasks in your list:
 ____________________________________________________________
 
 ____________________________________________________________
-  Got it. I've added this task:
-    [D][ ] return book (by: 1 Jan 2026 12:00am)
-  Now you have 2 tasks in the list.
+Got it. I've added this task:
+  [D][ ] return book (by: 1 Jan 2026 12:00am)
+Now you have 2 tasks in the list.
 ____________________________________________________________
 
 ____________________________________________________________
-  Got it. I've added this task:
-    [E][ ] project meeting (from: 31 Aug 2026 2:00pm, to: 31 Aug 2026 4:00pm)
-  Now you have 3 tasks in the list.
+Got it. I've added this task:
+  [E][ ] project meeting (from: 31 Aug 2026 2:00pm, to: 31 Aug 2026 4:00pm)
+Now you have 3 tasks in the list.
 ____________________________________________________________
 
 ____________________________________________________________
-  Got it. I've added this task:
-    [T][ ] join sports club
-  Now you have 4 tasks in the list.
+Got it. I've added this task:
+  [T][ ] join sports club
+Now you have 4 tasks in the list.
 ____________________________________________________________
 
 ____________________________________________________________
- Nice! I've marked this task as done:
-   [T][X] join sports club
+Nice! I've marked this task as done:
+  [T][X] join sports club
 ____________________________________________________________
 
 ____________________________________________________________
-  Got it. I've added this task:
-    [T][ ] borrow book
-  Now you have 5 tasks in the list.
+Got it. I've added this task:
+  [T][ ] borrow book
+Now you have 5 tasks in the list.
 ____________________________________________________________
 
 ____________________________________________________________
-  Got it. I've added this task:
-    [D][ ] return book (by: 31 Aug 2026 12:00am)
-  Now you have 6 tasks in the list.
+Got it. I've added this task:
+  [D][ ] return book (by: 31 Aug 2026 12:00am)
+Now you have 6 tasks in the list.
 ____________________________________________________________
 
 ____________________________________________________________
@@ -78,9 +78,9 @@ This event needs boundaries! Format: event <description> /from <start> /to <end>
 ____________________________________________________________
 
 ____________________________________________________________
- Noted. I've removed this task:
-   [E][ ] project meeting (from: 31 Aug 2026 2:00pm, to: 31 Aug 2026 4:00pm)
- Now you have 5 tasks in the list.
+Noted. I've removed this task:
+  [E][ ] project meeting (from: 31 Aug 2026 2:00pm, to: 31 Aug 2026 4:00pm)
+Now you have 5 tasks in the list.
 ____________________________________________________________
 
 ____________________________________________________________

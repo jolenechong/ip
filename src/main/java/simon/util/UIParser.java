@@ -1,0 +1,78 @@
+package simon.util;
+
+import simon.command.*;
+import simon.exception.InputErrorType;
+import simon.exception.InputFormatException;
+import simon.task.Deadline;
+import simon.task.Event;
+import simon.task.Todo;
+
+import java.time.LocalDateTime;
+
+import static simon.util.IntParser.parseIndex;
+
+public class UIParser {
+    public Command parse(String raw) throws InputFormatException {
+        if (raw == null || raw.isBlank()) {
+            throw new InputFormatException(InputErrorType.TODO_EMPTY);
+        }
+        String[] parts = raw.split("\\s+", 2);
+        String cmd = parts[0].toLowerCase();
+
+        return
+                switch (cmd) {
+                    case "bye" -> (tasks, ui) -> {
+                        ui.sayBye();
+                        return false;
+                    };
+                    case "list" -> new ListCommand();
+                    case "mark" -> {
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
+                        yield new MarkCommand(parseIndex(parts[1]), true);
+                    }
+                    case "unmark" -> {
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
+                        yield new MarkCommand(parseIndex(parts[1]), false);
+                    }
+                    case "todo" -> {
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.TODO_EMPTY);
+                        yield new AddCommand(new Todo(parts[1]));
+                    }
+                    case "deadline" -> {
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+                        String rest = parts[1];
+                        int byIndex = rest.indexOf(" /by ");
+                        if (byIndex == -1) throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+                        String desc = rest.substring(0, byIndex).trim();
+                        String by = rest.substring(byIndex + 5).trim();
+                        if (desc.isEmpty() || by.isEmpty())
+                            throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+                        yield new AddCommand(new Deadline(desc, by));
+                    }
+                    case "event" -> {
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+                        String rest = parts[1];
+                        int fromIndex = rest.indexOf(" /from ");
+                        int toIndex = rest.indexOf(" /to ");
+                        if (fromIndex == -1 || toIndex == -1 || fromIndex >= toIndex)
+                            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+                        String desc = rest.substring(0, fromIndex).trim();
+                        String from = rest.substring(fromIndex + 7, toIndex).trim();
+                        String to = rest.substring(toIndex + 5).trim();
+                        if (desc.isEmpty() || from.isEmpty() || to.isEmpty())
+                            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+                        yield new AddCommand(new Event(desc, from, to));
+                    }
+                    case "delete" -> {
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.NUMBER_RANGE);
+                        yield new DeleteCommand(parseIndex(parts[1]));
+                    }
+                    case "on" -> {
+                        if (parts.length <= 1) throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+                        LocalDateTime d = DateParser.parse(parts[1].trim());
+                        yield new OnCommand(d);
+                    }
+                    default -> throw new InputFormatException(InputErrorType.UNKNOWN_INPUT);
+                };
+    }
+}
