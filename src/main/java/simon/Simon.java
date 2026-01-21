@@ -2,11 +2,13 @@ package simon;
 
 import static simon.util.Parser.parseIndex;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import simon.exception.InputErrorType;
 import simon.exception.InputFormatException;
+import simon.storage.Storage;
 import simon.task.Task;
 import simon.task.Todo;
 import simon.task.Event;
@@ -18,7 +20,8 @@ import simon.task.Deadline;
 public class Simon {
 
     private static final String name = "Simon";
-    private static ArrayList<Task> list;
+    private static ArrayList<Task> tasks;
+    private static Storage storage;
 
     private static void sayHi() {
         System.out.println();
@@ -49,28 +52,29 @@ public class Simon {
     private static void listAll() {
         System.out.print("____________________________________________________________\n");
         System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(i + 1 + "." + list.get(i));
+        for (int i = 0; i < Simon.tasks.size(); i++) {
+            System.out.println(i + 1 + "." + Simon.tasks.get(i));
         }
         System.out.println("____________________________________________________________\n");
     }
 
     private static void addToList(Task item) {
-        Simon.list.add(item);
+        Simon.tasks.add(item);
         System.out.printf("""
                 ____________________________________________________________
                   Got it. I've added this task:
                     %s
                   Now you have %d tasks in the list.
                 ____________________________________________________________
-                %n""", item, Simon.list.size());
+                %n""", item, Simon.tasks.size());
+        persist();
     }
 
     public static void markAsCompleted(int num) {
-        if (num == 0 || num > list.size()) {
+        if (num == 0 || num > tasks.size()) {
             return;
         }
-        Task toMark = Simon.list.get(num - 1);
+        Task toMark = Simon.tasks.get(num - 1);
         toMark.setCompleted(true);
         System.out.printf("""
                 ____________________________________________________________
@@ -78,13 +82,14 @@ public class Simon {
                    %s
                 ____________________________________________________________
                 %n""", toMark);
+        persist();
     }
 
     public static void markAsUnCompleted(int num) {
-        if (num == 0 || num > list.size()) {
+        if (num == 0 || num > Simon.tasks.size()) {
             return;
         }
-        Task toMark = Simon.list.get(num - 1);
+        Task toMark = Simon.tasks.get(num - 1);
         toMark.setCompleted(false);
         System.out.printf("""
                 ____________________________________________________________
@@ -92,24 +97,36 @@ public class Simon {
                    %s
                 ____________________________________________________________
                 %n""", toMark);
+        persist();
     }
 
     public static void deleteFromList(int num) {
-        if (num == 0 || num > list.size()) {
+        if (num == 0 || num > Simon.tasks.size()) {
             return;
         }
-        Task toDelete = Simon.list.remove(num - 1);
+        Task toDelete = Simon.tasks.remove(num - 1);
         System.out.printf("""
                 ____________________________________________________________
                  Noted. I've removed this task:
                    %s
                  Now you have %d tasks in the list.
                 ____________________________________________________________
-                %n""", toDelete, Simon.list.size());
+                %n""", toDelete, Simon.tasks.size());
+        persist();
+    }
+
+    private static void persist() {
+        try {
+            storage.saveTasks(Simon.tasks);
+        } catch (Exception e) {
+            System.err.println("Unexpected error while saving tasks: " + e.getMessage());
+        }
     }
 
     public static void main(String[] args) {
-        Simon.list = new ArrayList<>();
+        Simon.tasks = new ArrayList<>();
+        storage = new Storage("./data/simon.txt");
+        tasks = storage.loadTasks();
 
         sayHi();
 
