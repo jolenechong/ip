@@ -1,26 +1,9 @@
 package simon;
 
-import static simon.util.IntParser.parseIndex;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import simon.command.Command;
-import simon.exception.InputErrorType;
-import simon.exception.InputFormatException;
 import simon.model.TaskList;
 import simon.storage.Storage;
-import simon.task.Task;
-import simon.task.Todo;
-import simon.task.Event;
-import simon.task.Deadline;
 import simon.ui.UI;
-import simon.util.DateParser;
 import simon.util.UIParser;
 
 /**
