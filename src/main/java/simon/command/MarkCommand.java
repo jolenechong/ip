@@ -18,7 +18,9 @@ public class MarkCommand implements Command {
             ui.printError("That task number doesn’t exist (yet). Try one from the list!");
             return true;
         }
+
         var t = tasks.mark(index, completed);
+
         if (completed) {
             ui.printAll("""
                     Nice! I've marked this task as done:
