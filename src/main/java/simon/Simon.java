@@ -12,13 +12,19 @@ import simon.util.UIParser;
 public class Simon {
 
     private static final String NAME = "Simon";
+    private final UI ui;
+    private final TaskList tasks;
+    private final UIParser parser;
+    private final Storage storage;
 
-    public static void main(String[] args) {
-        UI ui = new UI();
-        Storage storage = new Storage(System.getProperty("user.home") + "/.simon/data/simon.txt");
-        TaskList tasks = new TaskList(storage);
-        UIParser parser = new UIParser();
+    public Simon() {
+        this.ui = new UI();
+        this.storage = new Storage(System.getProperty("user.home") + "/.simon/data/simon.txt");
+        this.tasks = new TaskList(storage);
+        this.parser = new UIParser();
+    }
 
+    public void run() {
         ui.sayHi(NAME);
 
         boolean running = true;
@@ -32,5 +38,9 @@ public class Simon {
                 ui.printError(e.getMessage());
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new Simon().run();
     }
 }
