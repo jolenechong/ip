@@ -45,10 +45,12 @@ public class Simon {
 
         boolean running = true;
         while (running) {
+
             String line = ui.readLine();
             if (line == null || line.isBlank()) {
                 continue;
             }
+
             try {
                 Command cmd = parser.parse(line);
                 running = cmd.execute(tasks, ui);
