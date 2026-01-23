@@ -52,9 +52,7 @@ public class Storage {
      * Load tasks from the configured data file.
      * <p>
      * The method reads the file line-by-line and converts each line to a
-     * {@link Task} using {@code Task.fromDataString(line)}. Malformed lines are
-     * skipped with a message; I/O errors are logged and result in an empty list
-     * being returned if nothing could be read.
+     * {@link Task} using {@code Task.fromDataString(line)}.
      *
      * @return a non-null {@link ArrayList} of tasks (possibly empty)
      */

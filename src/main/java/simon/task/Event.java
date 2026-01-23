@@ -2,9 +2,7 @@ package simon.task;
 
 import simon.util.DateParser;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Represents an event task with a title, start time, and end time.
