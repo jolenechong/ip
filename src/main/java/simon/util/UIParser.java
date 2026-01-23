@@ -36,6 +36,12 @@ public class UIParser {
                         return false;
                     };
                     case "list" -> new ListCommand();
+                    case "find" -> {
+                        if (parts.length <= 1) {
+                            throw new InputFormatException(InputErrorType.QUERY_EMPTY);
+                        }
+                        yield new FindCommand(parts[1]);
+                    }
                     case "mark" -> {
                         if (parts.length <= 1) {
                             throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
