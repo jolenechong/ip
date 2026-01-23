@@ -4,18 +4,36 @@ abstract public class Task {
     private String title;
     private Boolean completed;
 
+    /**
+     * Constructor for Task class
+     * @param title Title of the task
+     */
     public Task(String title) {
         this.title = title;
         this.completed = false;
     }
 
+    /**
+     * Constructor for Task class with completion status
+     * @param title Title of the task
+     * @param completed Completion status of the task
+     */
     public Task(String title, Boolean completed) {
         this.title = title;
         this.completed = completed;
     }
 
+    /**
+     * Convert task to data string for storage
+     * @return Data string representation of the task
+     */
     abstract public String toDataString();
 
+    /**
+     * Recreate a Task object from a data string
+     * @param line Data string representation of the task
+     * @return Task object
+     */
     public static Task fromDataString(String line) {
         String[] parts = line.split(" \\| ");
         if (parts.length < 3) {
@@ -44,18 +62,34 @@ abstract public class Task {
         }
     }
 
+    /**
+     * Get the title of the task
+     * @return Title of the task
+     */
     public String getTitle() {
         return this.title;
     }
 
+    /**
+     * Check if the task is completed
+     * @return True if the task is completed, false otherwise
+     */
     public Boolean isCompleted() {
         return this.completed;
     }
 
+    /**
+     * Set the completion status of the task
+     * @param completed Completion status to set
+     */
     public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 
+    /**
+     * String representation of the task
+     * @return String representation of the task
+     */
     @Override
     public String toString() {
         String completed = this.completed ? "X" : " ";
