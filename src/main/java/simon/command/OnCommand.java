@@ -1,6 +1,5 @@
 package simon.command;
 
-import simon.Simon;
 import simon.model.TaskList;
 import simon.task.Deadline;
 import simon.task.Event;
@@ -11,13 +10,26 @@ import simon.util.DateParser;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Command to list all deadlines and events occurring on a specific date.
+ */
 public class OnCommand implements Command {
     private final LocalDateTime when;
 
+    /**
+     * Constructor for OnCommand.
+     * @param when The date to filter deadlines and events.
+     */
     public OnCommand(LocalDateTime when) {
         this.when = when;
     }
 
+    /**
+     * Executes the command to list deadlines and events on the specified date.
+     * @param tasks The TaskList containing all tasks.
+     * @param ui The UI instance for displaying output.
+     * @return true to indicate successful execution.
+     */
     @Override
     public boolean execute(TaskList tasks, UI ui) {
         StringBuilder sb = new StringBuilder();

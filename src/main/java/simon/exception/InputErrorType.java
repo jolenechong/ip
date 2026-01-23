@@ -13,10 +13,18 @@ public enum InputErrorType {
 
     private final String message;
 
+    /**
+     * Constructor for InputErrorType.
+     * @param message Human-readable error message.
+     */
     InputErrorType(String message) {
         this.message = message;
     }
 
+    /**
+     * Gets the human-readable error message.
+     * @return Error message.
+     */
     public String getMessage() {
         return message;
     }
