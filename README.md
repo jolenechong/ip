@@ -3,7 +3,20 @@
 This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are
 instructions on how to use it.
 
-## Setting up in Intellij
+## Running the Project
+### Using Gradle Wrapper from the command line
+1. Open a terminal and navigate to the project root folder (the folder containing this `README.md` file).
+1. Run the following command to build and run the project:
+   - On Windows:
+     ```cmd
+     .\gradlew run
+     ```
+   - On macOS/Linux:
+     ```bash
+     ./gradlew run
+       ```
+
+### Using an IDE (e.g., Intellij)
 
 Prerequisites: JDK 17, update Intellij to the most recent version.
 
@@ -31,3 +44,42 @@ Prerequisites: JDK 17, update Intellij to the most recent version.
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move
 Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle)
 expect to find Java files.
+
+## Project Structure
+The project has the following structure:
+
+```
+project-root/
+├── README.md
+├── build.gradle
+├── settings.gradle
+├── gradlew
+├── gradlew.bat
+├── gradle/
+├── .gitignore
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── simon/
+│   │   │       ├── other packages...
+│   │   │       └── Simon.java
+│   │   └── resources/
+│   └── test/
+│       ├── java/
+│       │   └── simon/
+│   │   │       ├── other packages test...
+│       │       └── SimonTest.java
+
+```
+
+## Running Tests
+To run the unit tests, you can use the Gradle wrapper from the command line:
+- On Windows:
+- ```cmd
+    .\gradlew test
+    ```
+- On macOS/Linux:
+- ```bash
+    ./gradlew test
+    ```
+This will execute all tests in the project and display the results in the terminal.
