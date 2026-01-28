@@ -18,9 +18,10 @@ public class UIParser {
 
     /**
      * Parses a raw input string into a Command object.
-     * @param raw which is the raw input string
-     * @return the parsed Command object
-     * @throws InputFormatException if the input format is invalid
+     *
+     * @param raw which is the raw input string.
+     * @return the parsed Command object.
+     * @throws InputFormatException if the input format is invalid.
      */
     public Command parse(String raw) throws InputFormatException {
         if (raw == null || raw.isBlank()) {

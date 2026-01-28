@@ -14,9 +14,10 @@ public class Event extends Task {
 
     /**
      * Creates an Event task.
-     * @param title the title of the event
-     * @param from the start time of the event
-     * @param to the end time of the event
+     *
+     * @param title the title of the event.
+     * @param from the start time of the event.
+     * @param to the end time of the event.
      */
     public Event(String title, LocalDateTime from, LocalDateTime to) {
         super(title);
@@ -27,9 +28,10 @@ public class Event extends Task {
 
     /**
      * Creates an Event task.
-     * @param title the title of the event
-     * @param from the start time of the event in string format
-     * @param to the end time of the event in string format
+     *
+     * @param title the title of the event.
+     * @param from the start time of the event in string format.
+     * @param to the end time of the event in string format.
      */
     public Event(String title, String from, String to) {
         this(title, DateParser.parse(from), DateParser.parse(to));
@@ -37,10 +39,11 @@ public class Event extends Task {
 
     /**
      * Creates an Event task.
-     * @param title the title of the event
-     * @param from the start time of the event
-     * @param to the end time of the event
-     * @param isCompleted whether the event is completed
+     *
+     * @param title the title of the event.
+     * @param from the start time of the event.
+     * @param to the end time of the event.
+     * @param isCompleted whether the event is completed.
      */
     public Event(String title, LocalDateTime from, LocalDateTime to, boolean isCompleted) {
         super(title);
@@ -51,10 +54,11 @@ public class Event extends Task {
 
     /**
      * Creates an Event task.
-     * @param title the title of the event
-     * @param from the start time of the event in string format
-     * @param to the end time of the event in string format
-     * @param isCompleted whether the event is completed
+     *
+     * @param title the title of the event.
+     * @param from the start time of the event in string format.
+     * @param to the end time of the event in string format.
+     * @param isCompleted whether the event is completed.
      */
     public Event(String title, String from, String to, boolean isCompleted) {
         this(title, DateParser.parse(from), DateParser.parse(to), isCompleted);
@@ -62,7 +66,8 @@ public class Event extends Task {
 
     /**
      * Gets the start time of the event.
-     * @return the start time
+     *
+     * @return the start time.
      */
     public LocalDateTime getFrom() {
         return this.from;
@@ -70,25 +75,18 @@ public class Event extends Task {
 
     /**
      * Gets the end time of the event.
-     * @return the end time
+     *
+     * @return the end time.
      */
     public LocalDateTime getTo() {
         return this.to;
     }
 
-    /**
-     * Converts the event to a data string for storage.
-     * @return the data string representation of the event
-     */
     @Override
     public String toDataString() {
         return "E | " + (isCompleted() ? "1" : "0") + " | " + super.getTitle() + " | " + this.from + " | " + this.to;
     }
 
-    /**
-     * Returns the string representation of the event.
-     * @return the string representation
-     */
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + DateParser.format(this.from) + ", to: " + DateParser.format(this.to) + ")";

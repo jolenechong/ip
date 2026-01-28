@@ -18,7 +18,7 @@ public class Storage {
     private final String filePath;
 
     /**
-     * Create a Storage object that reads from and writes to the given file path.
+     * Creates a Storage object that reads from and writes to the given file path.
      * The constructor will ensure the parent directory and the file exist.
      *
      * @param filePath path to the data file (relative or absolute)
@@ -51,8 +51,8 @@ public class Storage {
     /**
      * Load tasks from the configured data file.
      * <p>
-     * The method reads the file line-by-line and converts each line to a
-     * {@link Task} using {@code Task.fromDataString(line)}.
+     * The method reads the file line-by-line and converts each line.
+     * To a {@link Task} using {@code Task.fromDataString(line)}.
      *
      * @return a non-null {@link ArrayList} of tasks (possibly empty)
      */
@@ -76,9 +76,8 @@ public class Storage {
 
     /**
      * Persist the provided task list to the configured data file.
-     * <p>
-     * The file is overwritten. Each task is written using {@code task.toDataString()}
-     * on its own line. I/O errors are logged to standard output.
+     * The file is overwritten. Each task is written using {@code task.toDataString()}.
+     * I/O errors are logged to standard output.
      *
      * @param tasks the tasks to save; if null, a NullPointerException may be thrown
      *              by the underlying code

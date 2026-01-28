@@ -10,17 +10,26 @@ import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Unit tests for the UI class.
+ */
 public class UITest {
 
     private final PrintStream originalOut = System.out;
     private final java.io.InputStream originalIn = System.in;
 
+    /**
+     * Restores original System.out and System.in after each test.
+     */
     @AfterEach
     void tearDown() {
         System.setOut(originalOut);
         System.setIn(originalIn);
     }
 
+    /**
+     * Tests that sayHi prints the correct greeting message with the provided name.
+     */
     @Test
     void sayHi_printsGreetingWithName() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -35,6 +44,9 @@ public class UITest {
         assertTrue(printed.contains("What can I do for you?"), "sayHi should include the prompt");
     }
 
+    /**
+     * Tests that sayBye prints the correct farewell message.
+     */
     @Test
     void sayBye_printsFarewell() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -47,6 +59,9 @@ public class UITest {
         assertTrue(printed.contains("Bye. Hope to see you again soon!"), "sayBye should print farewell message");
     }
 
+    /**
+     * Tests that println, printAll, and printError work as expected.
+     */
     @Test
     void println_and_printAll_and_printError_workAsExpected() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -64,6 +79,9 @@ public class UITest {
         assertTrue(printed.contains("____________________________________________________________"), "printAll/printError should include separators");
     }
 
+    /**
+     * Tests that readLine correctly reads and trims input.
+     */
     @Test
     void readLine_trimsAndReturnsInput() {
         String input = "   hello world   \n";

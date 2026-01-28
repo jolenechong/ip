@@ -8,7 +8,7 @@ import simon.ui.UI;
  */
 public interface Command {
     /**
-     * Execute command. Return true to continue REPL, false to exit.
+     * Executes command. Return true to continue REPL, false to exit.
      */
-    boolean execute(TaskList tasks, UI ui) throws Exception;
+    boolean execute(TaskList tasks, UI ui);
 }

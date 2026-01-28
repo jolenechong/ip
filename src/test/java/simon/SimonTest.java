@@ -12,12 +12,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test class for {@link Simon}.
- *
  * This test verifies that the main method of the Simon application
  * correctly prints the greeting message and exits upon receiving the "bye" command.
  * It will use simon-test-home as temp user home directory and send "bye" as input.
  */
 public class SimonTest {
+
+    /**
+     * Tests that the main method prints the greeting and exits on "bye" command.
+     *
+     * @throws Exception if any I/O error occurs during the test.
+     */
     @Test
     void main_printsGreetingAndExitOnBye() throws Exception {
         PrintStream originalOut = System.out;

@@ -33,6 +33,7 @@ public class Deadline extends Task {
 
     /**
      * Constructs a Deadline task with the specified title, due date/time, and completion status.
+     *
      * @param title The title of the deadline task.
      * @param by  The due date/time of the deadline task.
      * @param isCompleted The completion status of the deadline task.
@@ -45,6 +46,7 @@ public class Deadline extends Task {
 
     /**
      * Constructs a Deadline task with the specified title, due date/time as a string, and completion status.
+     *
      * @param title The title of the deadline task.
      * @param by  The due date/time of the deadline task as a string.
      * @param isCompleted The completion status of the deadline task.
@@ -62,10 +64,6 @@ public class Deadline extends Task {
         return this.by;
     }
 
-    /**
-     * Converts the Deadline task to a data string for storage.
-     * @return A string representation of the Deadline task for storage.
-     */
     @Override
     public String toDataString() {
         // format date to  2nd of December 2019, 6pm
@@ -73,10 +71,6 @@ public class Deadline extends Task {
         return "D | " + (isCompleted() ? "1" : "0") + " | " + super.getTitle() + " | " + this.by;
     }
 
-    /**
-     * Converts the Deadline task to a string for display.
-     * @return A string representation of the Deadline task for display.
-     */
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + DateParser.format(this.by) + ")";

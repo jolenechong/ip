@@ -29,8 +29,9 @@ public final class DateParser {
 
     /**
      * Parses a date string into a LocalDateTime object.
-     * @param input the date string to parse
-     * @return the parsed LocalDateTime object
+     *
+     * @param input the date string to parse.
+     * @return the parsed LocalDateTime object.
      */
     public static LocalDateTime parse(String input) {
         if (input == null) {
@@ -59,8 +60,9 @@ public final class DateParser {
 
     /**
      * Formats a LocalDateTime object into a readable string.
-     * @param dateTime the LocalDateTime object to format
-     * @return the formatted date string
+     *
+     * @param dateTime the LocalDateTime object to format.
+     * @return the formatted date string.
      */
     public static String format(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM uuuu h:mma", Locale.ENGLISH);

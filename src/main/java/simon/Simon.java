@@ -15,7 +15,6 @@ import simon.util.UIParser;
  * This class initializes the UI, storage, task list, and command parser.
  * It runs a loop to read user input, parse commands, and execute them
  * until the user decides to exit the application.
- *
  */
 public class Simon {
 
@@ -37,8 +36,8 @@ public class Simon {
     }
 
     /**
-        * Runs the main application loop.
-        * Reads user input, parses commands, and executes them until exit.
+     * Runs the main application loop.
+     * Reads user input, parses commands, and executes them until exit.
      */
     public void run() {
         ui.sayHi(NAME);
@@ -62,6 +61,7 @@ public class Simon {
 
     /**
      * Main method to start the Simon application.
+     *
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {

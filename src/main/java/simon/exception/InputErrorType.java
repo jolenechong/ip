@@ -16,6 +16,7 @@ public enum InputErrorType {
 
     /**
      * Constructor for InputErrorType.
+     *
      * @param message Human-readable error message.
      */
     InputErrorType(String message) {
@@ -24,6 +25,7 @@ public enum InputErrorType {
 
     /**
      * Gets the human-readable error message.
+     *
      * @return Error message.
      */
     public String getMessage() {

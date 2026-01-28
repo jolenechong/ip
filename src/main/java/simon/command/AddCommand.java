@@ -12,6 +12,7 @@ public class AddCommand implements Command {
 
     /**
      * Constructor for AddCommand.
+     *
      * @param task The task to be added.
      */
     public AddCommand(Task task) {
@@ -19,7 +20,8 @@ public class AddCommand implements Command {
     }
 
     /**
-     * Executes the command to add the specified task.
+     * Executes the command to add the specified task
+     * .
      * @param tasks The TaskList containing all tasks.
      * @param ui The UI instance for displaying output.
      * @return true to indicate successful execution.

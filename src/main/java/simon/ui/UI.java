@@ -11,6 +11,7 @@ public class UI {
 
     /**
      * Greets the user with a welcome message.
+     *
      * @param name The name of the application.
      */
     public void sayHi(String name) {
@@ -36,6 +37,7 @@ public class UI {
 
     /**
      * Prints a message to the console.
+     *
      * @param msg The message to be printed.
      */
     public void println(String msg) {
@@ -44,6 +46,7 @@ public class UI {
 
     /**
      * Prints a formatted message to the console, enclosed in lines for emphasis.
+     *
      * @param msg The message format string.
      * @param args The arguments to be formatted into the message.
      */
@@ -55,6 +58,7 @@ public class UI {
 
     /**
      * Prints an error message to the console, enclosed in lines for emphasis.
+     *
      * @param msg The error message to be printed.
      */
     public void printError(String msg) {
@@ -65,6 +69,7 @@ public class UI {
 
     /**
      * Reads a line of input from the user.
+     *
      * @return The trimmed line of input.
      */
     public String readLine() {

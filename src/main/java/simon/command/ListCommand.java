@@ -9,6 +9,7 @@ import simon.ui.UI;
 public class ListCommand implements Command {
     /**
      * Executes the list command to display all tasks.
+     *
      * @param tasks The TaskList containing all tasks.
      * @param ui The UI instance for displaying output.
      * @return true to indicate successful execution.

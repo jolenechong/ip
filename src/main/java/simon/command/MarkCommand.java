@@ -12,6 +12,7 @@ public class MarkCommand implements Command {
 
     /**
      * Constructor for MarkCommand.
+     *
      * @param index The index of the task to be marked (1-based).
      * @param completed True to mark as completed, false to mark as not completed.
      */
@@ -22,6 +23,7 @@ public class MarkCommand implements Command {
 
     /**
      * Executes the command to mark/unmark the specified task.
+     *
      * @param tasks The TaskList containing all tasks.
      * @param ui The UI instance for displaying output.
      * @return true to indicate successful execution.

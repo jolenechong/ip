@@ -18,6 +18,7 @@ public class OnCommand implements Command {
 
     /**
      * Constructor for OnCommand.
+     *
      * @param when The date to filter deadlines and events.
      */
     public OnCommand(LocalDateTime when) {
@@ -26,6 +27,7 @@ public class OnCommand implements Command {
 
     /**
      * Executes the command to list deadlines and events on the specified date.
+     *
      * @param tasks The TaskList containing all tasks.
      * @param ui The UI instance for displaying output.
      * @return true to indicate successful execution.
