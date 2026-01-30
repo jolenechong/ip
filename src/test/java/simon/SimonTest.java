@@ -1,12 +1,13 @@
 package simon;
 
-import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -54,9 +55,15 @@ public class SimonTest {
                 Files.walk(tempHome)
                         .sorted((a, b) -> b.compareTo(a))
                         .forEach(p -> {
-                            try { Files.deleteIfExists(p); } catch (Exception ignored) {}
+                            try {
+                                Files.deleteIfExists(p);
+                            } catch (Exception ignored) {
+                               // ignored
+                            }
                         });
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+                // ignored
+            }
         }
     }
 }

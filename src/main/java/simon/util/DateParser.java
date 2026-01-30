@@ -11,17 +11,17 @@ import java.util.Locale;
  */
 public final class DateParser {
     private static final DateTimeFormatter[] DATE_TIME_FORMATTERS = new DateTimeFormatter[]{
-            DateTimeFormatter.ISO_LOCAL_DATE,                    // 2025-08-31
-            DateTimeFormatter.ofPattern("d/M/yyyy HHmm"),             // 31/8/2025 1800
-            DateTimeFormatter.ofPattern("d-M-yyyy HHmm"),             // 31-8-2025 1800
-            DateTimeFormatter.ofPattern("yyyy/M/d HHmm"),             // 2025/08/31 1800
+        DateTimeFormatter.ISO_LOCAL_DATE, // 2025-08-31
+        DateTimeFormatter.ofPattern("d/M/yyyy HHmm"), // 31/8/2025 1800
+        DateTimeFormatter.ofPattern("d-M-yyyy HHmm"), // 31-8-2025 1800
+        DateTimeFormatter.ofPattern("yyyy/M/d HHmm"), // 2025/08/31 1800
     };
     private static final DateTimeFormatter[] DATE_FORMATTERS = new DateTimeFormatter[]{
-            DateTimeFormatter.ISO_LOCAL_DATE,                     // 2025-08-31
-            DateTimeFormatter.ofPattern("d/M/yyyy"),              // 31/8/2025
-            DateTimeFormatter.ofPattern("d-M-yyyy"),              // 31-8-2025
-            DateTimeFormatter.ofPattern("yyyy/M/d"),              // 2025/08/31
-            DateTimeFormatter.ofPattern("d MMM uuuu", Locale.ENGLISH) // 31 Aug 2025
+        DateTimeFormatter.ISO_LOCAL_DATE, // 2025-08-31
+        DateTimeFormatter.ofPattern("d/M/yyyy"), // 31/8/2025
+        DateTimeFormatter.ofPattern("d-M-yyyy"), // 31-8-2025
+        DateTimeFormatter.ofPattern("yyyy/M/d"), // 2025/08/31
+        DateTimeFormatter.ofPattern("d MMM uuuu", Locale.ENGLISH) // 31 Aug 2025
     };
 
     private DateParser() {

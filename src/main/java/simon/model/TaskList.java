@@ -1,10 +1,10 @@
 package simon.model;
 
-import simon.storage.Storage;
-import simon.task.Task;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import simon.storage.Storage;
+import simon.task.Task;
 
 /**
  * Represents a list of tasks and provides methods to manipulate them.
