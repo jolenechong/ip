@@ -1,5 +1,7 @@
 package simon.util;
 
+import static simon.util.IntParser.parseIndex;
+
 import java.time.LocalDateTime;
 
 import simon.command.AddCommand;
@@ -14,8 +16,6 @@ import simon.exception.InputFormatException;
 import simon.task.Deadline;
 import simon.task.Event;
 import simon.task.Todo;
-
-import static simon.util.IntParser.parseIndex;
 
 /**
  * Utility class for parsing user input into Command objects.
