@@ -1,8 +1,8 @@
 package simon.task;
 
-import simon.util.DateParser;
-
 import java.time.LocalDateTime;
+
+import simon.util.DateParser;
 
 /**
  * Represents an event task with a title, start time, and end time.
@@ -89,6 +89,7 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + DateParser.format(this.from) + ", to: " + DateParser.format(this.to) + ")";
+        return "[E]" + super.toString() + " (from: " + DateParser.format(this.from)
+                + ", to: " + DateParser.format(this.to) + ")";
     }
 }

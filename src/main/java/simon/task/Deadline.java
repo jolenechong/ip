@@ -1,8 +1,8 @@
 package simon.task;
 
-import simon.util.DateParser;
-
 import java.time.LocalDateTime;
+
+import simon.util.DateParser;
 
 /**
  * Represents a deadline task with a title and a due date/time.

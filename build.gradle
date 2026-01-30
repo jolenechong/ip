@@ -3,6 +3,7 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'checkstyle'
 }
 
 version = '1.0.0'
@@ -47,6 +48,10 @@ test {
 
 application {
     mainClass.set("simon.Simon")
+}
+
+checkstyle {
+    toolVersion = '11.0.0'
 }
 
 shadowJar {

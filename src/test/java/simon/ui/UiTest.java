@@ -1,11 +1,11 @@
 package simon.ui;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for the UI class.
  */
-public class UITest {
+public class UiTest {
 
     private final PrintStream originalOut = System.out;
     private final java.io.InputStream originalIn = System.in;
@@ -63,7 +63,7 @@ public class UITest {
      * Tests that println, printAll, and printError work as expected.
      */
     @Test
-    void println_and_printAll_and_printError_workAsExpected() {
+    void printlnAllError_workAsExpected() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
 
@@ -76,7 +76,8 @@ public class UITest {
         assertTrue(printed.contains("simple line"), "println should print the message");
         assertTrue(printed.contains("formatted text"), "printAll should format and print the message");
         assertTrue(printed.contains("error occurred"), "printError should print the error message");
-        assertTrue(printed.contains("____________________________________________________________"), "printAll/printError should include separators");
+        assertTrue(printed.contains("____________________________________________________________"),
+                "printAll/printError should include separators");
     }
 
     /**

@@ -4,24 +4,23 @@ import simon.command.Command;
 import simon.model.TaskList;
 import simon.storage.Storage;
 import simon.ui.UI;
-import simon.util.UIParser;
+import simon.util.UiParser;
 
 /**
  * Main class for the Simon application.
  * Handles initialization and the main application loop.
+ * This class initializes the UI, storage, task list, and command parser.
+ * It runs a loop to read user input, parse commands, and execute them.
  * @author Jolene Chong
  * @version v1.0
  *
- * This class initializes the UI, storage, task list, and command parser.
- * It runs a loop to read user input, parse commands, and execute them
- * until the user decides to exit the application.
  */
 public class Simon {
 
     private static final String NAME = "Simon";
     private final UI ui;
     private final TaskList tasks;
-    private final UIParser parser;
+    private final UiParser parser;
     private final Storage storage;
 
     /**
@@ -32,7 +31,7 @@ public class Simon {
         this.ui = new UI();
         this.storage = new Storage(System.getProperty("user.home") + "/.simon/data/simon.txt");
         this.tasks = new TaskList(storage);
-        this.parser = new UIParser();
+        this.parser = new UiParser();
     }
 
     /**

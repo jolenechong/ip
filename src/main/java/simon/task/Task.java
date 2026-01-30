@@ -3,7 +3,7 @@ package simon.task;
 /**
  * Represents a generic task with a title and completion status.
  */
-abstract public class Task {
+public abstract class Task {
     private String title;
     private Boolean completed;
 
@@ -33,7 +33,7 @@ abstract public class Task {
      *
      * @return Data string representation of the task.
      */
-    abstract public String toDataString();
+    public abstract String toDataString();
 
     /**
      * Recreate a Task object from a data string.
