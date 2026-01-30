@@ -35,6 +35,33 @@ public class Simon {
     }
 
     /**
+     * Gets responses for GUI integration.
+     * @param input The user input command.
+     * @return The response from executing the command.
+     */
+    public String getResponse(String input) {
+        try {
+            Command cmd = parser.parse(input);
+            StringBuilder output = new StringBuilder();
+            UI tempUi = new UI() {
+                @Override
+                public void printAll(String message, Object... args) {
+                    output.append(String.format(message, args)).append("\n");
+                }
+
+                @Override
+                public void printError(String message) {
+                    output.append("Error: ").append(message).append("\n");
+                }
+            };
+            cmd.execute(tasks, tempUi);
+            return output.toString().trim();
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+
+    /**
      * Runs the main application loop.
      * Reads user input, parses commands, and executes them until exit.
      */
