@@ -21,6 +21,12 @@ public class DialogBox extends HBox {
     @FXML
     private Label dialog;
 
+    /**
+     * Creates a DialogBox with the specified text and speaker type.
+     *
+     * @param text   The text to be displayed in the dialog box.
+     * @param isUser True if the dialog box is for the user, false for Simon.
+     */
     private DialogBox(String text, boolean isUser) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
@@ -32,13 +38,10 @@ public class DialogBox extends HBox {
         }
 
         dialog.setText(text);
-        // make the dialog text wrap and limit its width so it looks like a chat bubble
         dialog.setWrapText(true);
-        dialog.setMaxWidth(260); // bubble max width before wrapping
+        dialog.setMaxWidth(260);
 
-        // style the bubble depending on the speaker
         if (isUser) {
-            // user bubble: teal-ish with white text, rounded corners
             setAlignment(Pos.TOP_RIGHT);
             dialog.setStyle(
                 "-fx-background-color: #26a7c7; "
@@ -47,7 +50,6 @@ public class DialogBox extends HBox {
                 + "-fx-text-fill: white;"
             );
         } else {
-            // simon bubble: light grey with dark text, rounded corners
             setAlignment(Pos.TOP_LEFT);
             dialog.setStyle(
                 "-fx-background-color: #ededed; "
@@ -68,10 +70,22 @@ public class DialogBox extends HBox {
         setAlignment(Pos.TOP_LEFT);
     }
 
+    /**
+     * Creates a dialog box for the user.
+     *
+     * @param text The text to be displayed in the dialog box.
+     * @return A DialogBox representing the user's message.
+     */
     public static DialogBox getUserDialog(String text) {
         return new DialogBox(text, true);
     }
 
+    /**
+     * Creates a dialog box for Simon.
+     *
+     * @param text The text to be displayed in the dialog box.
+     * @return A DialogBox representing Simon's message.
+     */
     public static DialogBox getSimonDialog(String text) {
         var db = new DialogBox(text, false);
         db.flip();

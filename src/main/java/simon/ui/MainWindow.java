@@ -1,8 +1,6 @@
 package simon.ui;
 
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -23,6 +21,8 @@ public class MainWindow extends AnchorPane {
     private TextField userInput;
     @FXML
     private HBox headerBox;
+    @FXML
+    private javafx.scene.control.Button sendButton;
 
     private Simon simon;
 
@@ -32,17 +32,13 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-
-        // ensure the topmost dialog isn't hidden under the header by adding top padding equal to header height
-        dialogContainer.paddingProperty().bind(
-                Bindings.createObjectBinding(
-                        () -> new Insets(headerBox.getHeight(), 0.0, 0.0, 0.0),
-                        headerBox.heightProperty()
-                )
-        );
     }
 
-    /** Injects the Simon instance */
+    /**
+     * Injects the Simon instance.
+     *
+     * @param simon the Simon instance.
+     */
     public void setSimon(Simon simon) {
         this.simon = simon;
     }
