@@ -22,6 +22,8 @@ public class MainWindow extends AnchorPane {
     @FXML
     private HBox headerBox;
     @FXML
+    private HBox inputBox;
+    @FXML
     private javafx.scene.control.Button sendButton;
 
     private Simon simon;

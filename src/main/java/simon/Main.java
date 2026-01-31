@@ -23,7 +23,14 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+
+            // load the dialog-box stylesheet from resources/css
+            scene.getStylesheets().add(Main.class.getResource("/css/dialog-box.css").toExternalForm());
+
             stage.setScene(scene);
+
+            stage.setMinHeight(220);
+            stage.setMinWidth(417);
 
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/simon.png")));
 

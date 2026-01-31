@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import simon.ui.MainWindow;
 
 /**
@@ -39,24 +40,22 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         dialog.setWrapText(true);
-        dialog.setMaxWidth(260);
 
+        this.parentProperty().addListener((obs, oldParent, newParent) -> {
+            if (newParent instanceof Region parentRegion) {
+                dialog.maxWidthProperty().bind(parentRegion.widthProperty().multiply(0.6));
+            } else if (newParent != null) {
+                dialog.maxWidthProperty().bind(this.widthProperty().multiply(0.6));
+            }
+        });
+
+        this.getStyleClass().add("dialog-wrapper");
         if (isUser) {
             setAlignment(Pos.TOP_RIGHT);
-            dialog.setStyle(
-                "-fx-background-color: #26a7c7; "
-                + "-fx-background-radius: 12; "
-                + "-fx-padding: 8; "
-                + "-fx-text-fill: white;"
-            );
+            dialog.getStyleClass().addAll("dialog-box", "user");
         } else {
             setAlignment(Pos.TOP_LEFT);
-            dialog.setStyle(
-                "-fx-background-color: #ededed; "
-                + "-fx-background-radius: 12; "
-                + "-fx-padding: 8; "
-                + "-fx-text-fill: black;"
-            );
+            dialog.getStyleClass().addAll("dialog-box", "simon");
         }
     }
 
