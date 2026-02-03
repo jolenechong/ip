@@ -1,7 +1,10 @@
 package simon.command;
 
 import simon.model.TaskList;
+import simon.task.Task;
 import simon.ui.UI;
+
+import java.util.List;
 
 /**
  * Command to find tasks that match a given keyword.
@@ -28,22 +31,20 @@ public class FindCommand implements Command {
      */
     @Override
     public boolean execute(TaskList tasks, UI ui) {
+        List<Task> matchingTasks = tasks.find(query);
+
         StringBuilder sb = new StringBuilder();
         sb.append("Here are the matching tasks in your list:");
 
-        int count = 0;
-        for (int i = 0; i < tasks.getTasks().size(); i++) {
-            if (tasks.getTasks().get(i).getTitle().contains(query)) {
-                count++;
-                sb.append("\n")
-                        .append(count)
-                        .append(".")
-                        .append(tasks.getTasks().get(i));
-            }
+        for (Task task : matchingTasks) {
+            sb.append("\n")
+                    .append(matchingTasks.indexOf(task) + 1)
+                    .append(".")
+                    .append(task);
         }
 
-        if (count == 0) {
-            sb.append(" No matching tasks found.");
+        if (matchingTasks.isEmpty()) {
+            sb.append("No matching tasks found.");
         }
 
         ui.printAll(sb.toString());

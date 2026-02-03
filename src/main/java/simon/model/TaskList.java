@@ -1,6 +1,7 @@
 package simon.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import simon.storage.Storage;
@@ -33,7 +34,7 @@ public class TaskList {
      * @return List of tasks.
      */
     public List<Task> getTasks() {
-        return this.tasks;
+        return Collections.unmodifiableList(this.tasks);
     }
 
     /**
@@ -70,6 +71,22 @@ public class TaskList {
         Task toDelete = this.tasks.remove(num - 1);
         persist();
         return toDelete;
+    }
+
+    /**
+     * Finds tasks that contain the specified keyword.
+     *
+     * @param query The keyword to search for in task titles.
+     * @return A list of tasks that match the keyword.
+     */
+    public List<Task> find(String query) {
+        List<Task> matchingTasks = new ArrayList<>(); // a copy, safe encapsulation
+        for (Task task : this.tasks) {
+            if (task.getTitle().contains(query)) {
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
     }
 
     /**
