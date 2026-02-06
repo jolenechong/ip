@@ -1,12 +1,16 @@
 package simon.command;
 
 import simon.model.TaskList;
-import simon.ui.UI;
+import simon.ui.Ui;
 
 /**
  * Command to mark a task as completed or not completed.
  */
 public class MarkCommand implements Command {
+    private static final String ERROR_TASK_DOESNT_EXIST = "That task number doesn’t exist (yet). "
+            + "Try one from the list!";
+    private static final String MARKED_AS_DONE_MESSAGE_TEMPLATE = "Nice! I've marked this task as done: \n%s";
+    private static final String MARKED_AS_NOT_DONE_MESSAGE_TEMPLATE = "OK, I've marked this task as not done yet: \n%s";
     private final int index;
     private final boolean isCompleted;
 
@@ -25,26 +29,22 @@ public class MarkCommand implements Command {
      * Executes the command to mark/unmark the specified task.
      *
      * @param tasks The TaskList containing all tasks.
-     * @param ui The UI instance for displaying output.
+     * @param ui The UiParser instance for displaying output.
      * @return true to indicate successful execution.
      */
     @Override
-    public boolean execute(TaskList tasks, UI ui) {
+    public boolean execute(TaskList tasks, Ui ui) {
         if (index <= 0 || index > tasks.getTasks().size()) {
-            ui.printError("That task number doesn’t exist (yet). Try one from the list!");
+            ui.printError(ERROR_TASK_DOESNT_EXIST);
             return true;
         }
 
         var t = tasks.mark(index, isCompleted);
 
         if (isCompleted) {
-            ui.printAll("""
-                    Nice! I've marked this task as done:
-                      %s""", t);
+            ui.printAll(MARKED_AS_DONE_MESSAGE_TEMPLATE, t);
         } else {
-            ui.printAll("""
-                    OK, I've marked this task as not done yet:
-                      %s""", t);
+            ui.printAll(MARKED_AS_NOT_DONE_MESSAGE_TEMPLATE, t);
         }
         return true;
     }

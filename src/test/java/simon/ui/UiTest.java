@@ -11,7 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for the UI class.
+ * Unit tests for the UiParser class.
  */
 public class UiTest {
 
@@ -36,7 +36,7 @@ public class UiTest {
         System.setOut(new PrintStream(out));
 
         System.setIn(new ByteArrayInputStream(new byte[0])); // avoid blocking scanner
-        UI ui = new UI();
+        UiParser ui = new UiParser();
         ui.sayHi("Tester");
 
         String printed = out.toString();
@@ -52,7 +52,7 @@ public class UiTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
 
-        UI ui = new UI();
+        UiParser ui = new UiParser();
         ui.sayBye();
 
         String printed = out.toString();
@@ -67,7 +67,7 @@ public class UiTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
 
-        UI ui = new UI();
+        UiParser ui = new UiParser();
         ui.println("simple line");
         ui.printAll("formatted %s", "text");
         ui.printError("error occurred");
@@ -88,7 +88,7 @@ public class UiTest {
         String input = "   hello world   \n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-        UI ui = new UI();
+        UiParser ui = new UiParser();
         String line = ui.readLine();
 
         assertEquals("hello world", line, "readLine should trim surrounding whitespace");
