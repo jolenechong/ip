@@ -57,6 +57,7 @@ public class TaskList {
     public Task mark(int num, boolean isCompleted) {
         Task toMark = this.tasks.get(num - 1);
         toMark.setCompleted(isCompleted);
+
         persist();
         return toMark;
     }
@@ -69,6 +70,7 @@ public class TaskList {
      */
     public Task delete(int num) {
         Task toDelete = this.tasks.remove(num - 1);
+
         persist();
         return toDelete;
     }
@@ -86,6 +88,7 @@ public class TaskList {
                 matchingTasks.add(task);
             }
         }
+
         return matchingTasks;
     }
 

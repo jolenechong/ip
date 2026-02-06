@@ -6,13 +6,15 @@ import java.util.stream.IntStream;
 
 import simon.model.TaskList;
 import simon.task.Task;
-import simon.ui.UI;
+import simon.ui.Ui;
 
 /**
  * Command to find tasks that match a given keyword.
  */
 public class FindCommand implements Command {
 
+    private static final String FIND_MESSAGE_TEMPLATE = "Here are the matching tasks in your list:";
+    private static final String ERROR_NO_MATCHING_TASKS = "No matching tasks found.";
     private final String query;
 
     /**
@@ -32,27 +34,21 @@ public class FindCommand implements Command {
      * @return true to indicate successful execution.
      */
     @Override
-    public boolean execute(TaskList tasks, UI ui) {
+    public boolean execute(TaskList tasks, Ui ui) {
         List<Task> matchingTasks = tasks.find(query);
 
         StringBuilder sb = new StringBuilder();
+        sb.append(FIND_MESSAGE_TEMPLATE);
 
         String result = IntStream.range(0, matchingTasks.size())
                 .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
                 .collect(Collectors.joining("\n", "Here are the matching tasks in your list:\n", ""));
 
         if (matchingTasks.isEmpty()) {
-            result = "No matching tasks found.";
+            sb.append(ERROR_NO_MATCHING_TASKS);
         }
 
         ui.printAll(result);
-
-
-        if (matchingTasks.isEmpty()) {
-            sb.append("\nNo matching tasks found.");
-        }
-
-        ui.printAll(sb.toString());
 
         return true;
     }

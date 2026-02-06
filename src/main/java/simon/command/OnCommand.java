@@ -7,7 +7,7 @@ import simon.model.TaskList;
 import simon.task.Deadline;
 import simon.task.Event;
 import simon.task.Task;
-import simon.ui.UI;
+import simon.ui.Ui;
 import simon.util.DateParser;
 
 /**
@@ -29,11 +29,11 @@ public class OnCommand implements Command {
      * Executes the command to list deadlines and events on the specified date.
      *
      * @param tasks The TaskList containing all tasks.
-     * @param ui The UI instance for displaying output.
+     * @param ui The UiParser instance for displaying output.
      * @return true to indicate successful execution.
      */
     @Override
-    public boolean execute(TaskList tasks, UI ui) {
+    public boolean execute(TaskList tasks, Ui ui) {
         StringBuilder sb = new StringBuilder();
         sb.append("Here are the deadlines and events on " + DateParser.format(when) + ":\n");
 

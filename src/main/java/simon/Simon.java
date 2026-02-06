@@ -3,13 +3,13 @@ package simon;
 import simon.command.Command;
 import simon.model.TaskList;
 import simon.storage.Storage;
-import simon.ui.UI;
+import simon.ui.Ui;
 import simon.util.UiParser;
 
 /**
  * Main class for the Simon application.
  * Handles initialization and the main application loop.
- * This class initializes the UI, storage, task list, and command parser.
+ * This class initializes the UiParser, storage, task list, and command parser.
  * It runs a loop to read user input, parse commands, and execute them.
  * @author Jolene Chong
  * @version v1.1
@@ -18,17 +18,17 @@ import simon.util.UiParser;
 public class Simon {
 
     private static final String NAME = "Simon";
-    private final UI ui;
+    private final Ui ui;
     private final TaskList tasks;
     private final UiParser parser;
     private final Storage storage;
 
     /**
      * Constructs a Simon application instance.
-     * Initializes the UI, storage, task list, and command parser.
+     * Initializes the UiParser, storage, task list, and command parser.
      */
     public Simon() {
-        this.ui = new UI();
+        this.ui = new Ui();
         this.storage = new Storage(System.getProperty("user.home") + "/.simon/data/simon.txt");
         this.tasks = new TaskList(storage);
         this.parser = new UiParser();
@@ -50,7 +50,7 @@ public class Simon {
             StringBuilder output = new StringBuilder();
             final boolean[] exitRequested = {false};
 
-            UI tempUi = new UI() {
+            Ui tempUi = new Ui() {
                 @Override
                 public void printAll(String message, Object... args) {
                     output.append(String.format(message, args)).append("\n");

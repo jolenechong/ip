@@ -67,7 +67,6 @@ public class Deadline extends Task {
     @Override
     public String toDataString() {
         // format date to  2nd of December 2019, 6pm
-
         return "D | " + (isCompleted() ? "1" : "0") + " | " + super.getTitle() + " | " + this.by;
     }
 
