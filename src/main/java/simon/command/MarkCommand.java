@@ -48,4 +48,21 @@ public class MarkCommand implements Command {
         }
         return true;
     }
+
+    @Override
+    public boolean undo(TaskList tasks, Ui ui) {
+        var t = tasks.mark(index, !isCompleted);
+
+        if (!isCompleted) {
+            ui.printAll(MARKED_AS_DONE_MESSAGE_TEMPLATE, t);
+        } else {
+            ui.printAll(MARKED_AS_NOT_DONE_MESSAGE_TEMPLATE, t);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
 }

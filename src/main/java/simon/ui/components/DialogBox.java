@@ -29,6 +29,11 @@ public class DialogBox extends HBox {
      * @param isUser True if the dialog box is for the user, false for Simon.
      */
     private DialogBox(String text, boolean isUser) {
+        setupFxml();
+        setupDialog(text, isUser);
+    }
+
+    private void setupFxml() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
@@ -37,7 +42,9 @@ public class DialogBox extends HBox {
         } catch (IOException e) {
             throw new IllegalStateException("Failed to load DialogBox FXML", e);
         }
+    }
 
+    private void setupDialog(String text, boolean isUser) {
         dialog.setText(text);
         dialog.setWrapText(true);
 
@@ -57,7 +64,9 @@ public class DialogBox extends HBox {
             setAlignment(Pos.TOP_LEFT);
             dialog.getStyleClass().addAll("dialog-box", "simon");
         }
+
     }
+
 
     /**
      * Flips the dialog box such that the ImageView is on the left and text on the right.

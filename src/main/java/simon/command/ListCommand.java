@@ -31,4 +31,10 @@ public class ListCommand implements Command {
         ui.printAll(sb.toString());
         return true;
     }
+
+    @Override
+    public boolean isUndoable() {
+        return false;
+    }
+
 }
