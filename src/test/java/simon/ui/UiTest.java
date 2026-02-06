@@ -36,7 +36,7 @@ public class UiTest {
         System.setOut(new PrintStream(out));
 
         System.setIn(new ByteArrayInputStream(new byte[0])); // avoid blocking scanner
-        UiParser ui = new UiParser();
+        Ui ui = new Ui();
         ui.sayHi("Tester");
 
         String printed = out.toString();
@@ -52,7 +52,7 @@ public class UiTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
 
-        UiParser ui = new UiParser();
+        Ui ui = new Ui();
         ui.sayBye();
 
         String printed = out.toString();
@@ -67,7 +67,7 @@ public class UiTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
 
-        UiParser ui = new UiParser();
+        Ui ui = new Ui();
         ui.println("simple line");
         ui.printAll("formatted %s", "text");
         ui.printError("error occurred");
@@ -88,7 +88,7 @@ public class UiTest {
         String input = "   hello world   \n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-        UiParser ui = new UiParser();
+        Ui ui = new Ui();
         String line = ui.readLine();
 
         assertEquals("hello world", line, "readLine should trim surrounding whitespace");
