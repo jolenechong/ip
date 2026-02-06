@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import simon.task.Task;
 
@@ -29,6 +30,10 @@ public class Storage {
      * @param filePath path to the data file (relative or absolute)
      */
     public Storage(String filePath) {
+        Objects.requireNonNull(filePath, "filePath must not be null");
+        if (filePath.isBlank()) {
+            throw new IllegalArgumentException("filePath must not be blank");
+        }
         this.filePath = filePath;
         ensureFileExists();
     }
@@ -37,6 +42,8 @@ public class Storage {
      * Ensure the parent directory and the data file exist else create them.
      */
     private void ensureFileExists() {
+        assert filePath != null;
+
         File file = new File(filePath);
         File parentDir = file.getParentFile();
 
@@ -54,7 +61,7 @@ public class Storage {
     }
 
     /**
-     * Load tasks from the configured data file.
+     * Loads tasks from the configured data file.
      * <p>
      * The method reads the file line-by-line and converts each line.
      * To a {@link Task} using {@code Task.fromDataString(line)}.
@@ -80,7 +87,7 @@ public class Storage {
     }
 
     /**
-     * Persist the provided task list to the configured data file.
+     * Persists the provided task list to the configured data file.
      * The file is overwritten. Each task is written using {@code task.toDataString()}.
      * I/O errors are logged to standard output.
      *
@@ -88,6 +95,11 @@ public class Storage {
      *              by the underlying code
      */
     public void saveTasks(ArrayList<Task> tasks) {
+        assert tasks != null : "Tasks should not be null";
+        for (Task t : tasks) {
+            Objects.requireNonNull(t, "task list contains null element");
+        }
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Task task : tasks) {
                 writer.write(task.toDataString());
