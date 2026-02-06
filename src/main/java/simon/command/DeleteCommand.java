@@ -53,4 +53,10 @@ public class DeleteCommand implements Command {
                 removed, tasks.getTasks().size());
         return true;
     }
+
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
+
 }

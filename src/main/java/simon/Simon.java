@@ -53,7 +53,20 @@ public class Simon {
             StringBuilder output = new StringBuilder();
             final boolean[] exitRequested = {false};
 
-            Ui tempUi = new Ui() {
+            Ui tempUi = initUi(output, exitRequested);
+
+            commandInvoker.execute(cmd, tasks, tempUi);
+
+            String response = output.toString().trim();
+            return new Response(response, exitRequested[0]);
+        } catch (Exception e) {
+            return new Response("Error: " + e.getMessage(), false);
+        }
+    }
+
+    private Ui initUi(StringBuilder output, boolean[] exitRequested) {
+        return
+            new Ui() {
                 @Override
                 public void printAll(String message, Object... args) {
                     output.append(String.format(message, args)).append("\n");
@@ -70,13 +83,7 @@ public class Simon {
                     exitRequested[0] = true;
                 }
             };
-            commandInvoker.execute(cmd, tasks, tempUi);
 
-            String response = output.toString().trim();
-            return new Response(response, exitRequested[0]);
-        } catch (Exception e) {
-            return new Response("Error: " + e.getMessage(), false);
-        }
     }
 
     /**

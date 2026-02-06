@@ -49,4 +49,9 @@ public class AddCommand implements Command {
 
         return true;
     }
+
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
 }

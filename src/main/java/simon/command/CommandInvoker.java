@@ -20,7 +20,9 @@ public class CommandInvoker {
      */
     public boolean execute(Command cmd, TaskList tasks, Ui ui) {
         boolean cont = cmd.execute(tasks, ui);
-        history.push(cmd);
+        if (cmd.isUndoable()) {
+            history.push(cmd);
+        }
         return cont;
     }
 

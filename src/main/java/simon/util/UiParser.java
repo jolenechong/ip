@@ -2,9 +2,8 @@ package simon.util;
 
 import static simon.util.IntParser.parseIndex;
 
-import java.time.LocalDateTime;
-
 import simon.command.AddCommand;
+import simon.command.ByeCommand;
 import simon.command.Command;
 import simon.command.CommandInvoker;
 import simon.command.DeleteCommand;
@@ -12,6 +11,7 @@ import simon.command.FindCommand;
 import simon.command.ListCommand;
 import simon.command.MarkCommand;
 import simon.command.OnCommand;
+import simon.command.UndoCommand;
 import simon.exception.InputErrorType;
 import simon.exception.InputFormatException;
 import simon.task.Deadline;
@@ -38,86 +38,58 @@ public class UiParser {
         String cmd = parts[0].toLowerCase();
 
         return switch (cmd) {
-        case "bye" -> (tasks, ui) -> {
-            ui.sayBye();
-            return false;
-        };
+        case "bye" -> new ByeCommand();
         case "list" -> new ListCommand();
-        case "find" -> {
-            if (parts.length <= 1) {
-                throw new InputFormatException(InputErrorType.QUERY_EMPTY);
-            }
-            yield new FindCommand(parts[1]);
-        }
-        case "mark" -> {
-            if (parts.length <= 1) {
-                throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
-            }
-            yield new MarkCommand(parseIndex(parts[1]), true);
-        }
-        case "unmark" -> {
-            if (parts.length <= 1) {
-                throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
-            }
-            yield new MarkCommand(parseIndex(parts[1]), false);
-        }
-        case "todo" -> {
-            if (parts.length <= 1) {
-                throw new InputFormatException(InputErrorType.TODO_EMPTY);
-            }
-            yield new AddCommand(new Todo(parts[1]));
-        }
-        case "deadline" -> {
-            if (parts.length <= 1) {
-                throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
-            }
-            String rest = parts[1];
-            int byIndex = rest.indexOf(" /by ");
-            if (byIndex == -1) {
-                throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
-            }
-            String desc = rest.substring(0, byIndex).trim();
-            String by = rest.substring(byIndex + 5).trim();
-            if (desc.isEmpty() || by.isEmpty()) {
-                throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
-            }
-            yield new AddCommand(new Deadline(desc, by));
-        }
-        case "event" -> {
-            if (parts.length <= 1) {
-                throw new InputFormatException(InputErrorType.EVENT_FORMAT);
-            }
-            String rest = parts[1];
-            int fromIndex = rest.indexOf(" /from ");
-            int toIndex = rest.indexOf(" /to ");
-            if (fromIndex == -1 || toIndex == -1 || fromIndex >= toIndex) {
-                throw new InputFormatException(InputErrorType.EVENT_FORMAT);
-            }
-            String desc = rest.substring(0, fromIndex).trim();
-            String from = rest.substring(fromIndex + 7, toIndex).trim();
-            String to = rest.substring(toIndex + 5).trim();
-            if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                throw new InputFormatException(InputErrorType.EVENT_FORMAT);
-            }
-            yield new AddCommand(new Event(desc, from, to));
-        }
-        case "delete" -> {
-            if (parts.length <= 1) {
-                throw new InputFormatException(InputErrorType.NUMBER_RANGE);
-            }
-            yield new DeleteCommand(parseIndex(parts[1]));
-        }
-        case "on" -> {
-            if (parts.length <= 1) {
-                throw new InputFormatException(InputErrorType.EVENT_FORMAT);
-            }
-            LocalDateTime d = DateParser.parse(parts[1].trim());
-            yield new OnCommand(d);
-        }
-        case "undo" -> {
-            yield (tasks, ui) -> invoker.executeUndo(tasks, ui);
-        }
+        case "find" -> new FindCommand(requireArgument(parts, InputErrorType.QUERY_EMPTY));
+        case "mark" -> new MarkCommand(parseIndex(
+                requireArgument(parts, InputErrorType.NUMBER_FORMAT)), true);
+        case "unmark" -> new MarkCommand(parseIndex(
+                requireArgument(parts, InputErrorType.NUMBER_FORMAT)), false);
+        case "todo" -> new AddCommand(new Todo(requireArgument(parts, InputErrorType.TODO_EMPTY)));
+        case "deadline" -> parseDeadline(requireArgument(parts, InputErrorType.DEADLINE_FORMAT));
+        case "event" -> parseEvent(requireArgument(parts, InputErrorType.EVENT_FORMAT));
+        case "delete" -> new DeleteCommand(parseIndex(
+                requireArgument(parts, InputErrorType.NUMBER_RANGE)));
+        case "on" -> new OnCommand(DateParser.parse(
+                requireArgument(parts, InputErrorType.EVENT_FORMAT).trim()));
+        case "undo" -> new UndoCommand(invoker);
         default -> throw new InputFormatException(InputErrorType.UNKNOWN_INPUT);
         };
+    }
+
+    private static String requireArgument(String[] parts, InputErrorType error)
+            throws InputFormatException {
+        if (parts.length <= 1 || parts[1].isBlank()) {
+            throw new InputFormatException(error);
+        }
+        return parts[1];
+    }
+
+    private Command parseDeadline(String rest) throws InputFormatException {
+        int byIndex = rest.indexOf(" /by ");
+        if (byIndex == -1) {
+            throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+        }
+        String desc = rest.substring(0, byIndex).trim();
+        String by = rest.substring(byIndex + 5).trim();
+        if (desc.isEmpty() || by.isEmpty()) {
+            throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
+        }
+        return new AddCommand(new Deadline(desc, by));
+    }
+
+    private Command parseEvent(String rest) throws InputFormatException {
+        int fromIndex = rest.indexOf(" /from ");
+        int toIndex = rest.indexOf(" /to ");
+        if (fromIndex == -1 || toIndex == -1 || fromIndex >= toIndex) {
+            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+        }
+        String desc = rest.substring(0, fromIndex).trim();
+        String from = rest.substring(fromIndex + 7, toIndex).trim();
+        String to = rest.substring(toIndex + 5).trim();
+        if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
+            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+        }
+        return new AddCommand(new Event(desc, from, to));
     }
 }

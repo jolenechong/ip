@@ -17,4 +17,8 @@ public interface Command {
         throw new UnsupportedOperationException("Not undoable");
     }
 
+    default boolean isUndoable() {
+        return false;
+    };
+
 }

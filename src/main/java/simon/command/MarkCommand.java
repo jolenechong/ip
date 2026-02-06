@@ -60,4 +60,9 @@ public class MarkCommand implements Command {
         }
         return true;
     }
+
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
 }

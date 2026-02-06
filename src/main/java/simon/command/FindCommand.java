@@ -52,4 +52,9 @@ public class FindCommand implements Command {
 
         return true;
     }
+
+    @Override
+    public boolean isUndoable() {
+        return false;
+    }
 }
