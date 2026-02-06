@@ -1,10 +1,10 @@
 package simon.command;
 
+import java.util.List;
+
 import simon.model.TaskList;
 import simon.task.Task;
 import simon.ui.UI;
-
-import java.util.List;
 
 /**
  * Command to find tasks that match a given keyword.

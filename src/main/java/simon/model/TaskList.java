@@ -51,12 +51,12 @@ public class TaskList {
      * Marks a task as completed or not completed and persists the change.
      *
      * @param num       Task number (1-based index).
-     * @param completed True to mark as completed, false to mark as not completed.
+     * @param isCompleted True to mark as completed, false to mark as not completed.
      * @return The updated Task.
      */
-    public Task mark(int num, boolean completed) {
+    public Task mark(int num, boolean isCompleted) {
         Task toMark = this.tasks.get(num - 1);
-        toMark.setCompleted(completed);
+        toMark.setCompleted(isCompleted);
         persist();
         return toMark;
     }

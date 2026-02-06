@@ -1,11 +1,15 @@
 package simon.ui;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import simon.Response;
 import simon.Simon;
 import simon.ui.components.DialogBox;
 
@@ -52,11 +56,19 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
-        String response = simon.getResponse(input);
+        Response resp = simon.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input),
-                DialogBox.getSimonDialog(response)
+                DialogBox.getSimonDialog(resp.getMessage())
         );
         userInput.clear();
+
+        if (resp.isExitRequested()) {
+            Platform.runLater(() -> {
+                PauseTransition delay = new PauseTransition(Duration.millis(500));
+                delay.setOnFinished(evt -> Platform.exit());
+                delay.play();
+            });
+        }
     }
 }

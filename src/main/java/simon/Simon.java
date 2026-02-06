@@ -36,13 +36,16 @@ public class Simon {
 
     /**
      * Gets responses for GUI integration.
+     *
      * @param input The user input command.
      * @return The response from executing the command.
      */
-    public String getResponse(String input) {
+    public Response getResponse(String input) {
         try {
             Command cmd = parser.parse(input);
             StringBuilder output = new StringBuilder();
+            final boolean[] exitRequested = {false};
+
             UI tempUi = new UI() {
                 @Override
                 public void printAll(String message, Object... args) {
@@ -53,11 +56,19 @@ public class Simon {
                 public void printError(String message) {
                     output.append("Error: ").append(message).append("\n");
                 }
+
+                @Override
+                public void sayBye() {
+                    output.append("Bye. Hope to see you again soon!\n");
+                    exitRequested[0] = true;
+                }
             };
             cmd.execute(tasks, tempUi);
-            return output.toString().trim();
+
+            String response = output.toString().trim();
+            return new Response(response, exitRequested[0]);
         } catch (Exception e) {
-            return "Error: " + e.getMessage();
+            return new Response("Error: " + e.getMessage(), false);
         }
     }
 
@@ -68,8 +79,8 @@ public class Simon {
     public void run() {
         ui.sayHi(NAME);
 
-        boolean running = true;
-        while (running) {
+        boolean isRunning = true;
+        while (isRunning) {
 
             String line = ui.readLine();
             if (line == null || line.isBlank()) {
@@ -78,7 +89,7 @@ public class Simon {
 
             try {
                 Command cmd = parser.parse(line);
-                running = cmd.execute(tasks, ui);
+                isRunning = cmd.execute(tasks, ui);
             } catch (Exception e) {
                 ui.printError(e.getMessage());
             }

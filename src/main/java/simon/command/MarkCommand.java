@@ -8,17 +8,17 @@ import simon.ui.UI;
  */
 public class MarkCommand implements Command {
     private final int index;
-    private final boolean completed;
+    private final boolean isCompleted;
 
     /**
      * Constructor for MarkCommand.
      *
      * @param index The index of the task to be marked (1-based).
-     * @param completed True to mark as completed, false to mark as not completed.
+     * @param isCompleted True to mark as completed, false to mark as not completed.
      */
-    public MarkCommand(int index, boolean completed) {
+    public MarkCommand(int index, boolean isCompleted) {
         this.index = index;
-        this.completed = completed;
+        this.isCompleted = isCompleted;
     }
 
     /**
@@ -35,9 +35,9 @@ public class MarkCommand implements Command {
             return true;
         }
 
-        var t = tasks.mark(index, completed);
+        var t = tasks.mark(index, isCompleted);
 
-        if (completed) {
+        if (isCompleted) {
             ui.printAll("""
                     Nice! I've marked this task as done:
                       %s""", t);

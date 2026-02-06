@@ -38,7 +38,7 @@ public class OnCommand implements Command {
         sb.append("Here are the deadlines and events on " + DateParser.format(when) + ":\n");
 
         List<Task> list = tasks.getTasks();
-        boolean shown = false;
+        boolean isShown = false;
         for (int i = 0; i < list.size(); i++) {
             Task task = list.get(i);
 
@@ -46,7 +46,7 @@ public class OnCommand implements Command {
                 Deadline deadline = (Deadline) task;
                 if (deadline.getBy().toLocalDate().equals(when.toLocalDate())) {
 
-                    shown = true;
+                    isShown = true;
                     sb.append(i + 1 + "." + deadline);
 
                     if (i != list.size() - 1) {
@@ -58,7 +58,7 @@ public class OnCommand implements Command {
                 if (event.getFrom().toLocalDate().equals(when.toLocalDate())
                         || event.getTo().toLocalDate().equals(when.toLocalDate())) {
 
-                    shown = true;
+                    isShown = true;
                     sb.append(i + 1 + "." + event);
 
                     if (i != list.size() - 1) {
@@ -68,7 +68,7 @@ public class OnCommand implements Command {
             }
         }
 
-        if (!shown) {
+        if (!isShown) {
             sb.append("No deadlines or events found on that date.");
         }
 

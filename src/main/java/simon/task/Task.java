@@ -5,7 +5,7 @@ package simon.task;
  */
 public abstract class Task {
     private String title;
-    private Boolean completed;
+    private Boolean isCompleted;
 
     /**
      * Constructor for Task class.
@@ -14,18 +14,18 @@ public abstract class Task {
      */
     public Task(String title) {
         this.title = title;
-        this.completed = false;
+        this.isCompleted = false;
     }
 
     /**
      * Constructor for Task class with completion status.
      *
      * @param title Title of the task.
-     * @param completed Completion status of the task.
+     * @param isCompleted Completion status of the task.
      */
-    public Task(String title, Boolean completed) {
+    public Task(String title, Boolean isCompleted) {
         this.title = title;
-        this.completed = completed;
+        this.isCompleted = isCompleted;
     }
 
     /**
@@ -84,21 +84,21 @@ public abstract class Task {
      * @return True if the task is completed, false otherwise.
      */
     public Boolean isCompleted() {
-        return this.completed;
+        return this.isCompleted;
     }
 
     /**
      * Set the completion status of the task.
      *
-     * @param completed Completion status to set.
+     * @param isCompleted Completion status to set.
      */
-    public void setCompleted(Boolean completed) {
-        this.completed = completed;
+    public void setCompleted(Boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
     @Override
     public String toString() {
-        String completed = this.completed ? "X" : " ";
+        String completed = this.isCompleted ? "X" : " ";
         return "[" + completed + "] " + this.title;
     }
 }

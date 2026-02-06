@@ -9,8 +9,8 @@ import simon.util.DateParser;
  */
 public class Event extends Task {
 
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private LocalDateTime fromDateTime;
+    private LocalDateTime toDateTime;
 
     /**
      * Creates an Event task.
@@ -22,8 +22,8 @@ public class Event extends Task {
     public Event(String title, LocalDateTime from, LocalDateTime to) {
         super(title);
 
-        this.from = from;
-        this.to = to;
+        this.fromDateTime = from;
+        this.toDateTime = to;
     }
 
     /**
@@ -47,8 +47,8 @@ public class Event extends Task {
      */
     public Event(String title, LocalDateTime from, LocalDateTime to, boolean isCompleted) {
         super(title);
-        this.from = from;
-        this.to = to;
+        this.fromDateTime = from;
+        this.toDateTime = to;
         super.setCompleted(isCompleted);
     }
 
@@ -70,7 +70,7 @@ public class Event extends Task {
      * @return the start time.
      */
     public LocalDateTime getFrom() {
-        return this.from;
+        return this.fromDateTime;
     }
 
     /**
@@ -79,17 +79,18 @@ public class Event extends Task {
      * @return the end time.
      */
     public LocalDateTime getTo() {
-        return this.to;
+        return this.toDateTime;
     }
 
     @Override
     public String toDataString() {
-        return "E | " + (isCompleted() ? "1" : "0") + " | " + super.getTitle() + " | " + this.from + " | " + this.to;
+        return "E | " + (isCompleted() ? "1" : "0") + " | " + super.getTitle() + " | "
+                + this.fromDateTime + " | " + this.toDateTime;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + DateParser.format(this.from)
-                + ", to: " + DateParser.format(this.to) + ")";
+        return "[E]" + super.toString() + " (from: " + DateParser.format(this.fromDateTime)
+                + ", to: " + DateParser.format(this.toDateTime) + ")";
     }
 }
