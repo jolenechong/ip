@@ -1,6 +1,8 @@
 package simon.command;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import simon.model.TaskList;
 import simon.task.Task;
@@ -28,7 +30,7 @@ public class FindCommand implements Command {
      * Finds and lists all tasks that match a given keyword.
      *
      * @param tasks The TaskList containing all tasks.
-     * @param ui The UiParser instance for displaying output.
+     * @param ui The UI instance for displaying output.
      * @return true to indicate successful execution.
      */
     @Override
@@ -38,18 +40,15 @@ public class FindCommand implements Command {
         StringBuilder sb = new StringBuilder();
         sb.append(FIND_MESSAGE_TEMPLATE);
 
-        for (Task task : matchingTasks) {
-            sb.append("\n")
-                    .append(matchingTasks.indexOf(task) + 1)
-                    .append(".")
-                    .append(task);
-        }
+        String result = IntStream.range(0, matchingTasks.size())
+                .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
+                .collect(Collectors.joining("\n", "Here are the matching tasks in your list:\n", ""));
 
         if (matchingTasks.isEmpty()) {
             sb.append(ERROR_NO_MATCHING_TASKS);
         }
 
-        ui.printAll(sb.toString());
+        ui.printAll(result);
 
         return true;
     }
