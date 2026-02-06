@@ -103,4 +103,16 @@ public class TaskList {
             System.err.println("Unexpected error while saving tasks: " + e.getMessage());
         }
     }
+
+    /**
+     * Adds a task back to the list at the specified index and persists the change.
+     * Used for undoing a delete operation.
+     *
+     * @param removed The Task to be re-added.
+     * @param index   The index (1-based) where the task should be added.
+     */
+    public void add(Task removed, int index) {
+        this.tasks.add(index - 1, removed);
+        persist();
+    }
 }

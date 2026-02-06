@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 import simon.command.AddCommand;
 import simon.command.Command;
+import simon.command.CommandInvoker;
 import simon.command.DeleteCommand;
 import simon.command.FindCommand;
 import simon.command.ListCommand;
@@ -29,7 +30,7 @@ public class UiParser {
      * @return the parsed Command object.
      * @throws InputFormatException if the input format is invalid.
      */
-    public Command parse(String raw) throws InputFormatException {
+    public Command parse(String raw, CommandInvoker invoker) throws InputFormatException {
         if (raw == null || raw.isBlank()) {
             throw new InputFormatException(InputErrorType.TODO_EMPTY);
         }
@@ -112,6 +113,9 @@ public class UiParser {
             }
             LocalDateTime d = DateParser.parse(parts[1].trim());
             yield new OnCommand(d);
+        }
+        case "undo" -> {
+            yield (tasks, ui) -> invoker.executeUndo(tasks, ui);
         }
         default -> throw new InputFormatException(InputErrorType.UNKNOWN_INPUT);
         };

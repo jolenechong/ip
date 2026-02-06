@@ -1,6 +1,7 @@
 package simon;
 
 import simon.command.Command;
+import simon.command.CommandInvoker;
 import simon.model.TaskList;
 import simon.storage.Storage;
 import simon.ui.Ui;
@@ -22,6 +23,7 @@ public class Simon {
     private final TaskList tasks;
     private final UiParser parser;
     private final Storage storage;
+    private final CommandInvoker commandInvoker;
 
     /**
      * Constructs a Simon application instance.
@@ -32,6 +34,7 @@ public class Simon {
         this.storage = new Storage(System.getProperty("user.home") + "/.simon/data/simon.txt");
         this.tasks = new TaskList(storage);
         this.parser = new UiParser();
+        this.commandInvoker = new CommandInvoker();
     }
 
     /**
@@ -46,7 +49,7 @@ public class Simon {
         }
 
         try {
-            Command cmd = parser.parse(input);
+            Command cmd = parser.parse(input, commandInvoker);
             StringBuilder output = new StringBuilder();
             final boolean[] exitRequested = {false};
 
@@ -67,7 +70,7 @@ public class Simon {
                     exitRequested[0] = true;
                 }
             };
-            cmd.execute(tasks, tempUi);
+            commandInvoker.execute(cmd, tasks, tempUi);
 
             String response = output.toString().trim();
             return new Response(response, exitRequested[0]);
@@ -96,7 +99,7 @@ public class Simon {
             }
 
             try {
-                Command cmd = parser.parse(line);
+                Command cmd = parser.parse(line, commandInvoker);
                 isRunning = cmd.execute(tasks, ui);
             } catch (Exception e) {
                 ui.printError(e.getMessage());

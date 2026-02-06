@@ -37,6 +37,16 @@ public class AddCommand implements Command {
         tasks.add(task);
         ui.printAll(ADD_MESSAGE_TEMPLATE,
                 task, tasks.getTasks().size());
+
+        return true;
+    }
+
+    @Override
+    public boolean undo(TaskList tasks, Ui ui) {
+        tasks.delete(tasks.getTasks().size());
+        ui.printAll("Undid adding the task:\n  %s\nNow you have %d tasks in the list.",
+                task, tasks.getTasks().size());
+
         return true;
     }
 }

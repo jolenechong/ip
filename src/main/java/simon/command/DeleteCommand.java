@@ -1,6 +1,7 @@
 package simon.command;
 
 import simon.model.TaskList;
+import simon.task.Task;
 import simon.ui.Ui;
 
 /**
@@ -14,6 +15,7 @@ public class DeleteCommand implements Command {
     private static final String ERROR_TASK_DOESNT_EXIST = "That task number doesn’t exist (yet). "
             + "Try one from the list!";
     private final int index;
+    private Task removed;
 
     /**
      * Constructor for DeleteCommand.
@@ -38,9 +40,17 @@ public class DeleteCommand implements Command {
             return true;
         }
 
-        var removed = tasks.delete(index);
+        removed = tasks.delete(index);
         ui.printAll(DELETE_MESSAGE_TEMPLATE, removed, tasks.getTasks().size());
 
+        return true;
+    }
+
+    @Override
+    public boolean undo(TaskList tasks, Ui ui) {
+        tasks.add(removed, index);
+        ui.printAll("Undid deleting the task:\n  %s\nNow you have %d tasks in the list.",
+                removed, tasks.getTasks().size());
         return true;
     }
 }
