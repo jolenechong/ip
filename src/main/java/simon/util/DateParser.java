@@ -5,13 +5,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
  * Utility class for parsing and formatting dates.
  */
 public final class DateParser {
+    private static final Logger LOGGER = Logger.getLogger(DateParser.class.getName());
+
     private static final DateTimeFormatter[] DATE_TIME_FORMATTERS = new DateTimeFormatter[]{
-        DateTimeFormatter.ISO_LOCAL_DATE, // 2025-08-31
         DateTimeFormatter.ofPattern("d/M/yyyy HHmm"), // 31/8/2025 1800
         DateTimeFormatter.ofPattern("d-M-yyyy HHmm"), // 31-8-2025 1800
         DateTimeFormatter.ofPattern("yyyy/M/d HHmm"), // 2025/08/31 1800
@@ -40,22 +42,37 @@ public final class DateParser {
 
         String trimmed = input.trim();
         for (DateTimeFormatter fmt : DATE_TIME_FORMATTERS) {
-            try {
-                return LocalDateTime.parse(trimmed, fmt);
-            } catch (DateTimeParseException ignored) {
-                // try next
+            LocalDateTime dt = tryParseDateTime(trimmed, fmt);
+            if (dt != null) {
+                return dt;
             }
         }
 
         for (DateTimeFormatter fmt : DATE_FORMATTERS) {
-            try {
-                LocalDate d = LocalDate.parse(trimmed, fmt);
+            LocalDate d = tryParseDate(trimmed, fmt);
+            if (d != null) {
                 return d.atStartOfDay();
-            } catch (DateTimeParseException ignored) {
-                // try next
             }
         }
         throw new IllegalArgumentException("Invalid date format: " + input);
+    }
+
+    private static LocalDateTime tryParseDateTime(String input, DateTimeFormatter fmt) {
+        try {
+            return LocalDateTime.parse(input, fmt);
+        } catch (DateTimeParseException e) {
+            LOGGER.fine(() -> "DateTime parse failed for format " + fmt + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static LocalDate tryParseDate(String input, DateTimeFormatter fmt) {
+        try {
+            return LocalDate.parse(input, fmt);
+        } catch (DateTimeParseException e) {
+            LOGGER.fine(() -> "Date parse failed for format " + fmt + ": " + e.getMessage());
+            return null;
+        }
     }
 
     /**
