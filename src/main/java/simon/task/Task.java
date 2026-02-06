@@ -42,6 +42,9 @@ public abstract class Task {
      * @return Task object.
      */
     public static Task fromDataString(String line) {
+        assert line != null : "Line should not be null";
+        assert !line.isEmpty() : "Line should not be empty";
+
         String[] parts = line.split(" \\| ");
         if (parts.length < 3) {
             throw new IllegalArgumentException("Invalid data string");
