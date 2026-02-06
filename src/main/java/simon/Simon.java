@@ -12,7 +12,7 @@ import simon.util.UiParser;
  * This class initializes the UiParser, storage, task list, and command parser.
  * It runs a loop to read user input, parse commands, and execute them.
  * @author Jolene Chong
- * @version v1.0
+ * @version v1.1
  *
  */
 public class Simon {
@@ -41,6 +41,10 @@ public class Simon {
      * @return The response from executing the command.
      */
     public Response getResponse(String input) {
+        if (input == null || input.isBlank()) {
+            return new Response("", false);
+        }
+
         try {
             Command cmd = parser.parse(input);
             StringBuilder output = new StringBuilder();
@@ -77,6 +81,10 @@ public class Simon {
      * Reads user input, parses commands, and executes them until exit.
      */
     public void run() {
+        assert ui != null : "UI should be initialized";
+        assert tasks != null : "TaskList should be initialized";
+        assert parser != null : "UiParser should be initialized";
+
         ui.sayHi(NAME);
 
         boolean isRunning = true;
