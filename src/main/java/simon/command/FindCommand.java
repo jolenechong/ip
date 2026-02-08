@@ -37,24 +37,17 @@ public class FindCommand implements Command {
     public boolean execute(TaskList tasks, Ui ui) {
         List<Task> matchingTasks = tasks.find(query);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(FIND_MESSAGE_TEMPLATE);
+        if (matchingTasks.isEmpty()) {
+            ui.printAll(ERROR_NO_MATCHING_TASKS);
+            return true;
+        }
 
         String result = IntStream.range(0, matchingTasks.size())
                 .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
-                .collect(Collectors.joining("\n", "Here are the matching tasks in your list:\n", ""));
-
-        if (matchingTasks.isEmpty()) {
-            sb.append(ERROR_NO_MATCHING_TASKS);
-        }
+                .collect(Collectors.joining("\n", FIND_MESSAGE_TEMPLATE, ""));
 
         ui.printAll(result);
-
         return true;
     }
 
-    @Override
-    public boolean isUndoable() {
-        return false;
-    }
 }
