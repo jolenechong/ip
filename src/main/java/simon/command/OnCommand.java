@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import simon.model.TaskList;
-import simon.task.Deadline;
-import simon.task.Event;
 import simon.task.Task;
 import simon.ui.Ui;
 import simon.util.DateParser;
@@ -14,8 +12,10 @@ import simon.util.DateParser;
  * Command to list all deadlines and events occurring on a specific date.
  */
 public class OnCommand implements Command {
-    private final LocalDateTime when;
+    private static final String ON_MESSAGE_TEMPLATE = "Here are the deadlines and events on %s:\n%s";
+    private static final String NO_TASKS_MESSAGE = "No deadlines or events found on that date.";
 
+    private final LocalDateTime when;
     /**
      * Constructor for OnCommand.
      *
@@ -34,45 +34,20 @@ public class OnCommand implements Command {
      */
     @Override
     public boolean execute(TaskList tasks, Ui ui) {
+        List<Task> matchingTasks = tasks.on(when);
+
+        if (matchingTasks.isEmpty()) {
+            ui.printAll(NO_TASKS_MESSAGE);
+            return true;
+        }
+
         StringBuilder sb = new StringBuilder();
-        sb.append("Here are the deadlines and events on " + DateParser.format(when) + ":\n");
+        matchingTasks.forEach(task -> {
+            sb.append(task).append("\n");
+        });
 
-        List<Task> list = tasks.getTasks();
-        boolean isShown = false;
-        for (int i = 0; i < list.size(); i++) {
-            Task task = list.get(i);
+        ui.printAll(ON_MESSAGE_TEMPLATE, DateParser.format(when), sb.toString().trim());
 
-            if (task instanceof Deadline) {
-                Deadline deadline = (Deadline) task;
-                if (deadline.getBy().toLocalDate().equals(when.toLocalDate())) {
-
-                    isShown = true;
-                    sb.append(i + 1 + "." + deadline);
-
-                    if (i != list.size() - 1) {
-                        sb.append("\n");
-                    }
-                }
-            } else if (task instanceof Event) {
-                Event event = (Event) task;
-                if (event.getFrom().toLocalDate().equals(when.toLocalDate())
-                        || event.getTo().toLocalDate().equals(when.toLocalDate())) {
-
-                    isShown = true;
-                    sb.append(i + 1 + "." + event);
-
-                    if (i != list.size() - 1) {
-                        sb.append("\n");
-                    }
-                }
-            }
-        }
-
-        if (!isShown) {
-            sb.append("No deadlines or events found on that date.");
-        }
-
-        ui.printAll(sb.toString());
         return true;
     }
 

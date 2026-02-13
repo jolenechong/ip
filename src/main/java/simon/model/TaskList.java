@@ -1,10 +1,13 @@
 package simon.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import simon.storage.Storage;
+import simon.task.Deadline;
+import simon.task.Event;
 import simon.task.Task;
 
 /**
@@ -116,6 +119,30 @@ public class TaskList {
         for (Task task : this.tasks) {
             if (task.getTitle().contains(query)) {
                 matchingTasks.add(task);
+            }
+        }
+
+        return matchingTasks;
+    }
+
+    /**
+     * Finds tasks that occur on the specified date.
+     *
+     * @param date The date to search for tasks (time component is ignored).
+     * @return A list of tasks that occur on the specified date.
+     */
+    public List<Task> on(LocalDateTime date) {
+        List<Task> matchingTasks = new ArrayList<>();
+        for (Task task : this.tasks) {
+            if (task instanceof Deadline deadline) {
+                if (deadline.getBy().toLocalDate().equals(date.toLocalDate())) {
+                    matchingTasks.add(task);
+                }
+            } else if (task instanceof Event event) {
+                if (event.getFrom().toLocalDate().equals(date.toLocalDate())
+                        || event.getTo().toLocalDate().equals(date.toLocalDate())) {
+                    matchingTasks.add(task);
+                }
             }
         }
 
