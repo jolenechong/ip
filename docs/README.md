@@ -1,6 +1,6 @@
 # Simon User Guide
 
-<img src="Ui.png" width="250" alt="Simon Demo Ui">
+<img src="Ui.png" width="300" alt="Simon Demo Ui">
 
 Manage your tasks efficiently and effortlessly with Simon, a user-friendly task management application. Simon helps you add, organize, and track your tasks, deadlines, and events. It supports single and batch operations, undo functionality, and filtering by date.
 
