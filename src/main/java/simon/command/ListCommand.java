@@ -18,6 +18,11 @@ public class ListCommand implements Command {
      */
     @Override
     public boolean execute(TaskList tasks, Ui ui) {
+        if (tasks.isEmpty()) {
+            ui.printAll("Your task list is empty :( Add some tasks first!");
+            return true;
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append(LIST_MESSAGE + "\n");
 

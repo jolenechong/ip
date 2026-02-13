@@ -14,6 +14,7 @@ public final class DateParser {
     private static final Logger LOGGER = Logger.getLogger(DateParser.class.getName());
 
     private static final DateTimeFormatter[] DATE_TIME_FORMATTERS = new DateTimeFormatter[]{
+        DateTimeFormatter.ISO_LOCAL_DATE_TIME,
         DateTimeFormatter.ofPattern("d/M/yyyy HHmm"), // 31/8/2025 1800
         DateTimeFormatter.ofPattern("d-M-yyyy HHmm"), // 31-8-2025 1800
         DateTimeFormatter.ofPattern("yyyy/M/d HHmm"), // 2025/08/31 1800

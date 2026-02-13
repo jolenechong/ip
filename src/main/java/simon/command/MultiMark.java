@@ -17,6 +17,7 @@ public class MultiMark implements Command {
     private static final String MARK_MESSAGE = "Noted. I've marked the following tasks as %s:\n%s";
     private static final String ERROR_TASK_DOESNT_EXIST = "That task number doesn’t exist (yet). "
             + "Try one from the list!";
+    private static final String UNDO_MESSAGE = "Mark undone! These tasks are back:\n%s\nYour list now has %d tasks.";
 
     private final boolean isCompleted;
     private final List<Integer> indices; // defensive copy of requested 1-based indices
@@ -92,7 +93,12 @@ public class MultiMark implements Command {
             tasks.mark(e.index, e.previous);
         }
 
-        ui.printAll("Undid marking of tasks.\nNow you have %d tasks in the list.", tasks.getTasks().size());
+        StringBuilder listSb = new StringBuilder();
+        for (MarkedEntry e : markedEntries) {
+            listSb.append("  ").append(tasks.getTasks().get(e.index - 1)).append('\n');
+        }
+
+        ui.printAll(UNDO_MESSAGE, listSb, tasks.size());
         return true;
     }
 

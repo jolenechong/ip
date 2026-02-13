@@ -38,6 +38,24 @@ public class TaskList {
     }
 
     /**
+     * Checks if the task list is empty.
+     *
+     * @return true if the task list is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+        return this.tasks.isEmpty();
+    }
+
+    /**
+     * Returns the size of the task list.
+     *
+     * @return The number of tasks in the list.
+     */
+    public int size() {
+        return this.tasks.size();
+    }
+
+    /**
      * Adds a new task to the list and persists the change.
      *
      * @param item Task to be added.

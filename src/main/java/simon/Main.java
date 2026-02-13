@@ -32,6 +32,8 @@ public class Main extends Application {
             stage.setMinHeight(220);
             stage.setMinWidth(417);
 
+            stage.setTitle("Simon");
+
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/simon.png")));
 
             fxmlLoader.<MainWindow>getController().setSimon(simon);

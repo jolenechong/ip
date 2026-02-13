@@ -16,6 +16,7 @@ import simon.ui.Ui;
 public class MultiDelete implements Command {
     private static final String DELETE_MESSAGE = "Noted. I've removed the following tasks:\n%s"
             + "\nNow you have %d tasks in the list.";
+    private static final String UNDO_MESSAGE = "All right! These tasks are back:\n%s\nYour list now has %d tasks.";
     private static final String ERROR_TASK_DOESNT_EXIST = "One or more task numbers don’t exist (yet). "
             + "Try ones from the list!";
 
@@ -50,7 +51,7 @@ public class MultiDelete implements Command {
         for (RemovedEntry e : removedEntries) {
             sb.append("  ").append(e.task).append('\n');
         }
-        ui.printAll(String.format(DELETE_MESSAGE, sb, removedEntries.size()));
+        ui.printAll(String.format(DELETE_MESSAGE, sb.toString(), removedEntries.size()));
 
         return true;
     }
@@ -93,8 +94,11 @@ public class MultiDelete implements Command {
             tasks.add(e.task, e.index);
         }
 
-        ui.printAll("Undid deleting the tasks. Now you have %d tasks in the list.",
-                tasks.getTasks().size());
+        StringBuilder restoredSb = new StringBuilder();
+        for (RemovedEntry e : removedEntries) {
+            restoredSb.append("  ").append(e.task).append('\n');
+        }
+        ui.printAll(String.format(UNDO_MESSAGE, restoredSb, tasks.size()));
 
         return true;
     }
