@@ -38,11 +38,20 @@ public class IntParser {
         if (s == null || s.isBlank()) {
             throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
         }
+        assert(s.contains("-") || s.contains(","));
+
         String[] parts = s.split("\\s*,\\s*");
         List<Integer> out = new ArrayList<>();
 
         for (String p : parts) {
-            assert(p.contains("-")); // assume only strings with '-' reach here
+            if (!p.contains("-")) {
+                int index = parseIndex(p.trim());
+                if (index <= 0) {
+                    throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
+                }
+                out.add(index);
+                continue;
+            }
 
             String[] range = p.split("-", 2);
             if (range.length != 2) {
