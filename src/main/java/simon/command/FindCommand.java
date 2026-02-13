@@ -13,7 +13,7 @@ import simon.ui.Ui;
  */
 public class FindCommand implements Command {
 
-    private static final String FIND_MESSAGE_TEMPLATE = "Here are the matching tasks in your list:";
+    private static final String FIND_MESSAGE_TEMPLATE = "Here are the matching tasks in your list:\n";
     private static final String ERROR_NO_MATCHING_TASKS = "No matching tasks found.";
     private final String query;
 

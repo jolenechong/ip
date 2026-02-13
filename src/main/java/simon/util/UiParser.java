@@ -2,10 +2,14 @@ package simon.util;
 
 import static simon.util.IntParser.parseIndex;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import simon.command.AddCommand;
 import simon.command.ByeCommand;
 import simon.command.Command;
 import simon.command.CommandInvoker;
+import simon.command.CompositeCommand;
 import simon.command.DeleteCommand;
 import simon.command.FindCommand;
 import simon.command.ListCommand;
@@ -34,6 +38,26 @@ public class UiParser {
         if (raw == null || raw.isBlank()) {
             throw new InputFormatException(InputErrorType.TODO_EMPTY);
         }
+
+        if (raw.contains("&&")) {
+            return parseMultiple(raw, invoker);
+        }
+
+        return parseSingle(raw, invoker);
+
+    }
+
+    private Command parseMultiple(String raw, CommandInvoker invoker)
+            throws InputFormatException {
+        String[] commandStrings = raw.split("\\s*&&\\s*");
+        List<Command> commands = new ArrayList<>();
+        for (String commandString : commandStrings) {
+            commands.add(parseSingle(commandString, invoker));
+        }
+        return new CompositeCommand(invoker, commands);
+    }
+
+    private Command parseSingle(String raw, CommandInvoker invoker) throws InputFormatException {
         String[] parts = raw.split("\\s+", 2);
         String cmd = parts[0].toLowerCase();
 
