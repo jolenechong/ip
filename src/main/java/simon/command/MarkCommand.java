@@ -3,8 +3,6 @@ package simon.command;
 import simon.model.TaskList;
 import simon.ui.Ui;
 
-import java.util.List;
-
 /**
  * Command to mark a task as completed or not completed.
  */

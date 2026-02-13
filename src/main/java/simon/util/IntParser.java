@@ -1,10 +1,10 @@
 package simon.util;
 
-import simon.exception.InputErrorType;
-import simon.exception.InputFormatException;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import simon.exception.InputErrorType;
+import simon.exception.InputFormatException;
 
 /**
  * Utility class for parsing integers.
