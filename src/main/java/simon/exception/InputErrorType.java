@@ -10,7 +10,8 @@ public enum InputErrorType {
     NUMBER_FORMAT("That doesn’t look like a number hmm... Please enter a valid number."),
     NUMBER_RANGE("That task number doesn’t exist (yet). Try one from the list!"),
     UNKNOWN_INPUT("hUH what are you sAying"),
-    QUERY_EMPTY("You need to provide a search query!");
+    QUERY_EMPTY("You need to provide a search query!"),
+    INVALID_RANGE("The range you provided is invalid. Use the format: <start>-<end>,<> with start <= end.");
 
     private final String message;
 

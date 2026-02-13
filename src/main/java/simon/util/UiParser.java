@@ -2,14 +2,20 @@ package simon.util;
 
 import static simon.util.IntParser.parseIndex;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import simon.command.AddCommand;
 import simon.command.ByeCommand;
 import simon.command.Command;
 import simon.command.CommandInvoker;
+import simon.command.CompositeCommand;
 import simon.command.DeleteCommand;
 import simon.command.FindCommand;
 import simon.command.ListCommand;
 import simon.command.MarkCommand;
+import simon.command.MultiDelete;
+import simon.command.MultiMark;
 import simon.command.OnCommand;
 import simon.command.UndoCommand;
 import simon.exception.InputErrorType;
@@ -34,6 +40,26 @@ public class UiParser {
         if (raw == null || raw.isBlank()) {
             throw new InputFormatException(InputErrorType.TODO_EMPTY);
         }
+
+        if (raw.contains("&&")) {
+            return parseMultiple(raw, invoker);
+        }
+
+        return parseSingle(raw, invoker);
+
+    }
+
+    private Command parseMultiple(String raw, CommandInvoker invoker)
+            throws InputFormatException {
+        String[] commandStrings = raw.split("\\s*&&\\s*");
+        List<Command> commands = new ArrayList<>();
+        for (String commandString : commandStrings) {
+            commands.add(parseSingle(commandString, invoker));
+        }
+        return new CompositeCommand(invoker, commands);
+    }
+
+    private Command parseSingle(String raw, CommandInvoker invoker) throws InputFormatException {
         String[] parts = raw.split("\\s+", 2);
         String cmd = parts[0].toLowerCase();
 
@@ -41,20 +67,43 @@ public class UiParser {
         case "bye" -> new ByeCommand();
         case "list" -> new ListCommand();
         case "find" -> new FindCommand(requireArgument(parts, InputErrorType.QUERY_EMPTY));
-        case "mark" -> new MarkCommand(parseIndex(
-                requireArgument(parts, InputErrorType.NUMBER_FORMAT)), true);
-        case "unmark" -> new MarkCommand(parseIndex(
-                requireArgument(parts, InputErrorType.NUMBER_FORMAT)), false);
+        case "mark" -> parseMarkOrMultiMark(parts, true);
+        case "unmark" -> parseMarkOrMultiMark(parts, false);
         case "todo" -> new AddCommand(new Todo(requireArgument(parts, InputErrorType.TODO_EMPTY)));
         case "deadline" -> parseDeadline(requireArgument(parts, InputErrorType.DEADLINE_FORMAT));
         case "event" -> parseEvent(requireArgument(parts, InputErrorType.EVENT_FORMAT));
-        case "delete" -> new DeleteCommand(parseIndex(
-                requireArgument(parts, InputErrorType.NUMBER_RANGE)));
+        case "delete" -> parseDeleteOrMultiDelete(parts);
         case "on" -> new OnCommand(DateParser.parse(
                 requireArgument(parts, InputErrorType.EVENT_FORMAT).trim()));
         case "undo" -> new UndoCommand(invoker);
         default -> throw new InputFormatException(InputErrorType.UNKNOWN_INPUT);
         };
+    }
+
+    private static Command parseDeleteOrMultiDelete(String[] parts)
+            throws InputFormatException {
+        String arg = requireArgument(parts, InputErrorType.NUMBER_RANGE);
+
+        if (arg.contains(",") || arg.contains("-")) {
+            List<Integer> indexes = IntParser.parseIndexes(arg);
+            return new MultiDelete(indexes);
+        } else {
+            int index = parseIndex(arg);
+            return new DeleteCommand(index);
+        }
+    }
+
+    private static Command parseMarkOrMultiMark(String[] parts, boolean isCompleted)
+            throws InputFormatException {
+        String arg = requireArgument(parts, InputErrorType.NUMBER_FORMAT);
+
+        if (arg.contains(",") || arg.contains("-")) {
+            List<Integer> indexes = IntParser.parseIndexes(arg);
+            return new MultiMark(isCompleted, indexes);
+        } else {
+            int index = parseIndex(arg);
+            return new MarkCommand(index, isCompleted);
+        }
     }
 
     private static String requireArgument(String[] parts, InputErrorType error)
