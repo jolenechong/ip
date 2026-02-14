@@ -12,7 +12,7 @@ import java.util.Objects;
 import simon.task.Task;
 
 /**
- * Responsible for persisting and loading {@link Task} objects to and from a simple
+ * Represents Storage, persists and loads {@link Task} objects to and from a simple
  * text file. Each task is represented as a single line using the task's
  * {@code toDataString()} / {@code fromDataString()} format.
  * <p>
@@ -39,7 +39,7 @@ public class Storage {
     }
 
     /**
-     * Ensure the parent directory and the data file exist else create them.
+     * Ensures the parent directory and the data file exist else create them.
      */
     private void ensureFileExists() {
         assert filePath != null;

@@ -40,7 +40,8 @@ public class MainWindow extends AnchorPane {
     private String input;
 
     /**
-     * Initializes the controller. Binds scroll and dialog container padding so content is visible.
+     * Initializes the controller. Binds scroll and dialog container padding
+     * so content is visible.
      */
     @FXML
     private void initialize() {

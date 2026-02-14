@@ -16,7 +16,7 @@ public enum InputErrorType {
     private final String message;
 
     /**
-     * Constructor for InputErrorType.
+     * Constructs InputErrorType.
      *
      * @param message Human-readable error message.
      */

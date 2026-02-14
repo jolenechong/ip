@@ -12,6 +12,7 @@ import simon.util.UiParser;
  * Handles initialization and the main application loop.
  * This class initializes the UiParser, storage, task list, and command parser.
  * It runs a loop to read user input, parse commands, and execute them.
+ *
  * @author Jolene Chong
  * @version v1.1
  *
@@ -51,20 +52,20 @@ public class Simon {
         try {
             Command cmd = parser.parse(input, commandInvoker);
             StringBuilder output = new StringBuilder();
-            final boolean[] exitRequested = {false};
+            final boolean[] isExitRequested = {false};
 
-            Ui tempUi = initUi(output, exitRequested);
+            Ui tempUi = initUi(output, isExitRequested);
 
             commandInvoker.execute(cmd, tasks, tempUi);
 
             String response = output.toString().trim();
-            return new Response(response, exitRequested[0]);
+            return new Response(response, isExitRequested[0]);
         } catch (Exception e) {
             return new Response("Error: " + e.getMessage(), false);
         }
     }
 
-    private Ui initUi(StringBuilder output, boolean[] exitRequested) {
+    private Ui initUi(StringBuilder output, boolean[] isExitRequested) {
         return
             new Ui() {
                 @Override
@@ -80,7 +81,7 @@ public class Simon {
                 @Override
                 public void sayBye() {
                     output.append("Bye. Hope to see you again soon!\n");
-                    exitRequested[0] = true;
+                    isExitRequested[0] = true;
                 }
             };
 
@@ -115,7 +116,7 @@ public class Simon {
     }
 
     /**
-     * Main method to start the Simon application.
+     * Runs the Simon application. This is the entry point of the CLI program.
      *
      * @param args Command line arguments (not used).
      */

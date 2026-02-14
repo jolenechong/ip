@@ -6,7 +6,7 @@ package simon.task;
 public class Todo extends Task {
 
     /**
-     * Constructor for Todo task.
+     * Constructs Todo task.
      *
      * @param title Title of the todo task.
      */
@@ -15,7 +15,7 @@ public class Todo extends Task {
     }
 
     /**
-     * Constructor for Todo task with completion status.
+     * Constructs Todo task with completion status.
      *
      * @param title Title of the todo task.
      * @param isCompleted Completion status of the todo task.

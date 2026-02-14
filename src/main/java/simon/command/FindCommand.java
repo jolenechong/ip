@@ -9,7 +9,7 @@ import simon.task.Task;
 import simon.ui.Ui;
 
 /**
- * Command to find tasks that match a given keyword.
+ * Represents a Command to find tasks that match a given keyword.
  */
 public class FindCommand implements Command {
 
@@ -18,7 +18,7 @@ public class FindCommand implements Command {
     private final String query;
 
     /**
-     * Constructor for FindCommand.
+     * Constructs FindCommand.
      *
      * @param query The keyword to search for in task titles.
      */

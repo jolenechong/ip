@@ -27,7 +27,7 @@ public class Event extends Task {
     }
 
     /**
-     * Creates an Event task.
+     * Creates an Event task using string representations of the start and end times.
      *
      * @param title the title of the event.
      * @param from the start time of the event in string format.
@@ -53,7 +53,7 @@ public class Event extends Task {
     }
 
     /**
-     * Creates an Event task.
+     * Creates an Event task using string representations of the start and end times.
      *
      * @param title the title of the event.
      * @param from the start time of the event in string format.

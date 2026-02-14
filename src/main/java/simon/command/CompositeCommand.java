@@ -14,7 +14,7 @@ public class CompositeCommand implements Command {
     private List<Command> commands;
 
     /**
-     * Constructor for CompositeCommand.
+     * Constructs CompositeCommand.
      *
      * @param invoker CommandInvoker to execute sub-commands.
      * @param commands List of commands to be executed as part of this composite command.

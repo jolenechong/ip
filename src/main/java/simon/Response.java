@@ -1,21 +1,21 @@
 package simon;
 
 /**
- * Simple result object returned to the GUI.
+ * Represents a simple result object returned to the GUI.
  */
 public class Response {
     private final String message;
-    private final boolean exitRequested;
+    private final boolean isExitRequested;
 
     /**
      * Creates a Response.
      *
      * @param message The textual response to display.
-     * @param exitRequested True if the GUI should exit after displaying the response.
+     * @param isExitRequested True if the GUI should exit after displaying the response.
      */
-    public Response(String message, boolean exitRequested) {
+    public Response(String message, boolean isExitRequested) {
         this.message = message;
-        this.exitRequested = exitRequested;
+        this.isExitRequested = isExitRequested;
     }
 
     public String getMessage() {
@@ -23,6 +23,6 @@ public class Response {
     }
 
     public boolean isExitRequested() {
-        return exitRequested;
+        return isExitRequested;
     }
 }

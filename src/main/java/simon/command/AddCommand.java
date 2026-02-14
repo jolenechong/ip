@@ -13,11 +13,13 @@ public class AddCommand implements Command {
                     Got it. I've added this task:
                       %s
                     Now you have %d tasks in the list.""";
+    private static final String UNDO_MESSAGE_TEMPLATE = "Undid adding the task:\n  %s"
+            + "\nNow you have %d tasks in the list.";
 
     private final Task task;
 
     /**
-     * Constructor for AddCommand.
+     * Constructs AddCommand.
      *
      * @param task The task to be added.
      */
@@ -25,13 +27,6 @@ public class AddCommand implements Command {
         this.task = task;
     }
 
-    /**
-     * Executes the command to add the specified task
-     * .
-     * @param tasks The TaskList containing all tasks.
-     * @param ui The UiParser instance for displaying output.
-     * @return true to indicate successful execution.
-     */
     @Override
     public boolean execute(TaskList tasks, Ui ui) {
         tasks.add(task);
@@ -44,8 +39,7 @@ public class AddCommand implements Command {
     @Override
     public boolean undo(TaskList tasks, Ui ui) {
         tasks.delete(tasks.getTasks().size());
-        ui.printAll("Undid adding the task:\n  %s\nNow you have %d tasks in the list.",
-                task, tasks.getTasks().size());
+        ui.printAll(UNDO_MESSAGE_TEMPLATE, task, tasks.size());
 
         return true;
     }

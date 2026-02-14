@@ -4,7 +4,7 @@ import simon.model.TaskList;
 import simon.ui.Ui;
 
 /**
- * Command to mark a task as completed or not completed.
+ * Represents a Command to mark a task as completed or not completed.
  */
 public class MarkCommand implements Command {
     private static final String ERROR_TASK_DOESNT_EXIST = "That task number doesn’t exist (yet). "
@@ -15,7 +15,7 @@ public class MarkCommand implements Command {
     private final boolean isCompleted;
 
     /**
-     * Constructor for MarkCommand.
+     * Constructs a MarkCommand.
      *
      * @param index The index of the task to be marked (1-based).
      * @param isCompleted True to mark as completed, false to mark as not completed.

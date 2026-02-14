@@ -5,7 +5,7 @@ import simon.task.Task;
 import simon.ui.Ui;
 
 /**
- * Command to delete a task from the task list.
+ * Represents a Command to delete a task from the task list.
  */
 public class DeleteCommand implements Command {
     private static final String DELETE_MESSAGE_TEMPLATE = """
@@ -14,11 +14,13 @@ public class DeleteCommand implements Command {
             Now you have %d tasks in the list.""";
     private static final String ERROR_TASK_DOESNT_EXIST = "That task number doesn’t exist (yet). "
             + "Try one from the list!";
+    private static final String UNDO_MESSAGE_TEMPLATE = "Undid deleting the task:\n  %s"
+            + "\nNow you have %d tasks in the list.";
     private final int index;
     private Task removed;
 
     /**
-     * Constructor for DeleteCommand.
+     * Constructs DeleteCommand.
      *
      * @param index The index of the task to be deleted (1-based).
      */
@@ -41,7 +43,7 @@ public class DeleteCommand implements Command {
         }
 
         removed = tasks.delete(index);
-        ui.printAll(DELETE_MESSAGE_TEMPLATE, removed, tasks.getTasks().size());
+        ui.printAll(DELETE_MESSAGE_TEMPLATE, removed, tasks.size());
 
         return true;
     }
@@ -49,8 +51,8 @@ public class DeleteCommand implements Command {
     @Override
     public boolean undo(TaskList tasks, Ui ui) {
         tasks.add(removed, index);
-        ui.printAll("Undid deleting the task:\n  %s\nNow you have %d tasks in the list.",
-                removed, tasks.getTasks().size());
+        ui.printAll(UNDO_MESSAGE_TEMPLATE, removed, tasks.size());
+
         return true;
     }
 

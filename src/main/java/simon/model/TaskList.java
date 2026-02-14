@@ -20,8 +20,7 @@ public class TaskList {
     private final Storage storage;
 
     /**
-     * Constructor for TaskList.
-     * Loads existing tasks from the provided Storage instance.
+     * Constructs TaskList which loads existing tasks from the provided Storage instance.
      *
      * @param storage Storage instance for persisting tasks.
      */

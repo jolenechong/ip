@@ -25,7 +25,7 @@ import simon.task.Event;
 import simon.task.Todo;
 
 /**
- * Utility class for parsing user input into Command objects.
+ * Represents a Utility class for parsing user input into Command objects.
  */
 public class UiParser {
 

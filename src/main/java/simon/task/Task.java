@@ -8,7 +8,7 @@ public abstract class Task {
     private Boolean isCompleted;
 
     /**
-     * Constructor for Task class.
+     * Constructs Task class.
      *
      * @param title Title of the task.
      */
@@ -18,7 +18,7 @@ public abstract class Task {
     }
 
     /**
-     * Constructor for Task class with completion status.
+     * Constructs Task class with completion status.
      *
      * @param title Title of the task.
      * @param isCompleted Completion status of the task.
@@ -29,14 +29,14 @@ public abstract class Task {
     }
 
     /**
-     * Convert task to data string for storage.
+     * Converts task to data string for storage.
      *
      * @return Data string representation of the task.
      */
     public abstract String toDataString();
 
     /**
-     * Recreate a Task object from a data string.
+     * Recreates a Task object from a data string.
      *
      * @param line Data string representation of the task.
      * @return Task object.
@@ -73,7 +73,7 @@ public abstract class Task {
     }
 
     /**
-     * Get the title of the task.
+     * Gets the title of the task.
      *
      * @return Title of the task.
      */
@@ -82,7 +82,7 @@ public abstract class Task {
     }
 
     /**
-     * Check if the task is completed.
+     * Checks if the task is completed.
      *
      * @return True if the task is completed, false otherwise.
      */
@@ -91,7 +91,7 @@ public abstract class Task {
     }
 
     /**
-     * Set the completion status of the task.
+     * Sets the completion status of the task.
      *
      * @param isCompleted Completion status to set.
      */

@@ -11,7 +11,7 @@ import simon.task.Task;
 import simon.ui.Ui;
 
 /**
- * Command that marks or unmarks multiple tasks as completed in one operation.
+ * Represents a Command that marks or unmarks multiple tasks as completed in one operation.
  */
 public class MultiMark implements Command {
     private static final String MARK_MESSAGE = "Noted. I've marked the following tasks as %s:\n%s";
@@ -25,7 +25,7 @@ public class MultiMark implements Command {
     private final List<MarkedEntry> markedEntries = new ArrayList<>();
 
     /**
-     * Create a MultiMark to set the given indices to isCompleted.
+     * Creates a MultiMark to set the given indices to isCompleted.
      *
      * @param isCompleted desired completion state for all given indices
      * @param indices list of 1-based task indices
@@ -62,9 +62,9 @@ public class MultiMark implements Command {
 
         for (Integer idx : toMark) {
             Task t = tasks.getTasks().get(idx - 1);
-            boolean prev = t.isCompleted();
+            boolean isPrevCompleted = t.isCompleted();
             tasks.mark(idx, isCompleted);
-            markedEntries.add(new MarkedEntry(idx, prev));
+            markedEntries.add(new MarkedEntry(idx, isPrevCompleted));
         }
 
         markedEntries.sort(Comparator.comparingInt(e -> e.index));
@@ -90,7 +90,7 @@ public class MultiMark implements Command {
         // restore in ascending order
         markedEntries.sort(Comparator.comparingInt(e -> e.index));
         for (MarkedEntry e : markedEntries) {
-            tasks.mark(e.index, e.previous);
+            tasks.mark(e.index, e.isPreviousCompleted);
         }
 
         StringBuilder listSb = new StringBuilder();
@@ -109,11 +109,11 @@ public class MultiMark implements Command {
 
     private static class MarkedEntry {
         final int index;
-        final boolean previous;
+        final boolean isPreviousCompleted;
 
-        MarkedEntry(int index, boolean previous) {
+        MarkedEntry(int index, boolean isPreviousCompleted) {
             this.index = index;
-            this.previous = previous;
+            this.isPreviousCompleted = isPreviousCompleted;
         }
     }
 }

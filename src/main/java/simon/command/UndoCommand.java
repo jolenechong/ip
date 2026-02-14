@@ -10,6 +10,11 @@ public class UndoCommand implements Command {
 
     private final CommandInvoker invoker;
 
+    /**
+     * Constructs an UndoCommand with the given CommandInvoker.
+     *
+     * @param invoker the CommandInvoker to execute the undo operation.
+     */
     public UndoCommand(CommandInvoker invoker) {
         this.invoker = invoker;
     }

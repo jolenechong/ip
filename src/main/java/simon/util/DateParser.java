@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
- * Utility class for parsing and formatting dates.
+ * Represents a Utility class for parsing and formatting dates.
  */
 public final class DateParser {
     private static final Logger LOGGER = Logger.getLogger(DateParser.class.getName());
@@ -26,9 +26,6 @@ public final class DateParser {
         DateTimeFormatter.ofPattern("yyyy/M/d"), // 2025/08/31
         DateTimeFormatter.ofPattern("d MMM uuuu", Locale.ENGLISH) // 31 Aug 2025
     };
-
-    private DateParser() {
-    }
 
     /**
      * Parses a date string into a LocalDateTime object.

@@ -4,8 +4,7 @@ import simon.model.TaskList;
 import simon.ui.Ui;
 
 /**
- * Central place to execute commands and maintain history.
- * Create one CommandInvoker at application startup and pass it around.
+ * Represents a central place to execute commands and maintain history.
  */
 public class CommandInvoker {
     private final CommandHistory history = new CommandHistory();
@@ -19,11 +18,11 @@ public class CommandInvoker {
      * @return true if the application should continue running, false to exit.
      */
     public boolean execute(Command cmd, TaskList tasks, Ui ui) {
-        boolean cont = cmd.execute(tasks, ui);
+        boolean isSuccess = cmd.execute(tasks, ui);
         if (cmd.isUndoable()) {
             history.push(cmd);
         }
-        return cont;
+        return isSuccess;
     }
 
     /**
@@ -43,6 +42,11 @@ public class CommandInvoker {
         }
     }
 
+    /**
+     * Returns the command history.
+     *
+     * @return the command history.
+     */
     public CommandHistory getHistory() {
         return history;
     }

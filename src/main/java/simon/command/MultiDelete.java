@@ -11,7 +11,7 @@ import simon.task.Task;
 import simon.ui.Ui;
 
 /**
- * Command that deletes multiple tasks atomically (from the user's perspective).
+ * Represents a Command that deletes multiple tasks atomically (from the user's perspective).
  */
 public class MultiDelete implements Command {
     private static final String DELETE_MESSAGE = "Noted. I've removed the following tasks:\n%s"
@@ -23,12 +23,12 @@ public class MultiDelete implements Command {
     private final List<Integer> indices;
 
     /**
-     * Stored removed entries for undo; populated during execute.
+     * Stores removed entries for undo; populated during execute.
      */
     private final List<RemovedEntry> removedEntries = new ArrayList<>();
 
     /**
-     * Create a MultiDelete for the requested 1-based indices.
+     * Creates a MultiDelete for the requested 1-based indices.
      *
      * @param indices list of 1-based indices; a defensive copy will be kept.
      */

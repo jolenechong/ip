@@ -35,38 +35,67 @@ public class IntParser {
      * @throws InputFormatException if the string format is invalid.
      */
     public static List<Integer> parseIndexes(String s) throws InputFormatException {
-        if (s == null || s.isBlank()) {
-            throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
-        }
-        assert(s.contains("-") || s.contains(","));
+        validateInputString(s);
 
-        String[] parts = s.split("\\s*,\\s*");
+        String[] parts = splitByComma(s);
         List<Integer> out = new ArrayList<>();
 
-        for (String p : parts) {
-            if (!p.contains("-")) {
-                int index = parseIndex(p.trim());
-                if (index <= 0) {
-                    throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
-                }
-                out.add(index);
-                continue;
-            }
-
-            String[] range = p.split("-", 2);
-            if (range.length != 2) {
-                throw new InputFormatException(InputErrorType.INVALID_RANGE);
-            }
-
-            int a = Integer.parseInt(range[0].trim());
-            int b = Integer.parseInt(range[1].trim());
-            if (a <= 0 || b <= 0 || b < a) {
-                throw new InputFormatException(InputErrorType.INVALID_RANGE);
-            }
-            for (int i = a; i <= b; i++) {
-                out.add(i);
+        for (String part : parts) {
+            if (part.contains("-")) {
+                parseRange(part, out);
+            } else {
+                out.add(parseSingleIndex(part));
             }
         }
         return out;
     }
+
+    private static void validateInputString(String s) throws InputFormatException {
+        if (s == null || s.isBlank()) {
+            throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
+        }
+    }
+
+    private static String[] splitByComma(String s) {
+        return s.split("\\s*,\\s*");
+    }
+
+    private static int parseSingleIndex(String part) throws InputFormatException {
+        int index = parseIndex(part.trim());
+        if (index <= 0) {
+            throw new InputFormatException(InputErrorType.NUMBER_FORMAT);
+        }
+        return index;
+    }
+
+    private static void parseRange(String part, List<Integer> out) throws InputFormatException {
+        String[] range = part.split("-", 2);
+        if (range.length != 2) {
+            throw new InputFormatException(InputErrorType.INVALID_RANGE);
+        }
+
+        int start = parsePositiveInt(range[0]);
+        int end = parsePositiveInt(range[1]);
+
+        if (end < start) {
+            throw new InputFormatException(InputErrorType.INVALID_RANGE);
+        }
+
+        addRange(start, end, out);
+    }
+
+    private static int parsePositiveInt(String s) throws InputFormatException {
+        int value = Integer.parseInt(s.trim());
+        if (value <= 0) {
+            throw new InputFormatException(InputErrorType.INVALID_RANGE);
+        }
+        return value;
+    }
+
+    private static void addRange(int start, int end, List<Integer> out) {
+        for (int i = start; i <= end; i++) {
+            out.add(i);
+        }
+    }
+
 }
