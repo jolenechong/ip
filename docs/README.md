@@ -50,7 +50,24 @@ To add a task, use the following commands:
 - `deadline <description> /by <date/time>`: Adds a Deadline task.
 - `event <description> /from <start date/time> /to <end date/time>`: Adds an Event task.
 
-**Example:**
+When specifying date/time for `deadline` (`/by`) or `event` (`/from` and `/to`) commands, Simon accepts the following formats.
+
+Date & time (use these when a time is required):
+
+- ISO local date-time `eg. 2025-08-31T18:00`
+- Day/Month/Year with 24-hour time `eg. 31/8/2025 1800`
+- Day-Month-Year with 24-hour time `eg. 31-8-2025 180`
+- Year/Month/Day with 24-hour time `eg. 2025/08/31 1800`
+
+Date only (use these when you only need a date; time will default to start of day):
+
+- ISO local date `eg. 2025-08-31`
+- Day/Month/Year `eg. 31/8/2025`           
+- Day-Month-Year `eg. 31-8-2025`
+- Year/Month/Day `eg. 2025/08/31`
+- Day Month Year (abbreviated month name) `eg. 31 Aug 2025`
+
+  **Example:**
 
 ```
 todo Read book
@@ -60,8 +77,21 @@ todo Read book
 
 ```
 Got it. I've added this task:
-  [T][ ] Read book
+[T][ ] Read book
 Now you have 1 task in the list.
+```
+
+**Example:**
+```
+deadline Submit report /by 31/8/2025 1800
+```
+
+**Outcome:**
+
+```
+Got it. I've added this task:
+  [D][ ] Submit report (by: 31 Aug 2025 6:00pm)
+Now you have N tasks in the list.
 ```
 
 ---
