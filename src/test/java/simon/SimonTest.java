@@ -25,44 +25,84 @@ public class SimonTest {
      */
     @Test
     void main_printsGreetingAndExitOnBye() throws Exception {
-        PrintStream originalOut = System.out;
-        java.io.InputStream originalIn = System.in;
-        String originalUserHome = System.getProperty("user.home");
+        // High-level test: run Simon with "bye" and assert expected lines are printed.
+        String printed = runSimonAndCaptureOutput();
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+        assertTrue(printed.contains("Hello! I'm Simon!"), "Main should print the greeting with name Simon");
+        assertTrue(printed.contains("Bye. Hope to see you again soon!"), "Main should print the farewell on exit");
+    }
 
-        Path tempHome = Files.createTempDirectory("simon-test-home");
-        System.setProperty("user.home", tempHome.toString());
-
-        System.setIn(new ByteArrayInputStream("bye\n".getBytes())); // say bye
-
+    /**
+     * Run Simon.main with the "bye" stdin text and capture stdout, while isolating
+     * the user home to a temporary directory. Cleans up and restores global
+     * state before returning the captured output.
+     */
+    private String runSimonAndCaptureOutput() throws Exception {
+        TestEnv env = setupTestEnv();
         try {
-            Simon.main(new String[0]); // run main
-            String printed = out.toString();
-
-            // check what's printed
-            assertTrue(printed.contains("Hello! I'm Simon!"), "Main should print the greeting with name Simon");
-            assertTrue(printed.contains("Bye. Hope to see you again soon!"), "Main should print the farewell on exit");
+            Simon.main(new String[0]);
+            return env.out.toString();
         } finally {
-            System.setOut(originalOut);
-            System.setIn(originalIn);
-            System.setProperty("user.home", originalUserHome);
-
-            // cleanup temp directory
-            try {
-                Files.walk(tempHome)
-                        .sorted((a, b) -> b.compareTo(a))
-                        .forEach(p -> {
-                            try {
-                                Files.deleteIfExists(p);
-                            } catch (Exception ignored) {
-                               // ignored
-                            }
-                        });
-            } catch (Exception ignored) {
-                // ignored
-            }
+            cleanupEnv(env);
         }
+    }
+
+    /**
+     * Prepare the test environment: capture stdout, set stdin to `bye`, and
+     * set a temporary user.home. Returns a TestEnv holder with originals and
+     * resources to be cleaned up by `cleanupEnv`.
+     */
+    private TestEnv setupTestEnv() throws Exception {
+        final String input = "bye\n";
+        TestEnv e = new TestEnv();
+
+        e.originalOut = System.out;
+        e.originalIn = System.in;
+        e.originalUserHome = System.getProperty("user.home");
+
+        e.out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(e.out));
+
+        e.tempHome = Files.createTempDirectory("simon-test-home");
+        System.setProperty("user.home", e.tempHome.toString());
+
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        return e;
+    }
+
+    /**
+     * Restore global state and delete the temporary home directory.
+     */
+    private void cleanupEnv(TestEnv e) {
+        // restore globals
+        System.setOut(e.originalOut);
+        System.setIn(e.originalIn);
+        System.setProperty("user.home", e.originalUserHome);
+
+        // cleanup temp directory
+        try (java.util.stream.Stream<Path> s = Files.walk(e.tempHome)) {
+            s.sorted(java.util.Comparator.reverseOrder())
+                    .forEach(p -> {
+                        try {
+                            Files.deleteIfExists(p);
+                        } catch (Exception ignored) {
+                            // ignored
+                        }
+                    });
+        } catch (Exception ignored) {
+            // ignored
+        }
+    }
+
+    /**
+     * Small holder for test environment resources and originals.
+     */
+    private static class TestEnv {
+        private Path tempHome;
+        private PrintStream originalOut;
+        private java.io.InputStream originalIn;
+        private String originalUserHome;
+        private ByteArrayOutputStream out;
     }
 }
