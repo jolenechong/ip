@@ -74,24 +74,18 @@ public class SimonTest {
     /**
      * Restore global state and delete the temporary home directory.
      */
-    private void cleanupEnv(TestEnv e) {
+    private void cleanupEnv(TestEnv e) throws Exception {
         // restore globals
         System.setOut(e.originalOut);
         System.setIn(e.originalIn);
         System.setProperty("user.home", e.originalUserHome);
 
-        // cleanup temp directory
+        // cleanup temp directory: let IOExceptions propagate to the caller
         try (java.util.stream.Stream<Path> s = Files.walk(e.tempHome)) {
-            s.sorted(java.util.Comparator.reverseOrder())
-                    .forEach(p -> {
-                        try {
-                            Files.deleteIfExists(p);
-                        } catch (Exception ignored) {
-                            // ignored
-                        }
-                    });
-        } catch (Exception ignored) {
-            // ignored
+            java.util.List<Path> paths = s.sorted(java.util.Comparator.reverseOrder()).toList();
+            for (Path p : paths) {
+                Files.deleteIfExists(p);
+            }
         }
     }
 
