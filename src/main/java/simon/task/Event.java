@@ -9,8 +9,8 @@ import simon.util.DateParser;
  */
 public class Event extends Task {
 
-    private LocalDateTime fromDateTime;
-    private LocalDateTime toDateTime;
+    private final LocalDateTime fromDateTime;
+    private final LocalDateTime toDateTime;
 
     /**
      * Creates an Event task.

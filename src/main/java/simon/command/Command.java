@@ -9,7 +9,8 @@ import simon.ui.Ui;
 public interface Command {
 
     /**
-     * Executes the command to add the specified task
+     * Executes the command to perform its intended action.
+     * May involve modifying/querying/displaying TaskList.
      * .
      * @param tasks The TaskList containing all tasks.
      * @param ui The UiParser instance for displaying output.

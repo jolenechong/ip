@@ -1,5 +1,6 @@
 package simon.command;
 
+import simon.exception.InputFormatException;
 import simon.model.TaskList;
 import simon.task.Task;
 import simon.ui.Ui;
@@ -16,6 +17,7 @@ public class DeleteCommand implements Command {
             + "Try one from the list!";
     private static final String UNDO_MESSAGE_TEMPLATE = "Undid deleting the task:\n  %s"
             + "\nNow you have %d tasks in the list.";
+
     private final int index;
     private Task removed;
 
@@ -37,12 +39,17 @@ public class DeleteCommand implements Command {
      */
     @Override
     public boolean execute(TaskList tasks, Ui ui) {
-        if (index <= 0 || index > tasks.getTasks().size()) {
+        if (index <= 0 || index > tasks.size()) {
             ui.printError(ERROR_TASK_DOESNT_EXIST);
             return true;
         }
 
-        removed = tasks.delete(index);
+        try {
+            removed = tasks.delete(index);
+        } catch (InputFormatException e) {
+            ui.printError(ERROR_TASK_DOESNT_EXIST);
+            return true;
+        }
         ui.printAll(DELETE_MESSAGE_TEMPLATE, removed, tasks.size());
 
         return true;

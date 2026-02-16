@@ -21,6 +21,7 @@ import simon.task.Task;
  */
 public class Storage {
 
+    private static final String SKIPPING_CORRUPTED_LINE = "Skipping corrupted line: ";
     private final String filePath;
 
     /**
@@ -31,9 +32,7 @@ public class Storage {
      */
     public Storage(String filePath) {
         Objects.requireNonNull(filePath, "filePath must not be null");
-        if (filePath.isBlank()) {
-            throw new IllegalArgumentException("filePath must not be blank");
-        }
+
         this.filePath = filePath;
         ensureFileExists();
     }
@@ -73,17 +72,22 @@ public class Storage {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                try {
-                    Task task = Task.fromDataString(line);
-                    tasks.add(task);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Skipping corrupted line: " + line);
-                }
+                Task task = tryParseTaskLine(line);
+                tasks.add(task);
             }
         } catch (IOException e) {
             System.out.println("Error loading tasks: " + e.getMessage());
         }
         return tasks;
+    }
+
+    private Task tryParseTaskLine(String line) {
+        try {
+            return Task.fromDataString(line);
+        } catch (IllegalArgumentException e) {
+            System.out.println(SKIPPING_CORRUPTED_LINE + line);
+            return null;
+        }
     }
 
     /**
@@ -95,7 +99,6 @@ public class Storage {
      *              by the underlying code
      */
     public void saveTasks(ArrayList<Task> tasks) {
-        assert tasks != null : "Tasks should not be null";
         for (Task t : tasks) {
             Objects.requireNonNull(t, "task list contains null element");
         }

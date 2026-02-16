@@ -4,8 +4,22 @@ package simon.task;
  * Represents a generic task with a title and completion status.
  */
 public abstract class Task {
-    private String title;
-    private Boolean isCompleted;
+
+    private static final String DATA_DELIMITER = " \\| ";
+    private static final String TYPE_TODO = "T";
+    private static final String TYPE_DEADLINE = "D";
+    private static final String TYPE_EVENT = "E";
+    private static final String COMPLETED_FLAG = "1";
+    private static final String DISPLAY_COMPLETED = "X";
+    private static final String DISPLAY_INCOMPLETE = " ";
+
+    private static final String ERROR_INVALID_DATA = "Invalid data string";
+    private static final String ERROR_INVALID_DEADLINE = "Invalid data string for Deadline";
+    private static final String ERROR_INVALID_EVENT = "Invalid data string for Event";
+    private static final String ERROR_UNKNOWN_TYPE = "Unknown task type";
+
+    private final String title;
+    private boolean isCompleted;
 
     /**
      * Constructs Task class.
@@ -23,7 +37,7 @@ public abstract class Task {
      * @param title Title of the task.
      * @param isCompleted Completion status of the task.
      */
-    public Task(String title, Boolean isCompleted) {
+    public Task(String title, boolean isCompleted) {
         this.title = title;
         this.isCompleted = isCompleted;
     }
@@ -42,33 +56,42 @@ public abstract class Task {
      * @return Task object.
      */
     public static Task fromDataString(String line) {
-        assert line != null : "Line should not be null";
-        assert !line.isEmpty() : "Line should not be empty";
 
-        String[] parts = line.split(" \\| ");
+        String[] parts = line.split(DATA_DELIMITER);
         if (parts.length < 3) {
-            throw new IllegalArgumentException("Invalid data string");
+            throw new IllegalArgumentException(ERROR_INVALID_DATA);
         }
 
         String type = parts[0];
-        boolean isCompleted = parts[1].equals("1");
+        boolean isCompleted = COMPLETED_FLAG.equals(parts[1]);
         String title = parts[2];
 
-        switch (type) {
-        case "T":
-            return new Todo(title, isCompleted);
-        case "D":
-            if (parts.length < 4) {
-                throw new IllegalArgumentException("Invalid data string for Deadline");
-            }
-            return new Deadline(title, parts[3], isCompleted);
-        case "E":
-            if (parts.length < 5) {
-                throw new IllegalArgumentException("Invalid data string for Event");
-            }
-            return new Event(title, parts[3], parts[4], isCompleted);
-        default:
-            throw new IllegalArgumentException("Unknown task type");
+        return createTask(type, parts, title, isCompleted);
+    }
+
+    private static Task createTask(
+            String type,
+            String[] parts,
+            String title,
+            boolean isCompleted
+    ) {
+        return switch (type) {
+        case TYPE_TODO -> new Todo(title, isCompleted);
+        case TYPE_DEADLINE -> {
+            requireArgLength(parts, 4, ERROR_INVALID_DEADLINE);
+            yield new Deadline(title, parts[3], isCompleted);
+        }
+        case TYPE_EVENT -> {
+            requireArgLength(parts, 4, ERROR_INVALID_EVENT);
+            yield new Event(title, parts[3], parts[4], isCompleted);
+        }
+        default -> throw new IllegalArgumentException(ERROR_UNKNOWN_TYPE);
+        };
+    }
+
+    private static void requireArgLength(String[] args, int expectedLength, String errorMessage) {
+        if (args.length < expectedLength) {
+            throw new IllegalArgumentException(errorMessage);
         }
     }
 
@@ -86,7 +109,7 @@ public abstract class Task {
      *
      * @return True if the task is completed, false otherwise.
      */
-    public Boolean isCompleted() {
+    public boolean isCompleted() {
         return this.isCompleted;
     }
 
@@ -95,13 +118,13 @@ public abstract class Task {
      *
      * @param isCompleted Completion status to set.
      */
-    public void setCompleted(Boolean isCompleted) {
+    public void setCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
     }
 
     @Override
     public String toString() {
-        String completed = this.isCompleted ? "X" : " ";
+        String completed = this.isCompleted ? DISPLAY_COMPLETED : DISPLAY_INCOMPLETE;
         return "[" + completed + "] " + this.title;
     }
 }

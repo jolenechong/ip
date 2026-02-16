@@ -42,12 +42,15 @@ public class FindCommand implements Command {
             return true;
         }
 
-        String result = IntStream.range(0, matchingTasks.size())
-                .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
-                .collect(Collectors.joining("\n", FIND_MESSAGE_TEMPLATE, ""));
-
+        String result = formatMatchingTasks(matchingTasks);
         ui.printAll(result);
         return true;
+    }
+
+    private String formatMatchingTasks(List<Task> matchingTasks) {
+        return IntStream.range(0, matchingTasks.size())
+                .mapToObj(i -> (i + 1) + "." + matchingTasks.get(i))
+                .collect(Collectors.joining("\n", FIND_MESSAGE_TEMPLATE, ""));
     }
 
 }

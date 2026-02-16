@@ -1,5 +1,6 @@
 package simon.command;
 
+import simon.exception.InputFormatException;
 import simon.model.TaskList;
 import simon.ui.Ui;
 
@@ -11,6 +12,7 @@ public class MarkCommand implements Command {
             + "Try one from the list!";
     private static final String MARKED_AS_DONE_MESSAGE_TEMPLATE = "Nice! I've marked this task as done: \n%s";
     private static final String MARKED_AS_NOT_DONE_MESSAGE_TEMPLATE = "OK, I've marked this task as not done yet: \n%s";
+
     private final int index;
     private final boolean isCompleted;
 
@@ -34,30 +36,41 @@ public class MarkCommand implements Command {
      */
     @Override
     public boolean execute(TaskList tasks, Ui ui) {
-        if (index <= 0 || index > tasks.getTasks().size()) {
+        if (index <= 0 || index > tasks.size()) {
             ui.printError(ERROR_TASK_DOESNT_EXIST);
             return true;
         }
 
-        var t = tasks.mark(index, isCompleted);
+        try {
+            var t = tasks.mark(index, isCompleted);
 
-        if (isCompleted) {
-            ui.printAll(MARKED_AS_DONE_MESSAGE_TEMPLATE, t);
-        } else {
-            ui.printAll(MARKED_AS_NOT_DONE_MESSAGE_TEMPLATE, t);
+            if (isCompleted) {
+                ui.printAll(MARKED_AS_DONE_MESSAGE_TEMPLATE, t);
+            } else {
+                ui.printAll(MARKED_AS_NOT_DONE_MESSAGE_TEMPLATE, t);
+            }
+        } catch (InputFormatException e) {
+            ui.printError(ERROR_TASK_DOESNT_EXIST);
+            return true;
         }
         return true;
     }
 
     @Override
     public boolean undo(TaskList tasks, Ui ui) {
-        var t = tasks.mark(index, !isCompleted);
+        try {
+            var t = tasks.mark(index, !isCompleted);
 
-        if (!isCompleted) {
-            ui.printAll(MARKED_AS_DONE_MESSAGE_TEMPLATE, t);
-        } else {
-            ui.printAll(MARKED_AS_NOT_DONE_MESSAGE_TEMPLATE, t);
+            if (!isCompleted) {
+                ui.printAll(MARKED_AS_DONE_MESSAGE_TEMPLATE, t);
+            } else {
+                ui.printAll(MARKED_AS_NOT_DONE_MESSAGE_TEMPLATE, t);
+            }
+        } catch (InputFormatException e) {
+            ui.printError(ERROR_TASK_DOESNT_EXIST);
+            return true;
         }
+
         return true;
     }
 

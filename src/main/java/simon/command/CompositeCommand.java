@@ -35,6 +35,7 @@ public class CompositeCommand implements Command {
 
     @Override
     public boolean undo(TaskList tasks, Ui ui) {
+        // undo in reverse to maintain consistency
         for (int i = this.commands.size() - 1; i >= 0; i--) {
             Command cmd = this.commands.get(i);
             cmd.undo(tasks, ui);

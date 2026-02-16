@@ -19,9 +19,11 @@ public class CommandInvoker {
      */
     public boolean execute(Command cmd, TaskList tasks, Ui ui) {
         boolean isSuccess = cmd.execute(tasks, ui);
+
         if (cmd.isUndoable()) {
             history.push(cmd);
         }
+
         return isSuccess;
     }
 
@@ -29,25 +31,15 @@ public class CommandInvoker {
      * Executes an undo operation for the last command in history.
      *
      * @param tasks the task list.
-     * @param ui the UI instance.
-     * @return true if the application should continue running, false to exit.
+     * @param ui    the UI instance.
      */
-    public boolean executeUndo(TaskList tasks, Ui ui) {
+    public void executeUndo(TaskList tasks, Ui ui) {
         Command cmd = history.pop();
         if (cmd != null) {
-            return cmd.undo(tasks, ui);
+            cmd.undo(tasks, ui);
         } else {
             ui.printError("No commands to undo.");
-            return true;
         }
     }
 
-    /**
-     * Returns the command history.
-     *
-     * @return the command history.
-     */
-    public CommandHistory getHistory() {
-        return history;
-    }
 }

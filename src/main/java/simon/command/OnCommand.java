@@ -2,6 +2,7 @@ package simon.command;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import simon.model.TaskList;
 import simon.task.Task;
@@ -42,19 +43,20 @@ public class OnCommand implements Command {
             return true;
         }
 
-        StringBuilder sb = new StringBuilder();
-        matchingTasks.forEach(task -> {
-            sb.append(task).append("\n");
-        });
+        String formatted = formatTasks(matchingTasks);
 
-        ui.printAll(ON_MESSAGE_TEMPLATE, DateParser.format(when), sb.toString().trim());
+        ui.printAll(ON_MESSAGE_TEMPLATE, DateParser.format(when), formatted);
 
         return true;
     }
 
-    @Override
-    public boolean isUndoable() {
-        return false;
+    /**
+     * Format matching tasks into a newline-separated string.
+     */
+    private static String formatTasks(List<Task> tasks) {
+        return tasks.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining("\n"));
     }
 
 }

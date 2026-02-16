@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import simon.exception.InputErrorType;
+import simon.exception.InputFormatException;
 import simon.storage.Storage;
 import simon.task.Deadline;
 import simon.task.Event;
@@ -16,6 +18,8 @@ import simon.task.Task;
  * Each tasklist can be modified with add, mark, and delete operations.
  */
 public class TaskList {
+    private static final int BASE_INDEX = 1;
+
     private final ArrayList<Task> tasks;
     private final Storage storage;
 
@@ -75,7 +79,7 @@ public class TaskList {
      * @param index   The index (1-based) where the task should be added.
      */
     public void add(Task removed, int index) {
-        this.tasks.add(index - 1, removed);
+        this.tasks.add(index - BASE_INDEX, removed);
         persist();
     }
 
@@ -86,7 +90,11 @@ public class TaskList {
      * @param isCompleted True to mark as completed, false to mark as not completed.
      * @return The updated Task.
      */
-    public Task mark(int num, boolean isCompleted) {
+    public Task mark(int num, boolean isCompleted) throws InputFormatException {
+        if (num < 1 || num > tasks.size()) {
+            throw new InputFormatException(InputErrorType.NUMBER_RANGE);
+        }
+
         Task toMark = this.tasks.get(num - 1);
         toMark.setCompleted(isCompleted);
 
@@ -100,7 +108,11 @@ public class TaskList {
      * @param num Task number (1-based index).
      * @return The deleted Task.
      */
-    public Task delete(int num) {
+    public Task delete(int num) throws InputFormatException {
+        if (num < 1 || num > tasks.size()) {
+            throw new InputFormatException(InputErrorType.NUMBER_RANGE);
+        }
+
         Task toDelete = this.tasks.remove(num - 1);
 
         persist();

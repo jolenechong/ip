@@ -24,7 +24,10 @@ public class CommandHistory {
      * @return the most recently executed command, or null if the stack is empty.
      */
     public Command pop() {
-        return stack.isEmpty() ? null : stack.pop();
+        if (stack.isEmpty()) {
+            return null;
+        }
+        return stack.pop();
     }
 
     /**
@@ -36,10 +39,4 @@ public class CommandHistory {
         return stack.isEmpty();
     }
 
-    /**
-     * Clears all commands from the history stack.
-     */
-    public void clear() {
-        stack.clear();
-    }
 }

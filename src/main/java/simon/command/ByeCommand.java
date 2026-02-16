@@ -13,9 +13,4 @@ public class ByeCommand implements Command {
         return false;
     }
 
-    @Override
-    public boolean isUndoable() {
-        return false;
-    }
-
 }

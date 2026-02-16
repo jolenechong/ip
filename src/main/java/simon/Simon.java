@@ -19,6 +19,10 @@ import simon.util.UiParser;
  */
 public class Simon {
 
+    private static final String DATA_FILE_PATH =
+            System.getProperty("user.home") + "/.simon/data/simon.txt";
+    private static final String BYE_MESSAGE = "Bye. Hope to see you again soon!";
+
     private static final String NAME = "Simon";
     private final Ui ui;
     private final TaskList tasks;
@@ -32,7 +36,7 @@ public class Simon {
      */
     public Simon() {
         this.ui = new Ui();
-        this.storage = new Storage(System.getProperty("user.home") + "/.simon/data/simon.txt");
+        this.storage = new Storage(DATA_FILE_PATH);
         this.tasks = new TaskList(storage);
         this.parser = new UiParser();
         this.commandInvoker = new CommandInvoker();
@@ -52,39 +56,37 @@ public class Simon {
         try {
             Command cmd = parser.parse(input, commandInvoker);
             StringBuilder output = new StringBuilder();
-            final boolean[] isExitRequested = {false};
 
-            Ui tempUi = initUi(output, isExitRequested);
+            ExitStatus exitStatus = new ExitStatus();
+            Ui tempUi = initUi(output, exitStatus);
 
             commandInvoker.execute(cmd, tasks, tempUi);
 
             String response = output.toString().trim();
-            return new Response(response, isExitRequested[0]);
+            return new Response(response, exitStatus.isExitRequested());
         } catch (Exception e) {
             return new Response("Error: " + e.getMessage(), false);
         }
     }
 
-    private Ui initUi(StringBuilder output, boolean[] isExitRequested) {
-        return
-            new Ui() {
-                @Override
-                public void printAll(String message, Object... args) {
-                    output.append(String.format(message, args)).append("\n");
-                }
+    private Ui initUi(StringBuilder output, ExitStatus exitStatus) {
+        return new Ui() {
+            @Override
+            public void printAll(String message, Object... args) {
+                output.append(String.format(message, args)).append("\n");
+            }
 
-                @Override
-                public void printError(String message) {
-                    output.append("Error: ").append(message).append("\n");
-                }
+            @Override
+            public void printError(String message) {
+                output.append("Error: ").append(message).append("\n");
+            }
 
-                @Override
-                public void sayBye() {
-                    output.append("Bye. Hope to see you again soon!\n");
-                    isExitRequested[0] = true;
-                }
-            };
-
+            @Override
+            public void sayBye() {
+                output.append(BYE_MESSAGE);
+                exitStatus.requestExit();
+            }
+        };
     }
 
     /**
@@ -112,6 +114,18 @@ public class Simon {
             } catch (Exception e) {
                 ui.printError(e.getMessage());
             }
+        }
+    }
+
+    private static class ExitStatus {
+        private boolean isExitRequested;
+
+        public boolean isExitRequested() {
+            return isExitRequested;
+        }
+
+        public void requestExit() {
+            this.isExitRequested = true;
         }
     }
 

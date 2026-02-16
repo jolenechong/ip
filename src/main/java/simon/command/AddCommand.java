@@ -1,11 +1,12 @@
 package simon.command;
 
+import simon.exception.InputFormatException;
 import simon.model.TaskList;
 import simon.task.Task;
 import simon.ui.Ui;
 
 /**
- * Command to add a task to the task list.
+ * Represents the Add Command to add a task to the task list.
  */
 public class AddCommand implements Command {
 
@@ -15,6 +16,7 @@ public class AddCommand implements Command {
                     Now you have %d tasks in the list.""";
     private static final String UNDO_MESSAGE_TEMPLATE = "Undid adding the task:\n  %s"
             + "\nNow you have %d tasks in the list.";
+    private static final String ERROR_TASK_DOESNT_EXIST = "That task number doesn't exist (yet). ";
 
     private final Task task;
 
@@ -30,15 +32,19 @@ public class AddCommand implements Command {
     @Override
     public boolean execute(TaskList tasks, Ui ui) {
         tasks.add(task);
-        ui.printAll(ADD_MESSAGE_TEMPLATE,
-                task, tasks.getTasks().size());
+        ui.printAll(ADD_MESSAGE_TEMPLATE, task, tasks.size());
 
         return true;
     }
 
     @Override
     public boolean undo(TaskList tasks, Ui ui) {
-        tasks.delete(tasks.getTasks().size());
+        try {
+            tasks.delete(tasks.size());
+        } catch (InputFormatException e) {
+            ui.printError(ERROR_TASK_DOESNT_EXIST);
+            return true;
+        }
         ui.printAll(UNDO_MESSAGE_TEMPLATE, task, tasks.size());
 
         return true;
