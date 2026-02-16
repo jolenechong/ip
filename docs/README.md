@@ -157,7 +157,8 @@ on 1/1/2026
 
 **Outcome:**
 
-```Here are the tasks on 1 Jan 2026:
+```
+Here are the tasks on 1 Jan 2026:
 1.[D][ ] return book (by: 1 Jan 2026 12:00am)
 2.[E][ ] book event (from: 1 Jan 2026 10:00am to: 1 Jan 2026 12:00pm)
 ```
