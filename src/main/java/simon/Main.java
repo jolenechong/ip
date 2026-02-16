@@ -24,7 +24,6 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
 
-            // load the dialog-box stylesheet from resources/css
             scene.getStylesheets().add(Main.class.getResource("/css/dialog-box.css").toExternalForm());
 
             stage.setScene(scene);

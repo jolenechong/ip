@@ -35,7 +35,7 @@ public class MainWindow extends AnchorPane {
     private javafx.scene.control.Button sendButton;
 
     private Simon simon;
-    private ArrayList<String> inputHistory = new ArrayList<>();
+    private final ArrayList<String> inputHistory = new ArrayList<>();
     private int historyPointer = -1;
     private String input;
 
@@ -59,7 +59,7 @@ public class MainWindow extends AnchorPane {
     }
 
     private void handleKeyUp() {
-        if (inputHistory.size() > 0 && historyPointer < inputHistory.size() - 1) {
+        if (!inputHistory.isEmpty() && historyPointer < inputHistory.size() - 1) {
             historyPointer++;
             userInput.setText(inputHistory.get(inputHistory.size() - 1 - historyPointer));
             userInput.positionCaret(userInput.getText().length());
@@ -83,6 +83,7 @@ public class MainWindow extends AnchorPane {
      */
     public void setSimon(Simon simon) {
         this.simon = simon;
+        Platform.runLater(this::showStartupMessage);
     }
 
     private void setUpUserInput() {
@@ -125,5 +126,27 @@ public class MainWindow extends AnchorPane {
         Response resp = setUpDialogContainer();
         handleResponseExit(resp);
 
+    }
+
+    /**
+     * Display a short startup greeting and list of commonly used commands.
+     */
+    private void showStartupMessage() {
+        if (dialogContainer == null) {
+            return; // UI not ready
+        }
+        String intro = """
+                Hi, I'm Simon.
+                I can help you manage tasks :)
+
+                Common commands:
+                - list
+                - todo <task>
+                - deadline <task> /by <date>
+                - event <task> /from <d> /to <d>
+                - bye
+                """;
+
+        dialogContainer.getChildren().add(DialogBox.getSimonDialog(intro));
     }
 }

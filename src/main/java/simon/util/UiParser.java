@@ -29,6 +29,15 @@ import simon.task.Todo;
  */
 public class UiParser {
 
+    private static final String CHAINING_DELIMITER_REGEX = "\\s*&&\\s*";
+    private static final String SINGLE_COMMAND_REGEX = "\\s+";
+    private static final String BY_DELIMITER = " /by ";
+    private static final String FROM_DELIMITER = " /from ";
+    private static final String TO_DELIMITER = " /to ";
+    private static final String COMMA_DELIMITER = ",";
+    private static final String DASH_DELIMITER = "-";
+    private static final String CHAINING_DELIMITER = "&&";
+
     /**
      * Parses a raw input string into a Command object.
      *
@@ -41,7 +50,7 @@ public class UiParser {
             throw new InputFormatException(InputErrorType.TODO_EMPTY);
         }
 
-        if (raw.contains("&&")) {
+        if (raw.contains(CHAINING_DELIMITER)) {
             return parseMultiple(raw, invoker);
         }
 
@@ -51,7 +60,7 @@ public class UiParser {
 
     private Command parseMultiple(String raw, CommandInvoker invoker)
             throws InputFormatException {
-        String[] commandStrings = raw.split("\\s*&&\\s*");
+        String[] commandStrings = raw.split(CHAINING_DELIMITER_REGEX);
         List<Command> commands = new ArrayList<>();
         for (String commandString : commandStrings) {
             commands.add(parseSingle(commandString, invoker));
@@ -60,7 +69,7 @@ public class UiParser {
     }
 
     private Command parseSingle(String raw, CommandInvoker invoker) throws InputFormatException {
-        String[] parts = raw.split("\\s+", 2);
+        String[] parts = raw.split(SINGLE_COMMAND_REGEX, 2);
         String cmd = parts[0].toLowerCase();
 
         return switch (cmd) {
@@ -84,7 +93,7 @@ public class UiParser {
             throws InputFormatException {
         String arg = requireArgument(parts, InputErrorType.NUMBER_RANGE);
 
-        if (arg.contains(",") || arg.contains("-")) {
+        if (arg.contains(COMMA_DELIMITER) || arg.contains(DASH_DELIMITER)) {
             List<Integer> indexes = IntParser.parseIndexes(arg);
             return new MultiDelete(indexes);
         } else {
@@ -97,7 +106,7 @@ public class UiParser {
             throws InputFormatException {
         String arg = requireArgument(parts, InputErrorType.NUMBER_FORMAT);
 
-        if (arg.contains(",") || arg.contains("-")) {
+        if (arg.contains(COMMA_DELIMITER) || arg.contains(DASH_DELIMITER)) {
             List<Integer> indexes = IntParser.parseIndexes(arg);
             return new MultiMark(isCompleted, indexes);
         } else {
@@ -115,7 +124,7 @@ public class UiParser {
     }
 
     private Command parseDeadline(String rest) throws InputFormatException {
-        int byIndex = rest.indexOf(" /by ");
+        int byIndex = rest.indexOf(BY_DELIMITER);
         if (byIndex == -1) {
             throw new InputFormatException(InputErrorType.DEADLINE_FORMAT);
         }
@@ -128,17 +137,19 @@ public class UiParser {
     }
 
     private Command parseEvent(String rest) throws InputFormatException {
-        int fromIndex = rest.indexOf(" /from ");
-        int toIndex = rest.indexOf(" /to ");
+        int fromIndex = rest.indexOf(FROM_DELIMITER);
+        int toIndex = rest.indexOf(TO_DELIMITER);
         if (fromIndex == -1 || toIndex == -1 || fromIndex >= toIndex) {
             throw new InputFormatException(InputErrorType.EVENT_FORMAT);
         }
+
         String desc = rest.substring(0, fromIndex).trim();
         String from = rest.substring(fromIndex + 7, toIndex).trim();
         String to = rest.substring(toIndex + 5).trim();
         if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
             throw new InputFormatException(InputErrorType.EVENT_FORMAT);
         }
+
         return new AddCommand(new Event(desc, from, to));
     }
 }

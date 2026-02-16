@@ -11,6 +11,9 @@ import simon.exception.InputFormatException;
  */
 public class IntParser {
 
+    private static final String COMMA_DELIMITER_REGEX = "\\s*,\\s*";
+    private static final String RANGE_DELIMITER_REGEX = "-";
+
     /**
      * Parses a string into an integer index, else throws an InputFormatException.
      *
@@ -41,7 +44,7 @@ public class IntParser {
         List<Integer> out = new ArrayList<>();
 
         for (String part : parts) {
-            if (part.contains("-")) {
+            if (part.contains(RANGE_DELIMITER_REGEX)) {
                 parseRange(part, out);
             } else {
                 out.add(parseSingleIndex(part));
@@ -57,7 +60,7 @@ public class IntParser {
     }
 
     private static String[] splitByComma(String s) {
-        return s.split("\\s*,\\s*");
+        return s.split(COMMA_DELIMITER_REGEX);
     }
 
     private static int parseSingleIndex(String part) throws InputFormatException {

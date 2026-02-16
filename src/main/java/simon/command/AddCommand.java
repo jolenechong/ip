@@ -16,7 +16,7 @@ public class AddCommand implements Command {
                     Now you have %d tasks in the list.""";
     private static final String UNDO_MESSAGE_TEMPLATE = "Undid adding the task:\n  %s"
             + "\nNow you have %d tasks in the list.";
-    private static final String ERROR_TASK_DOESNT_EXIST = "That task number doesn't exist (yet). ";
+    private static final String ERROR_TASK_DOESNT_EXIST = "That task number does not exist (yet). ";
 
     private final Task task;
 

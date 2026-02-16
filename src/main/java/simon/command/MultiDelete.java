@@ -19,7 +19,7 @@ public class MultiDelete implements Command {
             + "\nNow you have %d tasks in the list.";
     private static final String UNDO_MESSAGE_TEMPLATE = "All right! These tasks are back:\n%s"
             + "\nYour list now has %d tasks.";
-    private static final String ERROR_TASK_DOESNT_EXIST = "One or more task numbers don't exist (yet). "
+    private static final String ERROR_TASK_DOESNT_EXIST = "One or more task numbers do not exist (yet). "
             + "Try ones from the list!";
 
     private final List<Integer> indices;

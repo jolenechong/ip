@@ -11,6 +11,8 @@ import java.util.logging.Logger;
  * Represents a Utility class for parsing and formatting dates.
  */
 public final class DateParser {
+
+    private static final String DATE_TIME_DISPLAY_PATTERN = "d MMM uuuu h:mma";
     private static final Logger LOGGER = Logger.getLogger(DateParser.class.getName());
 
     private static final DateTimeFormatter[] DATE_TIME_FORMATTERS = new DateTimeFormatter[]{
@@ -80,7 +82,7 @@ public final class DateParser {
      * @return the formatted date string.
      */
     public static String format(LocalDateTime dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM uuuu h:mma", Locale.ENGLISH);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_DISPLAY_PATTERN, Locale.ENGLISH);
         String formatted = dateTime.format(formatter);
         return formatted.replace("AM", "am").replace("PM", "pm");
     }
