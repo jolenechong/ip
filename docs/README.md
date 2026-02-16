@@ -56,7 +56,7 @@ Date & time (use these when a time is required):
 
 - ISO local date-time `eg. 2025-08-31T18:00`
 - Day/Month/Year with 24-hour time `eg. 31/8/2025 1800`
-- Day-Month-Year with 24-hour time `eg. 31-8-2025 180`
+- Day-Month-Year with 24-hour time `eg. 31-8-2025 1800`
 - Year/Month/Day with 24-hour time `eg. 2025/08/31 1800`
 
 Date only (use these when you only need a date; time will default to start of day):
