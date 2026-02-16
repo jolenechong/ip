@@ -215,5 +215,6 @@ Simon makes task management simple and fun. Stay organized and never forget a ta
 | Find Tasks         | `find <keyword>`                                                  | Finds tasks containing the specified keyword.      |
 | View Tasks by Date | `on <date>`                                                       | Lists tasks occurring on the specified date.       |
 | Undo Last Action   | `undo`                                                            | Reverts the last executed command.                 |
-| Exit Simon         | `bye`                                                             | Closes the application.                            | Command Chaining | `<command1> && <command2>` | Executes multiple commands in sequence. |
+| Exit Simon         | `bye`                                                             | Closes the application.                            |
+| Command Chaining   | `<command1> && <command2>`                                        | Executes multiple commands in sequence.            |
 
