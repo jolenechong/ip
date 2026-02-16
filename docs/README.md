@@ -15,6 +15,28 @@ Features at a glance
 * **View tasks by date:** List tasks occurring on a specific date
 * **Command history navigation:** Use ↑ and ↓ keys to navigate previous commands
 
+For quick navigation of this User Guide:
+1. [Quick Start](#quick-start)
+2. [Commands](#commands)
+   - [Adding Tasks](#adding-tasks)
+   - [Listing Tasks](#listing-tasks)
+   - [Marking Tasks](#marking-tasks)
+   - [Deleting Tasks](#deleting-tasks)
+   - [Searching Tasks](#searching-tasks)
+   - [Viewing Tasks on a Specific Date](#viewing-tasks-on-a-specific-date)
+   - [Undo Last Action](#undo-last-action)
+   - [Exiting Simon](#exiting-simon)
+3. [Pro Tips](#pro-tips)
+4. [Command Summary](#command-summary)
+
+## Quick Start
+1. **Download and Install**: Get the latest version of Simon from the [releases page](https://github.com/jolenechong/ip/releases)
+2. **Run the Application**: `cd` into the folder with the downloaded JAR file and run it via command line:
+   ```
+   java -jar simon.jar
+   ```
+3. **Start Managing Tasks**: Use the commands outlined below to add, list, mark tasks
+
 ## Commands
 
 ### Adding Tasks
@@ -67,6 +89,7 @@ mark <index>
 ```
 unmark <index>
 ```
+Marks task at <index> as done/not done accordingly. Index starts from 1 and refers to the index number shown in the displayed list.
 
 **Multi-mark/unmark:**
 
@@ -74,6 +97,7 @@ unmark <index>
 mark 1,3
 unmark 2-4
 ```
+Marks tasks 1 and 3, unmarks tasks 2 to 4.
 
 ---
 
@@ -91,6 +115,7 @@ delete <index>
 delete 1,3
 delete 2-4
 ```
+Deletes tasks 1,3 and tasks 2 to 4 respectively.
 
 ---
 
@@ -130,6 +155,13 @@ on <date>
 on 1/1/2026
 ```
 
+**Outcome:**
+
+```Here are the tasks on 1 Jan 2026:
+1.[D][ ] return book (by: 1 Jan 2026 12:00am)
+2.[E][ ] book event (from: 1 Jan 2026 10:00am to: 1 Jan 2026 12:00pm)
+```
+
 ---
 
 ### Undo Last Action
@@ -165,3 +197,23 @@ todo Read book && deadline Submit report /by 18/2/2026 2359
 ---
 
 Simon makes task management simple and fun. Stay organized and never forget a task again! ✅
+
+## Command Summary
+
+| Action             | Command Format                                                    | Description                                        |
+|--------------------|-------------------------------------------------------------------|----------------------------------------------------|
+| Add Todo           | `todo <description>`                                              | Adds a Todo task.                                  |
+| Add Deadline       | `deadline <description> /by <date/time>`                          | Adds a Deadline task.                              |
+| Add Event          | `event <description> /from <start date/time> /to <end date/time>` | Adds an Event task.                                |
+| List Tasks         | `list`                                                            | Displays all tasks in the list.                    |
+| Mark Task          | `mark <index>`                                                    | Marks the task at the specified index as done.     |
+| Unmark Task        | `unmark <index>`                                                  | Marks the task at the specified index as not done. |
+| Multi-mark Tasks   | `mark 1,3` or `mark 2-4`                                          | Marks multiple tasks as done.                      |
+| Multi-unmark Tasks | `unmark 1,3` or `unmark 2-4`                                      | Marks multiple tasks as not done.                  |
+| Delete Task        | `delete <index>`                                                  | Deletes the task at the specified index.           |
+| Multi-delete Tasks | `delete 1,3` or `delete 2-4`                                      | Deletes multiple tasks.                            |
+| Find Tasks         | `find <keyword>`                                                  | Finds tasks containing the specified keyword.      |
+| View Tasks by Date | `on <date>`                                                       | Lists tasks occurring on the specified date.       |
+| Undo Last Action   | `undo`                                                            | Reverts the last executed command.                 |
+| Exit Simon         | `bye`                                                             | Closes the application.                            | Command Chaining | `<command1> && <command2>` | Executes multiple commands in sequence. |
+
