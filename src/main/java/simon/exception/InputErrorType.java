@@ -11,7 +11,7 @@ public enum InputErrorType {
     NUMBER_RANGE("That task number does not exist. Try one from the list!"),
     UNKNOWN_INPUT("hUH what are you sAying"),
     QUERY_EMPTY("You need to provide a search query!"),
-    MARK_FORMAT("That does not look like a valid mark command. Try mark <task number> instead!"),
+    MARK_FORMAT("That does not look like a valid mark command. Try mark/unmark <task number> instead!"),
     DELETE_FORMAT("That does not look like a valid delete command. Try delete <task number> instead!"),
     ON_FORMAT("That does not look like a valid on command. Try on <date> instead!"),
     INVALID_RANGE("The range you provided is invalid. Use the format: <start>-<end>,<> with start <= end.");

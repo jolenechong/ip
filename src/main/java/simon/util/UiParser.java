@@ -37,7 +37,8 @@ public class UiParser {
     private static final String COMMA_DELIMITER = ",";
     private static final String DASH_DELIMITER = "-";
     private static final String CHAINING_DELIMITER = "&&";
-    private static final String NEGATIVE_NUMBER_REGEX = "-\\d+";
+    private static final String VALID_NUMBER_OR_RANGE_REGEX =
+            "^\\d+(?:-\\d+)?(?:,\\d+(?:-\\d+)?)*$";
 
     /**
      * Parses a raw input string into a Command object.
@@ -95,7 +96,7 @@ public class UiParser {
         String arg = requireArgument(parts, InputErrorType.DELETE_FORMAT);
 
         if (arg.contains(COMMA_DELIMITER) || arg.contains(DASH_DELIMITER)) {
-            if (arg.matches(NEGATIVE_NUMBER_REGEX)) {
+            if (!arg.matches(VALID_NUMBER_OR_RANGE_REGEX)) {
                 throw new InputFormatException(InputErrorType.NUMBER_RANGE);
             }
             List<Integer> indexes = IntParser.parseIndexes(arg);
@@ -111,7 +112,7 @@ public class UiParser {
         String arg = requireArgument(parts, InputErrorType.MARK_FORMAT);
 
         if (arg.contains(COMMA_DELIMITER) || arg.contains(DASH_DELIMITER)) {
-            if (arg.matches(NEGATIVE_NUMBER_REGEX)) {
+            if (!arg.matches(VALID_NUMBER_OR_RANGE_REGEX)) {
                 throw new InputFormatException(InputErrorType.NUMBER_RANGE);
             }
             List<Integer> indexes = IntParser.parseIndexes(arg);
@@ -150,13 +151,22 @@ public class UiParser {
             throw new InputFormatException(InputErrorType.EVENT_FORMAT);
         }
 
+        int fromValueStart = fromIndex + FROM_DELIMITER.length();
+        int toValueStart = toIndex + TO_DELIMITER.length();
+
+        if (fromValueStart >= toIndex || toValueStart >= rest.length()) {
+            throw new InputFormatException(InputErrorType.EVENT_FORMAT);
+        }
+
         String desc = rest.substring(0, fromIndex).trim();
-        String from = rest.substring(fromIndex + 7, toIndex).trim();
-        String to = rest.substring(toIndex + 5).trim();
+        String from = rest.substring(fromValueStart, toIndex).trim();
+        String to = rest.substring(toValueStart).trim();
+
         if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
             throw new InputFormatException(InputErrorType.EVENT_FORMAT);
         }
 
         return new AddCommand(new Event(desc, from, to));
     }
+
 }
