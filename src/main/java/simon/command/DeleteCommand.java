@@ -13,7 +13,7 @@ public class DeleteCommand implements Command {
             Noted. I've removed this task:
               %s
             Now you have %d tasks in the list.""";
-    private static final String ERROR_TASK_DOESNT_EXIST = "That task number does not exist (yet). "
+    private static final String ERROR_TASK_DOESNT_EXIST = "That task number does not exist. "
             + "Try one from the list!";
     private static final String UNDO_MESSAGE_TEMPLATE = "Undid deleting the task:\n  %s"
             + "\nNow you have %d tasks in the list.";

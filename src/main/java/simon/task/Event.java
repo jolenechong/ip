@@ -9,6 +9,8 @@ import simon.util.DateParser;
  */
 public class Event extends Task {
 
+    private static final String START_TIME_BEFORE_END_TIME_MESSAGE = "Hmm, start time must be before end time.";
+
     private final LocalDateTime fromDateTime;
     private final LocalDateTime toDateTime;
 
@@ -21,6 +23,10 @@ public class Event extends Task {
      */
     public Event(String title, LocalDateTime from, LocalDateTime to) {
         super(title);
+
+        if (from.isAfter(to) || from.isEqual(to)) {
+            throw new IllegalArgumentException(START_TIME_BEFORE_END_TIME_MESSAGE);
+        }
 
         this.fromDateTime = from;
         this.toDateTime = to;

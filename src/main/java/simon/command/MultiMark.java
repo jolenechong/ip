@@ -18,7 +18,7 @@ public class MultiMark implements Command {
     private static final String MARK_MESSAGE_TEMPLATE = "Noted. I've marked the following tasks as %s:\n%s";
     private static final String UNDO_MESSAGE_TEMPLATE = "Mark undone! These tasks are back:\n%s\nYour list "
             + "now has %d tasks.";
-    private static final String ERROR_TASK_DOESNT_EXIST = "That task number does not exist (yet). "
+    private static final String ERROR_TASK_DOESNT_EXIST = "One or more task numbers do not exist. "
             + "Try one from the list!";
     private static final String STATUS_DONE = "done";
     private static final String STATUS_NOT_DONE = "not done";

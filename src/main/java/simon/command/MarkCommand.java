@@ -8,7 +8,7 @@ import simon.ui.Ui;
  * Represents a Command to mark a task as completed or not completed.
  */
 public class MarkCommand implements Command {
-    private static final String ERROR_TASK_DOESNT_EXIST = "That task number does not exist (yet). "
+    private static final String ERROR_TASK_DOESNT_EXIST = "That task number does not exist. "
             + "Try one from the list!";
     private static final String MARKED_AS_DONE_MESSAGE_TEMPLATE = "Nice! I've marked this task as done: \n%s";
     private static final String MARKED_AS_NOT_DONE_MESSAGE_TEMPLATE = "OK, I've marked this task as not done yet: \n%s";

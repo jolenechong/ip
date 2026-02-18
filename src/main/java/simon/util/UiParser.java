@@ -37,6 +37,7 @@ public class UiParser {
     private static final String COMMA_DELIMITER = ",";
     private static final String DASH_DELIMITER = "-";
     private static final String CHAINING_DELIMITER = "&&";
+    private static final String NEGATIVE_NUMBER_REGEX = "-\\d+";
 
     /**
      * Parses a raw input string into a Command object.
@@ -83,7 +84,7 @@ public class UiParser {
         case "event" -> parseEvent(requireArgument(parts, InputErrorType.EVENT_FORMAT));
         case "delete" -> parseDeleteOrMultiDelete(parts);
         case "on" -> new OnCommand(DateParser.parse(
-                requireArgument(parts, InputErrorType.EVENT_FORMAT).trim()));
+                requireArgument(parts, InputErrorType.ON_FORMAT).trim()));
         case "undo" -> new UndoCommand(invoker);
         default -> throw new InputFormatException(InputErrorType.UNKNOWN_INPUT);
         };
@@ -91,9 +92,12 @@ public class UiParser {
 
     private static Command parseDeleteOrMultiDelete(String[] parts)
             throws InputFormatException {
-        String arg = requireArgument(parts, InputErrorType.NUMBER_RANGE);
+        String arg = requireArgument(parts, InputErrorType.DELETE_FORMAT);
 
         if (arg.contains(COMMA_DELIMITER) || arg.contains(DASH_DELIMITER)) {
+            if (arg.matches(NEGATIVE_NUMBER_REGEX)) {
+                throw new InputFormatException(InputErrorType.NUMBER_RANGE);
+            }
             List<Integer> indexes = IntParser.parseIndexes(arg);
             return new MultiDelete(indexes);
         } else {
@@ -104,9 +108,12 @@ public class UiParser {
 
     private static Command parseMarkOrMultiMark(String[] parts, boolean isCompleted)
             throws InputFormatException {
-        String arg = requireArgument(parts, InputErrorType.NUMBER_FORMAT);
+        String arg = requireArgument(parts, InputErrorType.MARK_FORMAT);
 
         if (arg.contains(COMMA_DELIMITER) || arg.contains(DASH_DELIMITER)) {
+            if (arg.matches(NEGATIVE_NUMBER_REGEX)) {
+                throw new InputFormatException(InputErrorType.NUMBER_RANGE);
+            }
             List<Integer> indexes = IntParser.parseIndexes(arg);
             return new MultiMark(isCompleted, indexes);
         } else {

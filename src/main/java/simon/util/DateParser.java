@@ -14,6 +14,8 @@ public final class DateParser {
 
     private static final String DATE_TIME_DISPLAY_PATTERN = "d MMM uuuu h:mma";
     private static final Logger LOGGER = Logger.getLogger(DateParser.class.getName());
+    private static final String INVALID_DATE_FORMAT = "That date looks a little lost. Try something like this"
+            + " instead! eg. 31/8/2025 1800 or 31/8/2025.";
 
     private static final DateTimeFormatter[] DATE_TIME_FORMATTERS = new DateTimeFormatter[]{
         DateTimeFormatter.ISO_LOCAL_DATE_TIME,
@@ -37,7 +39,7 @@ public final class DateParser {
      */
     public static LocalDateTime parse(String input) {
         if (input == null) {
-            throw new IllegalArgumentException("Date string is null");
+            throw new IllegalArgumentException(INVALID_DATE_FORMAT);
         }
 
         String trimmed = input.trim();
@@ -54,7 +56,7 @@ public final class DateParser {
                 return d.atStartOfDay();
             }
         }
-        throw new IllegalArgumentException("Invalid date format: " + input);
+        throw new IllegalArgumentException(INVALID_DATE_FORMAT);
     }
 
     private static LocalDateTime tryParseDateTime(String input, DateTimeFormatter fmt) {
