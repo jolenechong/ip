@@ -17,6 +17,7 @@ public class AiCommand implements Command {
     public static final String CONFIRMATION_MESSAGE_REGEX = "Generated: (.+?)\\s+Do you want to execute "
             + "this command\\? \\(Y/n\\):";
     public static final String AI_COMMAND_CANCELLED_MESSAGE = "Command cancelled.";
+    public static final String AI_COMMAND_PREFIX = "[AI_CMD] ";
 
     private static final String SYSTEM_PROMPT = "You are an assistant for a GUI task management "
             + "app. Based on the user's "
