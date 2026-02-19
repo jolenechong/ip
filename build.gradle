@@ -30,6 +30,9 @@ dependencies {
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'linux'
+
+    implementation 'dev.langchain4j:langchain4j-open-ai:1.10.0'
+    implementation 'dev.langchain4j:langchain4j:1.10.0'
 }
 
 test {
