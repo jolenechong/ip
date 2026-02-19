@@ -1,5 +1,14 @@
 package simon;
 
+import static simon.command.AiCommand.AI_COMMAND_CANCELLED_MESSAGE;
+import static simon.command.AiCommand.AI_COMMAND_PREFIX;
+import static simon.command.AiCommand.CONFIRMATION_MESSAGE_REGEX;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.openai.OpenAiChatModel;
 import simon.command.Command;
 import simon.command.CommandInvoker;
 import simon.model.TaskList;
@@ -22,6 +31,10 @@ public class Simon {
     private static final String DATA_FILE_PATH =
             System.getProperty("user.home") + "/.simon/data/simon.txt";
     private static final String BYE_MESSAGE = "Bye. Hope to see you again soon!";
+    private static final String YES_RESPONSE_REGEX = "(?i)^(y|yes)$";
+    private static final String LLM_API_KEY_ENV = "LLM_API_KEY";
+    private static final String BASE_URL = "https://api.groq.com/openai/v1";
+    private static final String MODEL_NAME = "llama-3.3-70b-versatile";
 
     private static final String NAME = "Simon";
     private final Ui ui;
@@ -29,6 +42,7 @@ public class Simon {
     private final UiParser parser;
     private final Storage storage;
     private final CommandInvoker commandInvoker;
+    private String pendingAiCommand = null;
 
     /**
      * Constructs a Simon application instance.
@@ -38,7 +52,18 @@ public class Simon {
         this.ui = new Ui();
         this.storage = new Storage(DATA_FILE_PATH);
         this.tasks = new TaskList(storage);
-        this.parser = new UiParser();
+
+        if (System.getenv(LLM_API_KEY_ENV) != null) {
+            ChatModel model = OpenAiChatModel.builder()
+                    .apiKey(System.getenv(LLM_API_KEY_ENV))
+                    .baseUrl(BASE_URL)
+                    .modelName(MODEL_NAME)
+                    .build();
+            this.parser = new UiParser(model);
+        } else {
+            this.parser = new UiParser();
+        }
+
         this.commandInvoker = new CommandInvoker();
     }
 
@@ -54,20 +79,52 @@ public class Simon {
         }
 
         try {
+            if (pendingAiCommand != null) {
+                return handleAiConfirmation(input);
+            }
+
             Command cmd = parser.parse(input, commandInvoker);
             StringBuilder output = new StringBuilder();
-
             ExitStatus exitStatus = new ExitStatus();
             Ui tempUi = initUi(output, exitStatus);
 
             commandInvoker.execute(cmd, tasks, tempUi);
-
             String response = output.toString().trim();
-            return new Response(response, exitStatus.isExitRequested());
+
+            return handleAiSuggestion(response, exitStatus);
+
         } catch (Exception e) {
             return new Response("Error: " + e.getMessage(), false);
         }
     }
+
+    private Response handleAiConfirmation(String input) {
+        boolean confirmed = input.matches(YES_RESPONSE_REGEX);
+        String executedCommand = pendingAiCommand;
+        pendingAiCommand = null;
+
+        if (confirmed) {
+            String aiCommand = extractAiCommand(executedCommand);
+            return getResponse(aiCommand);
+        } else {
+            return new Response(AI_COMMAND_CANCELLED_MESSAGE, false);
+        }
+    }
+
+    private String extractAiCommand(String executedCommand) {
+        Pattern pattern = Pattern.compile(CONFIRMATION_MESSAGE_REGEX);
+        Matcher matcher = pattern.matcher(executedCommand);
+        return matcher.find() ? matcher.group(1) : null;
+    }
+
+    private Response handleAiSuggestion(String response, ExitStatus exitStatus) {
+        if (response.startsWith(AI_COMMAND_PREFIX)) {
+            pendingAiCommand = response.substring(9);
+            return new Response(pendingAiCommand, false);
+        }
+        return new Response(response, exitStatus.isExitRequested());
+    }
+
 
     private Ui initUi(StringBuilder output, ExitStatus exitStatus) {
         return new Ui() {

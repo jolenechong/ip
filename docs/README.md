@@ -37,6 +37,12 @@ For quick navigation of this User Guide:
    ```
 3. **Start Managing Tasks**: Use the commands outlined below to add, list, mark tasks
 
+To use the AI features of Simon, set up the `LLM_API_KEY` environment variable with your Groq API key. This allows you to ask Simon for help or to create tasks based on descriptions.
+```aiignore
+export LLM_API_KEY=your-groq-api-key # for Linux/Mac
+setx LLM_API_KEY "your-groq-api-key" # for Windows
+```
+
 ## Commands
 
 ### Adding Tasks
@@ -224,6 +230,8 @@ todo Read book && deadline Submit report /by 18/2/2026 2359
 ```
 
 * Use **up/down arrow keys** to navigate through your previous commands for faster input.
+* Use `@ai <query>` to ask Simon for help or tips on using the application.
+* Use `@aitask <description>` to ask Simon to create a task for you based on the description you provide.
 
 ---
 
@@ -231,21 +239,22 @@ Simon makes task management simple and fun. Stay organized and never forget a ta
 
 ## Command Summary
 
-| Action             | Command Format                                                    | Description                                        |
-|--------------------|-------------------------------------------------------------------|----------------------------------------------------|
-| Add Todo           | `todo <description>`                                              | Adds a Todo task.                                  |
-| Add Deadline       | `deadline <description> /by <date/time>`                          | Adds a Deadline task.                              |
-| Add Event          | `event <description> /from <start date/time> /to <end date/time>` | Adds an Event task.                                |
-| List Tasks         | `list`                                                            | Displays all tasks in the list.                    |
-| Mark Task          | `mark <index>`                                                    | Marks the task at the specified index as done.     |
-| Unmark Task        | `unmark <index>`                                                  | Marks the task at the specified index as not done. |
-| Multi-mark Tasks   | `mark 1,3` or `mark 2-4`                                          | Marks multiple tasks as done.                      |
-| Multi-unmark Tasks | `unmark 1,3` or `unmark 2-4`                                      | Marks multiple tasks as not done.                  |
-| Delete Task        | `delete <index>`                                                  | Deletes the task at the specified index.           |
-| Multi-delete Tasks | `delete 1,3` or `delete 2-4`                                      | Deletes multiple tasks.                            |
-| Find Tasks         | `find <keyword>`                                                  | Finds tasks containing the specified keyword.      |
-| View Tasks by Date | `on <date>`                                                       | Lists tasks occurring on the specified date.       |
-| Undo Last Action   | `undo`                                                            | Reverts the last executed command.                 |
-| Exit Simon         | `bye`                                                             | Closes the application.                            |
-| Command Chaining   | `<command1> && <command2>`                                        | Executes multiple commands in sequence.            |
-
+| Action             | Command Format                                                    | Description                                                    |
+|--------------------|-------------------------------------------------------------------|----------------------------------------------------------------|
+| Add Todo           | `todo <description>`                                              | Adds a Todo task.                                              |
+| Add Deadline       | `deadline <description> /by <date/time>`                          | Adds a Deadline task.                                          |
+| Add Event          | `event <description> /from <start date/time> /to <end date/time>` | Adds an Event task.                                            |
+| List Tasks         | `list`                                                            | Displays all tasks in the list.                                |
+| Mark Task          | `mark <index>`                                                    | Marks the task at the specified index as done.                 |
+| Unmark Task        | `unmark <index>`                                                  | Marks the task at the specified index as not done.             |
+| Multi-mark Tasks   | `mark 1,3` or `mark 2-4`                                          | Marks multiple tasks as done.                                  |
+| Multi-unmark Tasks | `unmark 1,3` or `unmark 2-4`                                      | Marks multiple tasks as not done.                              |
+| Delete Task        | `delete <index>`                                                  | Deletes the task at the specified index.                       |
+| Multi-delete Tasks | `delete 1,3` or `delete 2-4`                                      | Deletes multiple tasks.                                        |
+| Find Tasks         | `find <keyword>`                                                  | Finds tasks containing the specified keyword.                  |
+| View Tasks by Date | `on <date>`                                                       | Lists tasks occurring on the specified date.                   |
+| Undo Last Action   | `undo`                                                            | Reverts the last executed command.                             |
+| Exit Simon         | `bye`                                                             | Closes the application.                                        |
+| Command Chaining   | `<command1> && <command2>`                                        | Executes multiple commands in sequence.                        |
+| AI Assistance      | `@ai <query>`                                                     | Asks Simon for help or tips on using the application.          |
+| AI Task Creation   | `@aitask <description>`                                           | Asks Simon to create a task based on the provided description. |

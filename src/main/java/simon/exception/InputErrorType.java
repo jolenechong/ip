@@ -14,6 +14,8 @@ public enum InputErrorType {
     MARK_FORMAT("That does not look like a valid mark command. Try mark/unmark <task number> instead!"),
     DELETE_FORMAT("That does not look like a valid delete command. Try delete <task number> instead!"),
     ON_FORMAT("That does not look like a valid on command. Try on <date> instead!"),
+    AI_FORMAT("That does not look like a valid ai command. Try @ai <query> instead!"),
+    AI_NO_MODEL("I can't find the AI model! Please check your configuration and try again."),
     INVALID_RANGE("The range you provided is invalid. Use the format: <start>-<end>,<> with start <= end.");
 
     private final String message;

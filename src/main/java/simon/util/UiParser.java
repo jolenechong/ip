@@ -5,7 +5,10 @@ import static simon.util.IntParser.parseIndex;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.langchain4j.model.chat.ChatModel;
 import simon.command.AddCommand;
+import simon.command.AiCommand;
+import simon.command.AiQueryCommand;
 import simon.command.ByeCommand;
 import simon.command.Command;
 import simon.command.CommandInvoker;
@@ -39,6 +42,19 @@ public class UiParser {
     private static final String CHAINING_DELIMITER = "&&";
     private static final String VALID_NUMBER_OR_RANGE_REGEX =
             "^\\d+(?:-\\d+)?(?:,\\d+(?:-\\d+)?)*$";
+
+    private static ChatModel model;
+
+    public UiParser() {}
+
+    /**
+     * Constructs UiParser that takes in a ChatModel and Simon instance.
+     *
+     * @param model which is the ChatModel instance for AI commands.
+     */
+    public UiParser(ChatModel model) {
+        UiParser.model = model;
+    }
 
     /**
      * Parses a raw input string into a Command object.
@@ -87,8 +103,26 @@ public class UiParser {
         case "on" -> new OnCommand(DateParser.parse(
                 requireArgument(parts, InputErrorType.ON_FORMAT).trim()));
         case "undo" -> new UndoCommand(invoker);
+        case "@ai" -> parseAiQueryCommand(parts);
+        case "@aitask" -> parseAiCommand(parts);
         default -> throw new InputFormatException(InputErrorType.UNKNOWN_INPUT);
         };
+    }
+
+    private static Command parseAiCommand(String[] parts) throws InputFormatException {
+        String arg = requireArgument(parts, InputErrorType.AI_FORMAT);
+        if (UiParser.model == null) {
+            throw new InputFormatException(InputErrorType.AI_NO_MODEL);
+        }
+        return new AiCommand(arg, UiParser.model);
+    }
+
+    private static Command parseAiQueryCommand(String[] parts) throws InputFormatException {
+        String arg = requireArgument(parts, InputErrorType.AI_FORMAT);
+        if (UiParser.model == null) {
+            throw new InputFormatException(InputErrorType.AI_NO_MODEL);
+        }
+        return new AiQueryCommand(arg, UiParser.model);
     }
 
     private static Command parseDeleteOrMultiDelete(String[] parts)
