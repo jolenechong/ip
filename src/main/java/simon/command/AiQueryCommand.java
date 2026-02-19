@@ -14,7 +14,9 @@ import simon.ui.Ui;
  * Represents a command that interacts with an AI model to generate responses based on user input.
  */
 public class AiQueryCommand implements Command {
-    private static final String SYSTEM_PROMPT = "You are helping users of a GUI text-based app. Answer the user's query about the features of the app, based on the app's commands given below. Limit your answer to one sentence.\n\n"
+    private static final String SYSTEM_PROMPT = "You are helping users of a GUI text-based app. Answer the user's query"
+            + "about the features of the app, "
+            + "based on the app's commands given below. Limit your answer to one sentence.\n\n"
             + "1. todo <description> - Adds a Todo task.\n"
             + "2. deadline <description> /by <date/time> - Adds a Deadline task.\n"
             + "3. event <description> /from <start date/time> /to <end date/time> - Adds an Event task.\n"

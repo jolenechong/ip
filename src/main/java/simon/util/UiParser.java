@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.langchain4j.model.chat.ChatModel;
-import simon.Simon;
 import simon.command.AddCommand;
 import simon.command.AiCommand;
 import simon.command.AiQueryCommand;

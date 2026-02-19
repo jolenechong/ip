@@ -37,6 +37,12 @@ For quick navigation of this User Guide:
    ```
 3. **Start Managing Tasks**: Use the commands outlined below to add, list, mark tasks
 
+To use the AI features of Simon, set up the `LLM_API_KEY` environment variable with your Groq API key. This allows you to ask Simon for help or to create tasks based on descriptions.
+```aiignore
+export LLM_API_KEY=your-groq-api-key # for Linux/Mac
+setx LLM_API_KEY "your-groq-api-key" # for Windows
+```
+
 ## Commands
 
 ### Adding Tasks
